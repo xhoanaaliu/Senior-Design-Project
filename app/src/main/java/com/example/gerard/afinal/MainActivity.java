@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    private EventFragment fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +38,13 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        fragment = new EventFragment();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.main_fragment, EventFragment.newInstance(), null)
+                .commit();
     }
 
     @Override
