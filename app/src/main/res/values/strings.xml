@@ -10,4 +10,19 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="about_the_organization">About Organization</string>
+    <string name="valid_member">Are you member of us?</string>
+    <string name="need_account">Need an account?</string>
+    <string name= "signIn">Sign In</string>
+    <string name="signUp">Sign Up</string>
+    <string name="resinventa">resInventa</string>
+    <string name="askOrgOrUser">Are you an organization?</string>
+    <string name="yesIamOrganization">YES</string>
+    <string name="noIamNot">NO</string>
+    <string name="follow">FOLLOW</string>
+    <string name="event_history">EVENT HISTORY</string>
+    <string name="following">FOLLOWING</string>
+    <string name="org_profile">Organization Profile</string>
+    <string name="facebook">Sign in with Facebook</string>
+    <string name="info"> By continuing you accept our Privacy Policy and Terms of Use</string>
+    <string name="google">SIGN IN WITH GOOGLE</string>
 </resources>
