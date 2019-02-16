@@ -125,15 +125,20 @@ public class MainActivity extends AppCompatActivity
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     mTextMessage.setText(R.string.title_home);
-                case R.id.navigation_dashboard:
+                    return  true;
+                case R.id.navigation_camera:
                     NewEventFragment nextFrag= new NewEventFragment();
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.main_fragment, nextFrag, "findThisFragment")
                             .addToBackStack(null)
                             .commit();
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_change_location:
                     mTextMessage.setText(R.string.title_notifications);
+                    return true;
+                case R.id.navigation_my_events:
+                    return true;
+                case R.id.navigation_profile:
                     return true;
             }
             return false;

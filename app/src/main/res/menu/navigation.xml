@@ -4,23 +4,23 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/home"
-        android:title="@string/title_home" />
+        android:title="" />
 
     <item
         android:id="@+id/navigation_camera"
         android:icon="@drawable/camera"
-        android:title="Camera" />
+        android:title="" />
 
     <item
         android:id="@+id/navigation_change_location"
         android:icon="@drawable/change_location"
-        android:title="Change Location" />
+        android:title="" />
     <item
         android:id="@+id/navigation_my_events"
         android:icon="@drawable/favorite_events"
-        android:title="My Events" />
+        android:title="" />
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/profile"
-        android:title="My Profile" />
+        android:title="" />
 </menu>
