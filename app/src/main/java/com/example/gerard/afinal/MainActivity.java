@@ -126,7 +126,11 @@ public class MainActivity extends AppCompatActivity
                 case R.id.navigation_home:
                     mTextMessage.setText(R.string.title_home);
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+                    NewEventFragment nextFrag= new NewEventFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_fragment, nextFrag, "findThisFragment")
+                            .addToBackStack(null)
+                            .commit();
                     return true;
                 case R.id.navigation_notifications:
                     mTextMessage.setText(R.string.title_notifications);
