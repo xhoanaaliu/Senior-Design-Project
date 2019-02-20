@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -7,29 +8,29 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/resinventa"
         android:layout_gravity="center_horizontal"
-        android:textStyle="bold"
+        android:layout_marginTop="150dp"
+        android:text="@string/resinventa"
         android:textColor="@color/colorPrimary"
-        android:layout_marginTop="150dp"/>
+        android:textStyle="bold" />
 
     <Button
-        android:layout_marginTop="40dp"
         android:layout_width="350dp"
         android:layout_height="80dp"
-        android:scaleType="fitXY"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
         android:drawableLeft="@drawable/indir"
-        android:text="@string/facebook"
-        android:layout_gravity="center_horizontal"/>
+        android:scaleType="fitXY"
+        android:text="@string/facebook" />
 
     <Button
-        android:layout_marginTop="40dp"
         android:layout_width="350dp"
         android:layout_height="80dp"
-        android:scaleType="fitXY"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
         android:drawableLeft="@drawable/googlelogo"
-        android:text="@string/google"
-        android:layout_gravity="center_horizontal"/>
+        android:scaleType="fitXY"
+        android:text="@string/google" />
 
 
 </LinearLayout>
