@@ -19,8 +19,8 @@
     <string name="yesIamOrganization">YES</string>
     <string name="noIamNot">NO</string>
     <string name="follow">FOLLOW</string>
-    <string name="event_history">EVENT HISTORY</string>
-    <string name="following">FOLLOWING</string>
+    <string name="event_history">Event History</string>
+    <string name="following">Following</string>
     <string name="org_profile">Organization Profile</string>
     <string name="facebook">Sign in with Facebook</string>
     <string name="info"> By continuing you accept our Privacy Policy and Terms of Use</string>

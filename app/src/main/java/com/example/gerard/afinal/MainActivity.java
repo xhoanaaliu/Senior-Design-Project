@@ -35,10 +35,14 @@ public class MainActivity extends AppCompatActivity
 
 
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -59,11 +63,13 @@ public class MainActivity extends AppCompatActivity
 
         fragment = new EventFragment();
         profileFragment = new ProfileFragment();
-
+        settingsFragment = new SettingsFragment();
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.main_fragment, EventFragment.newInstance(), null)
                 .commit();
+
+
     }
     @Override
     public void onBackPressed() {
@@ -113,9 +119,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_settings) {
-            SettingsFragment sett = new SettingsFragment();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, sett, "Settings")
+                    .replace(R.id.main_fragment, settingsFragment, "Settings")
                     .addToBackStack(null)
                     .commit();
 
