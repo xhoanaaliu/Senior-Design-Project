@@ -39,6 +39,7 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
 
     private int mShortAnimationDuration;
 
+
     private static final String DATEPICKER_TAG = "datepicker";
     private static final String TIMEPICKER_TAG = "timepicker";
 
