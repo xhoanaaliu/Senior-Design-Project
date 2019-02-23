@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.Button;
 
 import com.fourmob.datetimepicker.date.CalendarDay;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
@@ -48,6 +50,7 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
     private TimePickerDialog timePickerDialog;
     private Button dateButton;
     private Button timeButton;
+    private MaterialSpinner spinner;
 
 
 
@@ -78,6 +81,16 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
 
         dateButton = view.findViewById(R.id.dateButton);
         timeButton =  view.findViewById(R.id.timeButton);
+
+        spinner =  view.findViewById(R.id.spinner);
+        spinner.setItems("Ice Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow");
+
+        spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+
+            @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show();
+            }
+        });
 
         dateButton.setOnClickListener(this);
         timeButton.setOnClickListener(this);
