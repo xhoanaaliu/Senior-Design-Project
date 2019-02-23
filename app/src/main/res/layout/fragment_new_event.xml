@@ -1,14 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <com.vatsal.imagezoomer.ImageZoomButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"
-        android:layout_gravity="center"/>
 
 
-</FrameLayout>
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.vatsal.imagezoomer.ImageZoomButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_launcher"
+                android:layout_gravity="top"/>
+
+            <com.github.florent37.materialtextfield.MaterialTextField
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:mtf_image="@drawable/title_icon"
+                app:mtf_labelColor="#666"
+                app:mtf_openKeyboardOnFocus="true">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Title"
+                    android:textColor="#333"
+                    android:textSize="15sp" />
+            </com.github.florent37.materialtextfield.MaterialTextField>
+
+
+            <Button
+                android:id="@+id/dateButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:text="Select Date" />
+
+            <Button
+                android:id="@+id/timeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Select Time" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+                <com.github.florent37.materialtextfield.MaterialTextField
+                    android:layout_width="270dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginLeft="30dp"
+                    app:mtf_image="@drawable/address_icon"
+                    app:mtf_labelColor="#666"
+                    app:mtf_openKeyboardOnFocus="true">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Address"
+                        android:textColor="#333"
+                        android:textSize="15sp" />
+
+                </com.github.florent37.materialtextfield.MaterialTextField>
+
+                <ImageView
+                    android:id="@+id/myImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/google_maps" />
+
+            </LinearLayout>
+
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/spinner"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:textColor="#333">
+
+            </com.jaredrummler.materialspinner.MaterialSpinner>
+
+            <EditText
+                android:layout_width="350dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:hint="Write a Description of the Event"
+                android:inputType="textCapSentences|textMultiLine"
+                android:textColor="#333"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="20dp"
+                android:text="Submit"
+                android:visibility="visible" />
+
+
+        </LinearLayout>
+    </ScrollView>
+

@@ -60,7 +60,7 @@
                 android:id="@+id/switchNotifications"
                 android:layout_width="62dp"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/textViewNotifications"
+                android:layout_alignBottom="@+id/textViewEmail"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginEnd="115dp"
@@ -68,7 +68,7 @@
                 android:layout_marginBottom="-13dp" />
 
             <TextView
-                android:id="@+id/textViewNotifications"
+                android:id="@+id/textViewEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"

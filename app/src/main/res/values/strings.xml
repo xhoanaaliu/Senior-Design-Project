@@ -9,16 +9,24 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="Button1">Create</string>
-    <string name="Button2">Search</string>
-    <string name="application_name">resInventa</string>
-    <string name="eventsNear">See Events Near</string>
-    <string name="location_name">Bilkent</string>
-    <string name="current_date">Feb 14 Events</string>
-    <string name="event_name1">METU Campus Meeting</string>
-    <string name="event_time1">13:30 GMT +3</string>
-    <string name="event_loc1">METU Department of Science</string>
-    <string name="event_name2">Jazz Concert</string>
-    <string name="event_time2">17:30 GMT +3</string>
-    <string name="event_loc2">Presidential Conference Hall</string>
+    <string name="about_the_organization">About Organization</string>
+    <string name="valid_member">Are you member of us?</string>
+    <string name="need_account">Need an account?</string>
+    <string name="signIn">Sign In</string>
+    <string name="signUp">Sign Up</string>
+    <string name="resinventa">resInventa</string>
+    <string name="askOrgOrUser">Are you an organization?</string>
+    <string name="yesIamOrganization">YES</string>
+    <string name="noIamNot">NO</string>
+    <string name="follow">FOLLOW</string>
+    <string name="event_history">Event History</string>
+    <string name="following">Following</string>
+    <string name="org_profile">Organization Profile</string>
+    <string name="facebook">Sign in with Facebook</string>
+    <string name="info"> By continuing you accept our Privacy Policy and Terms of Use</string>
+    <string name="google">SIGN IN WITH GOOGLE</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="change_my_location" />
 </resources>
