@@ -17,9 +17,9 @@ public class EventFragment extends Fragment implements View.OnClickListener{
 
     //private OnFragmentInteractionListener mListener;
     private TextView title, location, date, description;
-    private ImageView poster;
+    private ImageView poster,googleLoc, calendarDate;
     private Button interestedButton, goingToButton;
-    private ImageButton googleLoc, calendarDate;
+    private ImageButton  f;
 
     public EventFragment() {}
 

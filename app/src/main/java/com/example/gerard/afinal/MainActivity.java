@@ -109,12 +109,35 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+            NewEventFragment nextFrag = new NewEventFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, nextFrag, "findThisFragment")
+                    .addToBackStack(null)
+                    .commit();
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_my_events) {
+            EventHistoryFragment eventHistoryFragment = new EventHistoryFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, eventHistoryFragment, "profile")
+                    .addToBackStack(null).commit();
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_my_profile) {
+            ProfileFragment pfragment = new ProfileFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, pfragment, "profile")
+                    .addToBackStack(null).commit();
+
+        } else if (id == R.id.nav_change_location) {
+            FollowingFragment followingFragment = new FollowingFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, followingFragment, "profile")
+                    .addToBackStack(null).commit();
+
+        } else if (id == R.id.nav_home) {
+            EventFragment home = new EventFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment,home,"EventFragment")
+                    .addToBackStack(null).commit();
 
         } else if (id == R.id.nav_share) {
 
@@ -125,7 +148,6 @@ public class MainActivity extends AppCompatActivity
                     .commit();
 
         }
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -142,7 +164,9 @@ public class MainActivity extends AppCompatActivity
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     EventFragment home = new EventFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,home,"EventFragment").addToBackStack(null).commit();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_fragment,home,"EventFragment")
+                            .addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_camera:
                     NewEventFragment nextFrag = new NewEventFragment();
@@ -152,17 +176,25 @@ public class MainActivity extends AppCompatActivity
                             .commit();
                     return true;
                 case R.id.navigation_change_location:
-                    mTextMessage.setText(R.string.title_notifications);
+                    FollowingFragment followingFragment = new FollowingFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_fragment, followingFragment, "profile")
+                            .addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_my_events:
+                    EventHistoryFragment eventHistoryFragment = new EventHistoryFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_fragment, eventHistoryFragment, "profile")
+                            .addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_profile:
                     ProfileFragment pfragment = new ProfileFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, pfragment, "profile").addToBackStack(null).commit();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_fragment, pfragment, "profile")
+                            .addToBackStack(null).commit();
                     return true;
             }
             return false;
         }
     };
-
 }
