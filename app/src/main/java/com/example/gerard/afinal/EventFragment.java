@@ -8,10 +8,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-public class EventFragment extends Fragment {
+public class EventFragment extends Fragment implements View.OnClickListener{
 
     //private OnFragmentInteractionListener mListener;
+    private TextView title, location, date, description;
+    private ImageView poster;
+    private Button interestedButton, goingToButton;
+    private ImageButton googleLoc, calendarDate;
 
     public EventFragment() {}
 
@@ -51,10 +59,37 @@ public class EventFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-    //initialize
+        //initialize
+        title = view.findViewById(R.id.eventTitle);
+        location = view.findViewById(R.id.location);
+        date = view.findViewById(R.id.date);
+        description = view.findViewById(R.id.description);
+        poster = view.findViewById(R.id.eventPoster);
+        interestedButton = view.findViewById(R.id.button);
+        goingToButton = view.findViewById(R.id.button2);
+        googleLoc = view.findViewById(R.id.googleLocation);
+        calendarDate = view.findViewById(R.id.calendarDate);
+        googleLoc.setOnClickListener(this);
+        calendarDate.setOnClickListener(this);
+        goingToButton.setOnClickListener(this);
+        interestedButton.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view){
+        switch (view.getId()) {
+            case R.id.googleLocation:
+                //ads
+            case R.id.calendarDate:
+                //adas
+            case R.id.button:
+                //sds
+            case R.id.button2:
+                //sad
+        }
     }
     @Override
-    public void onResume() {
+    public void onResume(){
         super.onResume();
         //setCurrentFragmentName("Users");
       //  EventBus.getDefault().post(new GoToHomeScreenEvent(currentFragmentName, "Users", false));
