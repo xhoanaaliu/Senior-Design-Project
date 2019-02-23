@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.gerard.afinal"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -26,7 +26,11 @@ dependencies {
     implementation 'com.android.support:support-v4:28.0.0'
 
     implementation 'com.vatsal.imagezoomer:image-zoomer:1.0.2'
-    implementation 'com.afollestad.material-dialogs:color:2.0.0'
+    implementation 'com.github.florent37:materialtextfield:1.0.7'
+    implementation 'com.colapps:datetimepicker-library:0.0.7'
+    implementation 'com.nineoldandroids:library:2.4.0'
+
+
 
 
     testImplementation 'junit:junit:4.12'

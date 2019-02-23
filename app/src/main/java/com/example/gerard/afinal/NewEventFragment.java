@@ -4,10 +4,20 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import com.fourmob.datetimepicker.date.CalendarDay;
+import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.sleepbot.datetimepicker.time.RadialPickerLayout;
+import com.sleepbot.datetimepicker.time.TimePickerDialog;
+
+import java.util.Calendar;
+import java.util.Date;
 
 
 /**
@@ -18,7 +28,7 @@ import android.view.ViewGroup;
  * Use the {@link NewEventFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewEventFragment extends Fragment {
+public class NewEventFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, View.OnClickListener{
 
 
     private OnFragmentInteractionListener mListener;
@@ -28,6 +38,17 @@ public class NewEventFragment extends Fragment {
     // very frequently.
 
     private int mShortAnimationDuration;
+
+    private static final String DATEPICKER_TAG = "datepicker";
+    private static final String TIMEPICKER_TAG = "timepicker";
+
+    private static Calendar calendar;
+    private DatePickerDialog datePickerDialog;
+    private TimePickerDialog timePickerDialog;
+    private Button dateButton;
+    private Button timeButton;
+
+
 
     public NewEventFragment() {
         // Required empty public constructor
@@ -49,6 +70,16 @@ public class NewEventFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        calendar = Calendar.getInstance();
+        datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),false);
+        timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY) ,calendar.get(Calendar.MINUTE), false, false);
+
+        dateButton = view.findViewById(R.id.dateButton);
+        timeButton =  view.findViewById(R.id.timeButton);
+
+        dateButton.setOnClickListener(this);
+        timeButton.setOnClickListener(this);
 
 
         //initialize
@@ -118,6 +149,63 @@ public class NewEventFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+
+    }
+
+    @Override
+    public void onDateSet(com.fourmob.datetimepicker.date.DatePickerDialog datePickerDialog, int year, int month, int day) {
+
+    }
+
+    @Override
+    public void onClick(View view){
+
+        switch (view.getId()) {
+            case R.id.dateButton:
+
+                Calendar minDate = Calendar.getInstance();
+                minDate.setTime(new Date());
+                minDate.add(Calendar.DAY_OF_YEAR, -20);
+
+                Calendar maxDate = Calendar.getInstance();
+                maxDate.setTime(new Date());
+                maxDate.add(Calendar.DAY_OF_YEAR, 20);
+
+                datePickerDialog.setDateConstraints(new CalendarDay(minDate), new CalendarDay(maxDate));
+                datePickerDialog.show(getActivity().getSupportFragmentManager(), DATEPICKER_TAG);
+
+                DatePickerDialog dpd = (DatePickerDialog) getActivity().getSupportFragmentManager().findFragmentByTag(DATEPICKER_TAG);
+                if (dpd != null) {
+                    dpd.setOnDateSetListener(this);
+                }
+
+                break;
+
+            case R.id.timeButton:
+
+                timePickerDialog.show(getActivity().getSupportFragmentManager(), TIMEPICKER_TAG);
+
+                TimePickerDialog tpd = (TimePickerDialog) getActivity().getSupportFragmentManager().findFragmentByTag(TIMEPICKER_TAG);
+                if (tpd != null) {
+                    tpd.setOnTimeSetListener(this);
+                }
+
+                break;
+
+
+
+
+
+        }
+
+    }
+
+    private void isVibrate() {
+
     }
 
 
