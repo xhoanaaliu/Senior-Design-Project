@@ -25,6 +25,8 @@
     <string name="facebook">Sign in with Facebook</string>
     <string name="info"> By continuing you accept our Privacy Policy and Terms of Use</string>
     <string name="google">SIGN IN WITH GOOGLE</string>
+    <string name="facebook_app_id">388033508442144</string>
+    <string name="fb_login_protocol_scheme">fb388033508442144</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

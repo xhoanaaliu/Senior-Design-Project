@@ -31,14 +31,10 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountD
             textViewLogOut=view.findViewById(R.id.textViewLogOut);
 
             imageViewLogOut=view.findViewById(R.id.imageViewLogOut);
-
-
-
         }
 
 
     }
-
     @NonNull
     @Override
     public AccountDesignHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
