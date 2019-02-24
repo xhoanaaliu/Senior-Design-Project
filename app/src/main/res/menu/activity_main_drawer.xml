@@ -22,7 +22,8 @@
             android:title="Tools" />
          <item
              android:id="@+id/nav_login"
-             android:title="Login"/>
+             android:title="Login" />
+
     </group>
 
     <item android:title="Communicate">

@@ -32,9 +32,7 @@ public class MainActivity extends AppCompatActivity
     private ProfileFragment profileFragment;
     private SettingsFragment settingsFragment;
     private ImageView imageView;
-
-
-
+    private LoginFragment loginFragment;
 
 
 
@@ -62,6 +60,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         fragment = new EventFragment();
+        loginFragment = new LoginFragment();
         profileFragment = new ProfileFragment();
         settingsFragment = new SettingsFragment();
         getSupportFragmentManager()
@@ -147,6 +146,11 @@ public class MainActivity extends AppCompatActivity
                     .addToBackStack(null)
                     .commit();
 
+        }else if(id==R.id.nav_login){
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, loginFragment, "Login")
+                    .addToBackStack(null)
+                    .commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
