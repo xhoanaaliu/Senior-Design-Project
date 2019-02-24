@@ -30,9 +30,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private TabLayout tabs;
     private ViewPager viewPager;
-    private BottomNavigationView bottom_nav;
     MyAdapter adapter;
-    Intent intent;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -56,7 +54,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView= inflater.inflate(R.layout.fragment_profile, container, false);
-        bottom_nav=rootView.findViewById(R.id.bottom_nav);
+
         return rootView;
     }
 
@@ -84,15 +82,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         adapter.addFragment(new FollowingFragment(),"Following");
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
-        bottom_nav.setOnClickListener(this);
-        bottom_nav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                return false;
-            }
-        });
-
-
     }
 
 
