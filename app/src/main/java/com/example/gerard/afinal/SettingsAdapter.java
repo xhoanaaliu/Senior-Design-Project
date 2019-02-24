@@ -63,7 +63,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.Settin
              rate.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View v) {
-                     //Here it will be directed to playstore.
+
                  }
              });
              contact.setOnClickListener(new View.OnClickListener() {
