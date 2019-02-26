@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity
     private SettingsFragment settingsFragment;
     private ImageView imageView;
     private LoginFragment loginFragment;
+    private SignUpFragment signupfragment;
 
 
 
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity
         loginFragment = new LoginFragment();
         profileFragment = new ProfileFragment();
         settingsFragment = new SettingsFragment();
+        signupfragment = new SignUpFragment();
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.main_fragment, EventFragment.newInstance(), null)
@@ -149,6 +151,11 @@ public class MainActivity extends AppCompatActivity
         }else if(id==R.id.nav_login){
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, loginFragment, "Login")
+                    .addToBackStack(null)
+                    .commit();
+        }else if(id==R.id.nav_signup){
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, signupfragment, "Sign Up")
                     .addToBackStack(null)
                     .commit();
         }
