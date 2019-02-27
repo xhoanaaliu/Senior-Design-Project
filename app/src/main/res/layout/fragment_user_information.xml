@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context=".UserInformationFragment">
+
+    <EditText
+        android:id="@+id/userName"
+        android:layout_width="250dp"
+        android:layout_marginTop="75dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/user_name" />
+
+    <EditText
+        android:id="@+id/surname"
+        android:layout_width="250dp"
+        android:layout_marginTop="30dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/surname" />
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="250dp"
+        android:layout_marginTop="30dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/useremail" />
+    <EditText
+        android:id="@+id/editPassword"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:hint="@string/user_password" />
+    <EditText
+        android:id="@+id/confirmPassword"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:hint="@string/confirm_password" />
+
+    <Button
+        android:id="@+id/signupnow"
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SIGN UP"
+        android:background="@color/colorPrimary"/>
+
+
+</LinearLayout>

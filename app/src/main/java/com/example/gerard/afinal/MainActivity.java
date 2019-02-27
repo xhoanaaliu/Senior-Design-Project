@@ -20,9 +20,8 @@ public class MainActivity extends AppCompatActivity
     private ProfileFragment profileFragment;
     private SettingsFragment settingsFragment;
     private ImageView imageView;
-
-
-
+    private LoginFragment loginFragment;
+    private SignUpFragment signupfragment;
 
 
 
@@ -50,8 +49,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         fragment = new EventFragment();
+        loginFragment = new LoginFragment();
         profileFragment = new ProfileFragment();
         settingsFragment = new SettingsFragment();
+        signupfragment = new SignUpFragment();
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.main_fragment, EventFragment.newInstance(), null)
@@ -62,11 +63,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
+
+
     }
 
     @Override
@@ -116,9 +121,9 @@ public class MainActivity extends AppCompatActivity
                     .addToBackStack(null).commit();
 
         } else if (id == R.id.nav_change_location) {
-            FollowingFragment followingFragment = new FollowingFragment();
+            LocationFragment locationFragment = new LocationFragment();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, followingFragment, "profile")
+                    .replace(R.id.main_fragment, locationFragment, "location")
                     .addToBackStack(null).commit();
 
         } else if (id == R.id.nav_home) {
@@ -135,6 +140,16 @@ public class MainActivity extends AppCompatActivity
                     .addToBackStack(null)
                     .commit();
 
+        }else if(id==R.id.nav_login){
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, loginFragment, "Login")
+                    .addToBackStack(null)
+                    .commit();
+        }else if(id==R.id.nav_signup){
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, signupfragment, "Sign Up")
+                    .addToBackStack(null)
+                    .commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -164,9 +179,9 @@ public class MainActivity extends AppCompatActivity
                             .commit();
                     return true;
                 case R.id.navigation_change_location:
-                    FollowingFragment followingFragment = new FollowingFragment();
+                    LocationFragment locationFragment = new LocationFragment();
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, followingFragment, "profile")
+                            .replace(R.id.main_fragment, locationFragment, "location")
                             .addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_my_events:

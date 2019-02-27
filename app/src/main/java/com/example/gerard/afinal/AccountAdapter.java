@@ -9,13 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
 public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountDesignHolder>  {
     private Context context;
-
 
 
     public AccountAdapter(Context context) {
@@ -33,7 +31,6 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountD
             textViewLogOut=view.findViewById(R.id.textViewLogOut);
 
             imageViewLogOut=view.findViewById(R.id.imageViewLogOut);
-
 
 
 
