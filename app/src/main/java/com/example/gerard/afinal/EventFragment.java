@@ -13,11 +13,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.flaviofaria.kenburnsview.KenBurnsView;
+import com.github.florent37.shapeofview.ShapeOfView;
+
 public class EventFragment extends Fragment implements View.OnClickListener{
 
     //private OnFragmentInteractionListener mListener;
+    private KenBurnsView poster;
     private TextView title, location, date, description;
-    private ImageView poster,googleLoc, calendarDate;
+    private ImageView googleLoc, calendarDate;
     private Button interestedButton, goingToButton;
     private ImageButton  f;
 

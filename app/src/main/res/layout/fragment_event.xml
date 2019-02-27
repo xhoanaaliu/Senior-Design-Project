@@ -1,24 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/eventPoster"
+
+    <com.github.florent37.shapeofview.shapes.ArcView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher" />
-    />
+        android:layout_height="200dp"
+        android:elevation="5dp"
+        app:shape_arc_height="25dp"
+        app:shape_arc_position="bottom"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:id="@+id/florent"
+        >
+        <com.flaviofaria.kenburnsview.KenBurnsView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_launcher"
+            android:id="@+id/eventPoster"
+            />
+
+    </com.github.florent37.shapeofview.shapes.ArcView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/ll1">
+        android:id="@+id/ll1"
+        >
         <TextView
             android:id="@+id/eventTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:text="Title of the Event"
             android:textStyle="bold"
@@ -52,6 +70,10 @@
                 />
         </LinearLayout>
     </LinearLayout>
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -159,5 +181,5 @@
             android:textSize="20dp"/>
 
     </LinearLayout>
-
-</RelativeLayout>
+    </ScrollView>
+</LinearLayout>
