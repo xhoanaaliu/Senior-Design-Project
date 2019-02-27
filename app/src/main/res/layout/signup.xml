@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/register"
     android:fitsSystemWindows="true">
     <TextView
         android:layout_width="wrap_content"
@@ -32,11 +33,13 @@
         android:layout_marginTop="10dp"
         />
         <android.support.v7.widget.AppCompatButton
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
+            android:layout_marginLeft="130dp"
             android:padding="12dp"
+            android:id="@+id/sign_in_button"
             android:text="@string/signIn"
             android:background="@color/colorPrimary"/>
 
@@ -48,12 +51,14 @@
         android:textStyle="bold"/>
 
         <android.support.v7.widget.AppCompatButton
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
+            android:layout_marginLeft="130dp"
             android:text="@string/signUp"
+            android:id="@+id/sign_up_button"
             android:background="@color/colorPrimary"/>
    </LinearLayout>
 </LinearLayout>
