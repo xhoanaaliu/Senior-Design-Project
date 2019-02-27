@@ -39,4 +39,15 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="change_my_location" />
+    <string name="Button2">Search</string>
+    <string name="Button1">Create</string>
+    <string name="current_date">Feb 14</string>
+    <string name="event_name1">METU Campus Event</string>
+    <string name="event_time1">13:30 GMT+3</string>
+    <string name="event_loc1">Department of Science</string>
+    <string name="event_name2">Jazz Concert</string>
+    <string name="event_time2">17:30 GMT+3</string>
+    <string name="event_loc2">Presidential Conference Hall</string>
+    <string name="eventsNear">See Events Near</string>
+    <string name="location_name">Bilkent</string>
 </resources>
