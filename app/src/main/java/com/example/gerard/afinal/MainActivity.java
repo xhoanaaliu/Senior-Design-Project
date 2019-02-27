@@ -75,11 +75,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
+
+
     }
 
     @Override
@@ -129,9 +133,9 @@ public class MainActivity extends AppCompatActivity
                     .addToBackStack(null).commit();
 
         } else if (id == R.id.nav_change_location) {
-            FollowingFragment followingFragment = new FollowingFragment();
+            LocationFragment locationFragment = new LocationFragment();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, followingFragment, "profile")
+                    .replace(R.id.main_fragment, locationFragment, "location")
                     .addToBackStack(null).commit();
 
         } else if (id == R.id.nav_home) {
@@ -187,9 +191,9 @@ public class MainActivity extends AppCompatActivity
                             .commit();
                     return true;
                 case R.id.navigation_change_location:
-                    FollowingFragment followingFragment = new FollowingFragment();
+                    LocationFragment locationFragment = new LocationFragment();
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, followingFragment, "profile")
+                            .replace(R.id.main_fragment, locationFragment, "location")
                             .addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_my_events:
