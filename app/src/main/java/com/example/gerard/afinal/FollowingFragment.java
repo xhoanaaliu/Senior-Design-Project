@@ -20,4 +20,3 @@ public class FollowingFragment extends Fragment {
 
 
 }
-

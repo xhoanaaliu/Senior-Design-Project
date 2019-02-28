@@ -88,7 +88,7 @@ public class ContactFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-         contact_name = view.findViewById(R.id.contact_name);
+        contact_name = view.findViewById(R.id.contact_name);
         contact_email = view.findViewById(R.id.contact_email);
         contact_message = view.findViewById(R.id.contact_message);
         submit_contact = view.findViewById(R.id.submit_contact);

@@ -39,7 +39,7 @@ public class LocationFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-    nFragment.
+     nFragment.
      */
     // TODO: Rename and change types and number of parameters
     public static LocationFragment newInstance() {

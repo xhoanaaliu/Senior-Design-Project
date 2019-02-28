@@ -96,18 +96,18 @@ public class EventFragment extends Fragment implements View.OnClickListener{
     public void onResume(){
         super.onResume();
         //setCurrentFragmentName("Users");
-      //  EventBus.getDefault().post(new GoToHomeScreenEvent(currentFragmentName, "Users", false));
+        //  EventBus.getDefault().post(new GoToHomeScreenEvent(currentFragmentName, "Users", false));
     }
 
     @Override
     public void onStart() {
         super.onStart();
-       // EventBus.getDefault().register(this);
+        // EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop() {
-       // EventBus.getDefault().unregister(this);
+        // EventBus.getDefault().unregister(this);
         super.onStop();
     }
 

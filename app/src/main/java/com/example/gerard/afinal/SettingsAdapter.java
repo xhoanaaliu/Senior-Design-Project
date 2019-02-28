@@ -24,9 +24,9 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.Settin
         this.context = context;
     }
     public class SettingsDesignHolder extends RecyclerView.ViewHolder{
-         TextView textViewUserName,textViewAccount,textViewNotifications,textViewContact,textViewRate,textViewComment;
-         ImageView imageViewAccount,imageViewNotifications,imageViewContact,imageViewRate,imageViewComment;
-         Switch switchNotifications;
+        TextView textViewUserName,textViewAccount,textViewNotifications,textViewContact,textViewRate,textViewComment;
+        ImageView imageViewAccount,imageViewNotifications,imageViewContact,imageViewRate,imageViewComment;
+        Switch switchNotifications;
         public SettingsDesignHolder(View view){
             super(view);
             textViewUserName=view.findViewById(R.id.textViewUserName);
@@ -40,40 +40,40 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.Settin
             imageViewContact=view.findViewById(R.id.imageViewAccount);
             imageViewRate=view.findViewById(R.id.imageViewAccount);
             imageViewComment=view.findViewById(R.id.imageViewAccount);
-             account = view.findViewById(R.id.card_view_account);
-             comment=view.findViewById(R.id.card_view_comment);
-             rate = view.findViewById(R.id.card_view_rate);
-             contact=view.findViewById(R.id.card_view_contact);
-             account.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View v) {
-                     AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                     AccountFragment afr = new AccountFragment();
-                     activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,afr,"Account").addToBackStack(null).commit();
-                 }
-             });
-             comment.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View v) {
-                     AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                     CommentFragment cfr = new CommentFragment();
-                     activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,cfr,"Comment").addToBackStack(null).commit();
-                 }
-             });
-             rate.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View v) {
+            account = view.findViewById(R.id.card_view_account);
+            comment=view.findViewById(R.id.card_view_comment);
+            rate = view.findViewById(R.id.card_view_rate);
+            contact=view.findViewById(R.id.card_view_contact);
+            account.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                    AccountFragment afr = new AccountFragment();
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,afr,"Account").addToBackStack(null).commit();
+                }
+            });
+            comment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                    CommentFragment cfr = new CommentFragment();
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,cfr,"Comment").addToBackStack(null).commit();
+                }
+            });
+            rate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                 }
-             });
-             contact.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View v) {
-                     AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                     ContactFragment contact = new ContactFragment();
-                     activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,contact,"Contact").addToBackStack(null).commit();
-                 }
-             });
+                }
+            });
+            contact.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                    ContactFragment contact = new ContactFragment();
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,contact,"Contact").addToBackStack(null).commit();
+                }
+            });
         }
 
 
