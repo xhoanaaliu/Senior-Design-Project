@@ -1,4 +1,4 @@
-package com.example.gerard.afinal;
+package com.example.gerard.afinal.Account;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;

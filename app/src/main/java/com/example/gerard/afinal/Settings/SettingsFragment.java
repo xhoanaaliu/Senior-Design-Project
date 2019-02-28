@@ -1,8 +1,9 @@
-package com.example.gerard.afinal;
+package com.example.gerard.afinal.Settings;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,29 +11,38 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.gerard.afinal.R;
 
-public class AccountFragment extends Fragment {
 
-
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link SettingsFragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link SettingsFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class SettingsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
-    private View AccountView;
-    RecyclerView rv_account;
-    private AccountAdapter accountAdapter;
+    private View SettingsView;
+    RecyclerView rv_settings;
+    SettingsAdapter adapter;
 
-    public AccountFragment() {
-
+    public SettingsFragment() {
+        // Required empty public constructor
     }
 
 
     // TODO: Rename and change types and number of parameters
-    public static AccountFragment newInstance() {
-        AccountFragment fragment = new AccountFragment();
+    public static SettingsFragment newInstance() {
+        SettingsFragment fragment = new SettingsFragment();
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -40,15 +50,14 @@ public class AccountFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        AccountView = inflater.inflate(R.layout.fragment_account,container,false);
-        rv_account= (RecyclerView)AccountView.findViewById(R.id.rv_account);
-        rv_account.setLayoutManager(new LinearLayoutManager(getContext()));
-        accountAdapter = new AccountAdapter(getActivity());
-        rv_account.setAdapter(accountAdapter);
+        SettingsView = inflater.inflate(R.layout.fragment_settings,container,false);
+        rv_settings= (RecyclerView)SettingsView.findViewById(R.id.rv_settings);
+        rv_settings.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new SettingsAdapter(getActivity());
+        rv_settings.setAdapter(adapter);
 
-        return AccountView;
+        return SettingsView;
     }
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -69,6 +78,13 @@ public class AccountFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+
+    }
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

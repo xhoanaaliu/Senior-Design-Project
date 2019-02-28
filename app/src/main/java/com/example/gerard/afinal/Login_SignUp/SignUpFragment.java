@@ -1,4 +1,4 @@
-package com.example.gerard.afinal;
+package com.example.gerard.afinal.Login_SignUp;
 
 import android.content.Context;
 import android.net.Uri;
@@ -9,11 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.app.FragmentTransaction;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.example.gerard.afinal.R;
+import com.example.gerard.afinal.Settings.RegisterQuestionFragment;
 
 
 public class SignUpFragment extends Fragment implements View.OnClickListener{

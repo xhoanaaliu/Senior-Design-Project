@@ -1,7 +1,6 @@
-package com.example.gerard.afinal;
+package com.example.gerard.afinal.Settings;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import com.example.gerard.afinal.R;
 
 
 /**

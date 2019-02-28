@@ -1,4 +1,4 @@
-package com.example.gerard.afinal;
+package com.example.gerard.afinal.Settings;
 
 import android.content.Context;
 import android.net.Uri;
@@ -9,6 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.example.gerard.afinal.Account.OrganizationInformationFragment;
+import com.example.gerard.afinal.Account.UserInformationFragment;
+import com.example.gerard.afinal.R;
 
 public class RegisterQuestionFragment extends Fragment implements View.OnClickListener {
 
