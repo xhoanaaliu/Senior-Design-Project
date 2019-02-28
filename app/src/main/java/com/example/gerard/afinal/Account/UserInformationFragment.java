@@ -1,4 +1,4 @@
-package com.example.gerard.afinal;
+package com.example.gerard.afinal.Account;
 
 import android.content.Context;
 import android.net.Uri;
@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.example.gerard.afinal.R;
 
 /**
  * A simple {@link Fragment} subclass.

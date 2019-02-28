@@ -1,4 +1,4 @@
-package com.example.gerard.afinal;
+package com.example.gerard.afinal.Settings;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import com.example.gerard.afinal.Account.AccountFragment;
+import com.example.gerard.afinal.R;
 
 public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.SettingsDesignHolder>  {
     private Context context;

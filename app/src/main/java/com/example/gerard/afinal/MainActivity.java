@@ -14,6 +14,11 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.gerard.afinal.Account.ProfileFragment;
+import com.example.gerard.afinal.Login_SignUp.LoginFragment;
+import com.example.gerard.afinal.Login_SignUp.SignUpFragment;
+import com.example.gerard.afinal.Settings.SettingsFragment;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
     private EventFragment fragment;
@@ -22,8 +27,6 @@ public class MainActivity extends AppCompatActivity
     private ImageView imageView;
     private LoginFragment loginFragment;
     private SignUpFragment signupfragment;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

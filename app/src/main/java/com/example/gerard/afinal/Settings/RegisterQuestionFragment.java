@@ -1,4 +1,4 @@
-package com.example.gerard.afinal;
+package com.example.gerard.afinal.Settings;
 
 import android.content.Context;
 import android.net.Uri;
@@ -9,43 +9,44 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.app.FragmentTransaction;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
+
+import com.example.gerard.afinal.Account.OrganizationInformationFragment;
+import com.example.gerard.afinal.Account.UserInformationFragment;
+import com.example.gerard.afinal.R;
+
+public class RegisterQuestionFragment extends Fragment implements View.OnClickListener {
+
+    private Button yesOrganization;
+    private Button noOrganization;
+
+    public RegisterQuestionFragment() {
+        // Required empty public constructor
+    }
 
 
 
-public class SignUpFragment extends Fragment implements View.OnClickListener{
-
-
-    //private OnFragmentInteractionListener mListener;
-    private Button signin_b;
-    private Button signup_b;
-
-    public SignUpFragment() { }
-
-    public static SignUpFragment newInstance() {
-        SignUpFragment fragment = new SignUpFragment();
-        return fragment;
+    public static RegisterQuestionFragment newInstance() {
+        RegisterQuestionFragment fragmentQues = new RegisterQuestionFragment();
+        return fragmentQues;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.signup, container, false);
 
-        signin_b = (Button) rootView.findViewById(R.id.sign_in_button);
-        signup_b = (Button) rootView.findViewById(R.id.sign_up_button);
+        View rootView = inflater.inflate(R.layout.ask_organization_user, container, false);
 
-        signin_b.setOnClickListener(this);
-        signup_b.setOnClickListener(this);
+        yesOrganization = (Button) rootView.findViewById(R.id.yes_org);
+        noOrganization = (Button) rootView.findViewById(R.id.no_org);
+
+        yesOrganization.setOnClickListener(this);
+        noOrganization.setOnClickListener(this);
         return rootView;
     }
 
@@ -61,26 +62,11 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
         super.onAttach(context);
 
     }
-    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {}
 
     @Override
     public void onDetach() {
         super.onDetach();
-    }
-    public void onClick(View view){
 
-        Fragment fragment = null;
-        switch (view.getId()) {
-            case R.id.sign_in_button:
-                fragment = new LoginFragment();
-                replaceFragment(fragment);
-                break;
-
-            case R.id.sign_up_button:
-                fragment = new RegisterQuestionFragment();
-                replaceFragment(fragment);
-                break;
-        }
     }
 
 
@@ -88,11 +74,28 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+    public void onClick(View view){
+
+        Fragment fragment = null;
+        switch (view.getId()) {
+            case R.id.yes_org:
+                fragment = new OrganizationInformationFragment();
+                replaceFragment(fragment);
+                break;
+
+            case R.id.no_org:
+                fragment = new UserInformationFragment();
+                replaceFragment(fragment);
+                break;
+        }
+
+    }
+
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {}
     public void replaceFragment(Fragment someFragment) {
         android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.register, someFragment);
+        transaction.replace(R.id.questionForUser, someFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
-
 }

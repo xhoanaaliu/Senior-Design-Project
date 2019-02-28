@@ -1,4 +1,4 @@
-package com.example.gerard.afinal;
+package com.example.gerard.afinal.Login_SignUp;
 
 import android.content.Context;
 import android.net.Uri;
@@ -10,39 +10,40 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-public class RegisterQuestionFragment extends Fragment implements View.OnClickListener {
-
-    private Button yesOrganization;
-    private Button noOrganization;
-
-    public RegisterQuestionFragment() {
-        // Required empty public constructor
-    }
+import com.example.gerard.afinal.R;
+import com.example.gerard.afinal.Settings.RegisterQuestionFragment;
 
 
+public class SignUpFragment extends Fragment implements View.OnClickListener{
 
-    public static RegisterQuestionFragment newInstance() {
-        RegisterQuestionFragment fragmentQues = new RegisterQuestionFragment();
-        return fragmentQues;
+
+    //private OnFragmentInteractionListener mListener;
+    private Button signin_b;
+    private Button signup_b;
+
+    public SignUpFragment() { }
+
+    public static SignUpFragment newInstance() {
+        SignUpFragment fragment = new SignUpFragment();
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.signup, container, false);
 
-        View rootView = inflater.inflate(R.layout.ask_organization_user, container, false);
+        signin_b = (Button) rootView.findViewById(R.id.sign_in_button);
+        signup_b = (Button) rootView.findViewById(R.id.sign_up_button);
 
-        yesOrganization = (Button) rootView.findViewById(R.id.yes_org);
-        noOrganization = (Button) rootView.findViewById(R.id.no_org);
-
-        yesOrganization.setOnClickListener(this);
-        noOrganization.setOnClickListener(this);
+        signin_b.setOnClickListener(this);
+        signup_b.setOnClickListener(this);
         return rootView;
     }
 
@@ -58,11 +59,26 @@ public class RegisterQuestionFragment extends Fragment implements View.OnClickLi
         super.onAttach(context);
 
     }
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {}
 
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+    public void onClick(View view){
 
+        Fragment fragment = null;
+        switch (view.getId()) {
+            case R.id.sign_in_button:
+                fragment = new LoginFragment();
+                replaceFragment(fragment);
+                break;
+
+            case R.id.sign_up_button:
+                fragment = new RegisterQuestionFragment();
+                replaceFragment(fragment);
+                break;
+        }
     }
 
 
@@ -70,28 +86,11 @@ public class RegisterQuestionFragment extends Fragment implements View.OnClickLi
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-    public void onClick(View view){
-
-        Fragment fragment = null;
-        switch (view.getId()) {
-            case R.id.yes_org:
-                fragment = new OrganizationInformationFragment();
-                replaceFragment(fragment);
-                break;
-
-            case R.id.no_org:
-                fragment = new UserInformationFragment();
-                replaceFragment(fragment);
-                break;
-        }
-
-    }
-
-    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {}
     public void replaceFragment(Fragment someFragment) {
         android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.questionForUser, someFragment);
+        transaction.replace(R.id.register, someFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
 }

@@ -1,4 +1,4 @@
-package com.example.gerard.afinal;
+package com.example.gerard.afinal.Account;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,11 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.gerard.afinal.EventHistoryFragment;
+import com.example.gerard.afinal.InterestsFragment;
+import com.example.gerard.afinal.MainActivity;
+import com.example.gerard.afinal.R;
 
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
@@ -76,7 +81,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Intent i1 =  new Intent(getActivity(),MainActivity.class);
+        Intent i1 =  new Intent(getActivity(), MainActivity.class);
         startActivity(i1);
 
 

@@ -1,4 +1,4 @@
-package com.example.gerard.afinal;
+package com.example.gerard.afinal.Login_SignUp;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.Nullable;
@@ -7,20 +7,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.view.ViewGroup;
-import com.facebook.login.widget.LoginButton;
-import android.view.View.OnClickListener;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginResult;
-import android.support.v4.app.Fragment;
-import java.util.Arrays;
-import org.json.JSONObject;
-import android.support.v7.widget.LinearLayoutManager;
+
+import com.example.gerard.afinal.R;
 
 public class LoginFragment extends Fragment implements View.OnClickListener{
 
