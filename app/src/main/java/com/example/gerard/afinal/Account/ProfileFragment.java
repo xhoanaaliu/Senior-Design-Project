@@ -1,36 +1,28 @@
-package com.example.gerard.afinal;
+package com.example.gerard.afinal.Account;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.example.gerard.afinal.EventHistoryFragment;
+import com.example.gerard.afinal.InterestsFragment;
+import com.example.gerard.afinal.MainActivity;
+import com.example.gerard.afinal.R;
 
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private TabLayout tabs;
     private ViewPager viewPager;
-    MyAdapter adapter;
+    private MyAdapter adapter;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -38,8 +30,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
 
     public static ProfileFragment newInstance() {
-       ProfileFragment pfragment  = new ProfileFragment();
-       return pfragment;
+        ProfileFragment pfragment  = new ProfileFragment();
+        return pfragment;
     }
 
     @Override
@@ -74,12 +66,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tabs=view.findViewById(R.id.tabs);
-        viewPager=view.findViewById(R.id.viewPager);
-        adapter= new MyAdapter(getFragmentManager());
+        tabs=(TabLayout) view.findViewById(R.id.tabs);
+        viewPager=(ViewPager) view.findViewById(R.id.viewPager);
+        adapter= new MyAdapter(getChildFragmentManager());
         adapter.addFragment(new InterestsFragment(),"Interests");
-        adapter.addFragment(new EventHistoryFragment(),"EventHistory");
-        adapter.addFragment(new FollowingFragment(),"Following");
+        adapter.addFragment(new EventHistoryFragment(),"EventHıstory");
+        adapter.addFragment(new FollowingFragment(),"Followıng");
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
     }
@@ -89,22 +81,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-       Intent i1 =  new Intent(getActivity(),MainActivity.class);
-       startActivity(i1);
+        Intent i1 =  new Intent(getActivity(), MainActivity.class);
+        startActivity(i1);
 
 
- }
-     }
-
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-
+    }
+}

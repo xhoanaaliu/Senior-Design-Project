@@ -1,17 +1,8 @@
 package com.example.gerard.afinal;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -21,10 +12,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.gerard.afinal.Account.ProfileFragment;
+import com.example.gerard.afinal.Login_SignUp.LoginFragment;
+import com.example.gerard.afinal.Login_SignUp.SignUpFragment;
+import com.example.gerard.afinal.Settings.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -34,8 +27,6 @@ public class MainActivity extends AppCompatActivity
     private ImageView imageView;
     private LoginFragment loginFragment;
     private SignUpFragment signupfragment;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,11 +66,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
+
+
     }
 
     @Override
@@ -119,7 +114,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_my_events) {
             EventHistoryFragment eventHistoryFragment = new EventHistoryFragment();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, eventHistoryFragment, "profile")
+                    .replace(R.id.main_fragment, eventHistoryFragment, "eventhistory")
                     .addToBackStack(null).commit();
 
         } else if (id == R.id.nav_my_profile) {
@@ -129,9 +124,9 @@ public class MainActivity extends AppCompatActivity
                     .addToBackStack(null).commit();
 
         } else if (id == R.id.nav_change_location) {
-            FollowingFragment followingFragment = new FollowingFragment();
+            LocationFragment locationFragment = new LocationFragment();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, followingFragment, "profile")
+                    .replace(R.id.main_fragment, locationFragment, "location")
                     .addToBackStack(null).commit();
 
         } else if (id == R.id.nav_home) {
@@ -187,9 +182,9 @@ public class MainActivity extends AppCompatActivity
                             .commit();
                     return true;
                 case R.id.navigation_change_location:
-                    FollowingFragment followingFragment = new FollowingFragment();
+                    LocationFragment locationFragment = new LocationFragment();
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, followingFragment, "profile")
+                            .replace(R.id.main_fragment, locationFragment, "location")
                             .addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_my_events:

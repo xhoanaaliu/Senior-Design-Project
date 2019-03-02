@@ -1,49 +1,55 @@
 package com.example.gerard.afinal;
 
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
-public class MyAdapter extends FragmentPagerAdapter  {
+    private String[] mDataset;
 
-    private List<Fragment> fragmentList = new ArrayList<>();
-    private List<String> fragmentHeaderList = new ArrayList<>();
-
-    public MyAdapter(FragmentManager fm) {
-        super(fm);
+    // Provide a reference to the views for each data item
+    // Complex data items may need more than one view per item, and
+    // you provide access to all the views for a data item in a view holder
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+        // each data item is just a string in this case
+        public TextView textView;
+        public MyViewHolder(TextView v) {
+            super(v);
+            textView = v;
+        }
     }
 
+    // Provide a suitable constructor (depends on the kind of dataset)
+    public MyAdapter(String[] myDataset) {
+        mDataset = myDataset;
+    }
+
+    // Create new views (invoked by the layout manager)
     @Override
-    public Fragment getItem(int i) {
-        return fragmentList.get(i);
+    public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
+                                                     int viewType) {
+        // create a new view
+        TextView v = (TextView) LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.fragment_location, parent, false);
+
+        MyViewHolder vh = new MyViewHolder(v);
+        return vh;
     }
 
+    // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public int getCount() {
-        return fragmentList.size();
+    public void onBindViewHolder(MyViewHolder holder, int position) {
+        // - get element from your dataset at this position
+        // - replace the contents of the view with that element
+        holder.textView.setText("Hello");
+
     }
 
-    @Nullable
+    // Return the size of your dataset (invoked by the layout manager)
     @Override
-    public CharSequence getPageTitle(int position) {
-        return fragmentHeaderList.get(position);
+    public int getItemCount() {
+        return mDataset.length;
     }
-    public void addFragment(Fragment fragment, String header){
-        fragmentList.add(fragment);
-        fragmentHeaderList.add(header);
-
-    }
-
 }
-
-
-
-
-
-

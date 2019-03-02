@@ -1,52 +1,56 @@
-package com.example.gerard.afinal;
+package com.example.gerard.afinal.Account;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+
+import com.example.gerard.afinal.R;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CommentFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CommentFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class CommentFragment extends Fragment {
+public class AccountFragment extends Fragment {
 
 
     private OnFragmentInteractionListener mListener;
+    private View AccountView;
+    RecyclerView rv_account;
+    private AccountAdapter accountAdapter;
 
+    public AccountFragment() {
 
-    public CommentFragment() {
-        // Required empty public constructor
     }
 
 
     // TODO: Rename and change types and number of parameters
-    public static CommentFragment newInstance(String param1, String param2) {
-        CommentFragment fragment = new CommentFragment();
+    public static AccountFragment newInstance() {
+        AccountFragment fragment = new AccountFragment();
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
 
-        return inflater.inflate(R.layout.fragment_comment, container, false);
+        AccountView = inflater.inflate(R.layout.fragment_account,container,false);
+        rv_account= (RecyclerView)AccountView.findViewById(R.id.rv_account);
+        rv_account.setLayoutManager(new LinearLayoutManager(getContext()));
+        accountAdapter = new AccountAdapter(getActivity());
+        rv_account.setAdapter(accountAdapter);
+
+        return AccountView;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/account_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/colorPrimaryDark"
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
@@ -24,10 +26,10 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="50dp"
+                android:layout_marginTop="20dp"
                 android:text="Username:@AlisonParker"
-                android:textColor="@color/design_default_color_primary"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
@@ -49,12 +51,12 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
 
+                android:layout_marginStart="50dp"
                 android:layout_marginLeft="50dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:text="Email:alisonparker@gmail.com"
-                android:textColor="@color/design_default_color_primary"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
@@ -73,14 +75,12 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
 
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginStart="51dp"
+                android:layout_marginLeft="51dp"
                 android:text="Change Password"
-                android:textColor="@color/design_default_color_primary"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
 
 
         </RelativeLayout>
@@ -100,9 +100,9 @@
                 android:id="@+id/imageViewLogOut"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                app:srcCompat="@drawable/out" />
+                android:layout_marginTop="10dp"
+                app:srcCompat="@drawable/logout" />
 
             <TextView
                 android:id="@+id/textViewLogOut"
@@ -111,13 +111,12 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                 android:layout_marginLeft="50dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginStart="53dp"
+                android:layout_marginLeft="53dp"
+                android:layout_marginTop="16dp"
                 android:text="Logout"
-                android:textColor="@color/design_default_color_primary"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
-
 </LinearLayout>
