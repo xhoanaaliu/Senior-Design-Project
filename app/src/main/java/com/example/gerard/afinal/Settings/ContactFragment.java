@@ -4,14 +4,24 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
+import com.example.gerard.afinal.Account.FollowingFragment;
+import com.example.gerard.afinal.Account.MyAdapter;
+import com.example.gerard.afinal.EventHistoryFragment;
+import com.example.gerard.afinal.InterestsFragment;
 import com.example.gerard.afinal.R;
+
+import java.util.ArrayList;
 
 
 /**
@@ -23,7 +33,6 @@ import com.example.gerard.afinal.R;
  * create an instance of this fragment.
  */
 public class ContactFragment extends Fragment {
-
 
     private OnFragmentInteractionListener mListener;
     private EditText contact_name,contact_email,contact_message;
@@ -71,17 +80,7 @@ public class ContactFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
+      public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }

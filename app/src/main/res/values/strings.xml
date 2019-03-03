@@ -39,4 +39,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="change_my_location" />
+    <string name="pref_pref1" translatable="false">pref_pref1</string>
+    <string name="pref_pref2" translatable="false">pref_pref2</string>
+    <string name="pref_pref3" translatable="false">pref_pref3</string>
+    <string name="preferences_edittext_default">D</string>
 </resources>

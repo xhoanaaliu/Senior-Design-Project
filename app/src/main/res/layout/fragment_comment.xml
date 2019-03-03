@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Settings.CommentFragment">
+    tools:context=".Settings.CommentFragment"
+    android:theme="@style/AppAlertDialogContent">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -17,8 +18,9 @@
             android:layout_height="wrap_content"
             android:layout_alignEnd="@+id/textView5"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="93dp"
-            android:layout_marginEnd="-24dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginTop="134dp"
             android:ems="10"
             android:hint="Your Answer"
             android:inputType="textPersonName" />
@@ -30,9 +32,9 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="75dp"
-            android:layout_marginLeft="75dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginLeft="38dp"
+            android:layout_marginTop="49dp"
             android:text="Suggest Improvements"
             android:textColor="#000000"
             android:textSize="18sp"
@@ -45,68 +47,13 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="79dp"
-            android:layout_marginLeft="79dp"
-            android:layout_marginTop="57dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="117dp"
             android:text="E-mail adress"
             android:textColor="#000000"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/textView5"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="149dp"
-            android:text="Please Select a type!"
-            android:textColor="#000000"
-            android:textSize="18sp" />
-
-        <RadioGroup
-            android:layout_width="227dp"
-            android:layout_height="162dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="79dp"
-            android:layout_marginLeft="79dp"
-            android:layout_marginTop="182dp">
-
-            <RadioButton
-                android:id="@+id/radioButton8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Compliment"
-                android:textSize="14sp" />
-
-            <RadioButton
-                android:id="@+id/radioButton6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Bug or issue"
-                android:textSize="14sp" />
-
-            <RadioButton
-                android:id="@+id/radioButton7"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_weight="1"
-                android:text="New Feature Idea"
-                android:textSize="14sp" />
-
-            <RadioButton
-                android:id="@+id/radioButton5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="General Feedback"
-                android:textSize="14sp" />
-
-        </RadioGroup>
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/button3"
@@ -115,9 +62,9 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="138dp"
-            android:layout_marginLeft="138dp"
-            android:layout_marginBottom="109dp"
+            android:layout_marginStart="144dp"
+            android:layout_marginLeft="144dp"
+            android:layout_marginBottom="175dp"
             android:background="@color/colorPrimary"
             android:text="SEND"
             android:textColor="#FFFFFF" />
@@ -128,25 +75,52 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView5"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="7dp"
-            android:layout_marginBottom="226dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginBottom="293dp"
             android:text="How can we improve our app?"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <EditText
             android:id="@+id/editText2"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="79dp"
-            android:layout_marginLeft="79dp"
-            android:layout_marginBottom="170dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginLeft="38dp"
+            android:layout_marginBottom="242dp"
             android:ems="10"
             android:hint="Your Answer"
             android:inputType="textPersonName" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="184dp"
+            android:layout_marginTop="222dp"
+            android:layout_marginEnd="180dp"
+            android:layout_marginRight="180dp" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="194dp"
+            android:text="Please Select a type!"
+            android:textColor="@color/ampm_text_color_normal"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
 
     </RelativeLayout>

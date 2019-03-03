@@ -1,0 +1,31 @@
+<android.support.v7.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.v7.preference.PreferenceCategory>
+
+        <android.support.v7.preference.EditTextPreference
+            android:key="@string/pref_pref1"
+            android:title="ChangeUserName"
+            android:summary="Alison Parker"
+            android:dialogMessage="New UserName"
+            android:defaultValue=""
+            android:dialogLayout="@layout/pref_dialog_edittext_fix"
+            />
+        <android.support.v7.preference.EditTextPreference
+            android:key="@string/pref_pref2"
+            android:title="ChangeEmail"
+            android:summary="@Alisonparker@gmail.com"
+            android:dialogMessage="New Email"
+            android:defaultValue=""
+            android:dialogLayout="@layout/pref_dialog_edittext_fix"
+            />
+        <android.support.v7.preference.EditTextPreference
+            android:key="@string/pref_pref3"
+            android:title="ChangePassword"
+            android:defaultValue=""
+            android:dialogLayout="@layout/changepassword"
+
+            />
+    </android.support.v7.preference.PreferenceCategory>
+
+</android.support.v7.preference.PreferenceScreen>
