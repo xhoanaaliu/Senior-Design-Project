@@ -64,7 +64,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
     public void onClick(View view){
 
-       //THIS ACTION LISTENER WILL BE EDITED LATER
+        //THIS ACTION LISTENER WILL BE EDITED LATER
     }
 
 
@@ -79,15 +79,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 //OLD CODE IS BELOW... IT HAS BUGS--------FACEBOOK API
 
 /*public class LoginFragment extends Fragment {
-
     private OnClickListener mListener;
     private static final String EMAIL = "email";
     private View loginView;
     private TextView textView;
     private CallbackManager callbackManager;
-
     public LoginFragment(){
-
     }
     public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
@@ -96,27 +93,22 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         loginView = inflater.inflate(R.layout.sign_in_screen,container,false);
         final LoginButton button =  loginView.findViewById(R.id.login_button);
         button.setOnClickListener(new OnClickListener(){
             public void onClick(View v){
                 callbackManager = CallbackManager.Factory.create();
-
                 button.setReadPermissions(Arrays.asList(EMAIL));
-
                 // Callback registration
                 button.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         // App code
-
                         GraphRequest graphRequest=GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
@@ -128,19 +120,16 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                         graphRequest.setParameters(bundle1);
                         graphRequest.executeAsync();
                     }
-
                     @Override
                     public void onCancel() {
                         // App code
                     }
-
                     @Override
                     public void onError(FacebookException exception) {
                         // App code
                     }
                 });
             }
-
         });
         return loginView;
     }
@@ -148,30 +137,23 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private void FacebookResult(JSONObject object) {
         textView.setText(object.toString());
     }
-
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         //if (mListener != null) {
             //mListener.onFragmentInteraction(uri);
         //}
     }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
     }
-
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
-
-
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
 }*/

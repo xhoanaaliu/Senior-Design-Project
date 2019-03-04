@@ -53,7 +53,7 @@ public class UserInformationFragment extends Fragment implements View.OnClickLis
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         //if (mListener != null) {
-            //mListener.onFragmentInteraction(uri);
+        //mListener.onFragmentInteraction(uri);
         //}
     }
 

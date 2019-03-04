@@ -23,15 +23,15 @@
         android:paddingRight="24dp"
         >
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/valid_member"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        />
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/valid_member"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            />
         <android.support.v7.widget.AppCompatButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,11 +44,11 @@
             android:background="@color/colorPrimary"/>
 
         <TextView
-        android:layout_marginTop="30dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/need_account"
-        android:textStyle="bold"/>
+            android:layout_marginTop="30dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/need_account"
+            android:textStyle="bold"/>
 
         <android.support.v7.widget.AppCompatButton
             android:layout_width="wrap_content"
@@ -60,5 +60,5 @@
             android:text="@string/signUp"
             android:id="@+id/sign_up_button"
             android:background="@color/colorPrimary"/>
-   </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

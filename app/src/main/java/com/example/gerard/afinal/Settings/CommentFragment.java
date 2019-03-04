@@ -3,12 +3,17 @@ package com.example.gerard.afinal.Settings;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.example.gerard.afinal.R;
+
+import java.util.ArrayList;
 
 
 /**
@@ -21,7 +26,9 @@ import com.example.gerard.afinal.R;
  */
 public class CommentFragment extends Fragment {
 
-
+    private Spinner spinner;
+    private ArrayList<String> contact = new ArrayList<>();
+    private ArrayAdapter<String> adapter;
     private OnFragmentInteractionListener mListener;
 
 
@@ -67,6 +74,20 @@ public class CommentFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+    @Override
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        spinner=view.findViewById(R.id.spinner);
+        contact.add("New Feature Idea");
+        contact.add("Compliment");
+        contact.add("Bug or issue");
+        contact.add("General Feedback");
+        adapter = new ArrayAdapter<String >(getContext(),android.R.layout.simple_list_item_1,android.R.id.text1,contact);
+        spinner.setAdapter(adapter);
+
+    }
+
+
 
 
     public interface OnFragmentInteractionListener {
