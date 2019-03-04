@@ -169,9 +169,9 @@ public class MainActivity extends AppCompatActivity
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    EventFragment home = new EventFragment();
+                    HomeFragment home = new HomeFragment();
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment,home,"EventFragment")
+                            .replace(R.id.main_fragment, home,"HomeFragment")
                             .addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_camera:

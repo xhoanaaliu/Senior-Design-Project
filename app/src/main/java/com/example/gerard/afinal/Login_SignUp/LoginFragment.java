@@ -35,9 +35,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.sign_in_screen, container, false);
 
-        loginnow = (Button) rootView.findViewById(R.id.loginViaMail);
-        logFacebook = (Button) rootView.findViewById(R.id.login_button);
-        logGoogle = (Button) rootView.findViewById(R.id.login_google);
+       // loginnow = (Button) rootView.findViewById(R.id.loginViaMail);
+        //logFacebook = (Button) rootView.findViewById(R.id.login_button);
+        //logGoogle = (Button) rootView.findViewById(R.id.login_google);
 
         loginnow.setOnClickListener(this);
         logFacebook.setOnClickListener(this);
