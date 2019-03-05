@@ -34,14 +34,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.sign_in_screen, container, false);
-
-        loginnow = (Button) rootView.findViewById(R.id.loginViaMail);
-        logFacebook = (Button) rootView.findViewById(R.id.login_button);
-        logGoogle = (Button) rootView.findViewById(R.id.login_google);
-
-        loginnow.setOnClickListener(this);
-        logFacebook.setOnClickListener(this);
-        logGoogle.setOnClickListener(this);
         return rootView;
     }
     public void onButtonPressed(Uri uri) {
@@ -55,7 +47,16 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         super.onAttach(context);
 
     }
-    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {}
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
+
+        loginnow = (Button) view.findViewById(R.id.loginViaMail);
+        logFacebook = (Button) view.findViewById(R.id.login_button);
+        logGoogle = (Button) view.findViewById(R.id.login_google);
+
+        loginnow.setOnClickListener(this);
+        logFacebook.setOnClickListener(this);
+        logGoogle.setOnClickListener(this);
+    }
 
     @Override
     public void onDetach() {

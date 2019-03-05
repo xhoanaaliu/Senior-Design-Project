@@ -10,8 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.gerard.afinal.Account.UserInformationFragment;
 import com.example.gerard.afinal.R;
-import com.example.gerard.afinal.Settings.RegisterQuestionFragment;
+
 
 
 public class SignUpFragment extends Fragment implements View.OnClickListener{
@@ -20,6 +21,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
     //private OnFragmentInteractionListener mListener;
     private Button signin_b;
     private Button signup_b;
+    private RegisterQuestionFragment question;
+    private LoginFragment log;
 
     public SignUpFragment() { }
 
@@ -38,12 +41,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.signup, container, false);
-
-        signin_b = (Button) rootView.findViewById(R.id.sign_in_button);
-        signup_b = (Button) rootView.findViewById(R.id.sign_up_button);
-
-        signin_b.setOnClickListener(this);
-        signup_b.setOnClickListener(this);
         return rootView;
     }
 
@@ -59,7 +56,29 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
         super.onAttach(context);
 
     }
-    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {}
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
+
+        signin_b = view.findViewById(R.id.sign_in_button);
+        signup_b = view.findViewById(R.id.sign_up_button);
+        signin_b.setOnClickListener(this);
+        signup_b.setOnClickListener(this);
+        signup_b.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick (View v){
+
+                question = new RegisterQuestionFragment();
+                getFragmentManager().beginTransaction().replace(R.id.main_fragment,question,"information").addToBackStack(null).commit();
+            }
+        });
+        signin_b.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick (View v){
+
+                log = new LoginFragment();
+                getFragmentManager().beginTransaction().replace(R.id.main_fragment,log,"log").addToBackStack(null).commit();
+            }
+        });
+    }
 
     @Override
     public void onDetach() {
