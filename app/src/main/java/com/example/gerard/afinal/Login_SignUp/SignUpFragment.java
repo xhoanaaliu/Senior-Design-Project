@@ -60,8 +60,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
 
         signin_b = view.findViewById(R.id.sign_in_button);
         signup_b = view.findViewById(R.id.sign_up_button);
-        signin_b.setOnClickListener(this);
-        signup_b.setOnClickListener(this);
+        //signin_b.setOnClickListener(this);
+        //signup_b.setOnClickListener(this);
         signup_b.setOnClickListener(new View.OnClickListener() {
 
             public void onClick (View v){

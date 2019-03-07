@@ -87,6 +87,8 @@ public class RegisterQuestionFragment extends Fragment implements View.OnClickLi
         Fragment fragment = null;
         switch (view.getId()) {
             case R.id.yes_org:
+                userfragment = new UserInformationFragment();
+                getFragmentManager().beginTransaction().replace(R.id.questionForUser,userfragment," user information").addToBackStack(null).commit();
                 fragment = new OrganizationInformationFragment();
                 replaceFragment(fragment);
                 break;
