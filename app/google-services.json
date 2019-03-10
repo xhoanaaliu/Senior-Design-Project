@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "617557730736",
+    "firebase_url": "https://resinventa.firebaseio.com",
+    "project_id": "resinventa",
+    "storage_bucket": "resinventa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:617557730736:android:6693ddcf5a029f86",
+        "android_client_info": {
+          "package_name": "com.example.gerard.afinal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "617557730736-l63cgmddlo6kajfnfo0tarfhig3973n0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gerard.afinal",
+            "certificate_hash": "cd74519f316c9cea586610bd6fcf417b59aacea5"
+          }
+        },
+        {
+          "client_id": "617557730736-i4nfu1cgknu2o9lfbf1eadrnnmfkrti2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAz4g9g7PFP4PM6eDIZFYwal440nCbnpOc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "617557730736-i4nfu1cgknu2o9lfbf1eadrnnmfkrti2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

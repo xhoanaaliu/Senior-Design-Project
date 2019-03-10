@@ -1,14 +1,22 @@
 package com.example.gerard.afinal;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -19,6 +27,12 @@ import com.example.gerard.afinal.Login_SignUp.LoginFragment;
 import com.example.gerard.afinal.Login_SignUp.SignUpFragment;
 import com.example.gerard.afinal.Settings.SettingsFragment;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
     private EventFragment fragment;
@@ -28,6 +42,12 @@ public class MainActivity extends AppCompatActivity
     private LoginFragment loginFragment;
     private SignUpFragment signupfragment;
 
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_TAKE_PHOTO = 1;
+    String mCurrentPhotoPath;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +56,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         imageView = findViewById(R.id.imageView);
@@ -56,9 +75,10 @@ public class MainActivity extends AppCompatActivity
         profileFragment = new ProfileFragment();
         settingsFragment = new SettingsFragment();
         signupfragment = new SignUpFragment();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.main_fragment, EventFragment.newInstance(), null)
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment, fragment, "findThisFragment")
+                .addToBackStack(null)
                 .commit();
 
 
@@ -73,7 +93,6 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
-
 
     }
 
@@ -90,9 +109,6 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-
-        //noinspection SimplifiableIfStatement
 
 
         return super.onOptionsItemSelected(item);
@@ -160,13 +176,13 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     EventFragment home = new EventFragment();
@@ -175,11 +191,9 @@ public class MainActivity extends AppCompatActivity
                             .addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_camera:
-                    NewEventFragment nextFrag = new NewEventFragment();
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, nextFrag, "findThisFragment")
-                            .addToBackStack(null)
-                            .commit();
+
+                   dispatchTakePictureIntent();
+
                     return true;
                 case R.id.navigation_change_location:
                     LocationFragment locationFragment = new LocationFragment();
@@ -203,4 +217,68 @@ public class MainActivity extends AppCompatActivity
             return false;
         }
     };
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.gerard.afinal.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        }
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+
+            galleryAddPic();
+            NewEventFragment newEventFragment = new NewEventFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, newEventFragment, "location")
+                    .addToBackStack(null).commit();
+        }
+
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(mCurrentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+    }
+
+
 }
