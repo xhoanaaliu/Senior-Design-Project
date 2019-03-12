@@ -1,12 +1,17 @@
 package com.example.gerard.afinal;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +23,13 @@ import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -51,6 +61,9 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
     private Button dateButton;
     private Button timeButton;
     private MaterialSpinner spinner;
+    boolean camera = false;
+
+
 
 
 
@@ -94,10 +107,10 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
 
         dateButton.setOnClickListener(this);
         timeButton.setOnClickListener(this);
-
-
-        //initialize
     }
+
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -124,12 +137,12 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
 
+        View v;
 
-        return inflater.inflate(R.layout.fragment_new_event, container, false);
-
+           v = inflater.inflate(R.layout.fragment_new_event, container, false);
+           return v;
 
     }
 
@@ -210,10 +223,6 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
 
                 break;
 
-
-
-
-
         }
 
     }
@@ -221,6 +230,5 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
     private void isVibrate() {
 
     }
-
 
 }
