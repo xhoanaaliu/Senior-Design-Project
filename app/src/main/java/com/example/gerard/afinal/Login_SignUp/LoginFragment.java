@@ -49,9 +49,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     }
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
 
-        loginnow = (Button) view.findViewById(R.id.loginViaMail);
-        logFacebook = (Button) view.findViewById(R.id.login_button);
-        logGoogle = (Button) view.findViewById(R.id.login_google);
+        //loginnow = (Button) view.findViewById(R.id.loginViaMail);
+        //logFacebook = (Button) view.findViewById(R.id.login_button);
+        //logGoogle = (Button) view.findViewById(R.id.login_google);
 
         loginnow.setOnClickListener(this);
         logFacebook.setOnClickListener(this);

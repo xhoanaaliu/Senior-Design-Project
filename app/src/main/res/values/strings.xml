@@ -55,4 +55,5 @@
     <string name="event_time2">17:30 GMT +3</string>
     <string name="event_loc2">Presidential Conference Hall</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_maps_test">Map</string>
 </resources>
