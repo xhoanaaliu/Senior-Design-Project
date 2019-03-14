@@ -47,7 +47,7 @@
     <string name="location_name">Bilkent</string>
     <string name="Button2">Search</string>
     <string name="Button1">Create</string>
-    <string name="current_date">Feb 14</string>
+    <string name="current_date"></string>
     <string name="event_name1">METU Campus Event</string>
     <string name="event_time1">13:30 GMT +3</string>
     <string name="event_loc1">Department of Science</string>
