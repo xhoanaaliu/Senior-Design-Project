@@ -23,7 +23,7 @@ import com.example.gerard.afinal.R;
  */
 public class OrganizationInformationFragment extends Fragment implements View.OnClickListener {
 
-    private Button sign_up_org;
+   //private Button sign_up_org;
 
     private OnFragmentInteractionListener mListener;
 
@@ -48,8 +48,8 @@ public class OrganizationInformationFragment extends Fragment implements View.On
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_user_information, container, false);
 
-        sign_up_org = (Button) rootView.findViewById(R.id.signupnoworg);
-        sign_up_org.setOnClickListener(this);
+        //sign_up_org = (Button) rootView.findViewById(R.id.signupnoworg);
+        //sign_up_org.setOnClickListener(this);
         return rootView;
     }
 

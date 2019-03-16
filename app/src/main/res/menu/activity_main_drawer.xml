@@ -24,14 +24,11 @@
             android:id="@+id/nav_my_profile"
             android:icon="@drawable/ic_person_black_24dp"
             android:title="My Profile" />
-         <item
-             android:id="@+id/nav_login"
-             android:icon="@drawable/ic_menu_slideshow"
-             android:title="Login" />
+
         <item
-            android:id="@+id/nav_signup"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Sign Up" />
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/logout"
+            android:title="Log Out" />
 
     </group>
 

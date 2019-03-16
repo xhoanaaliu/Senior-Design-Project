@@ -19,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,7 +42,6 @@ public class MainActivity extends AppCompatActivity
     private ImageView imageView;
     private LoginFragment loginFragment;
     private SignUpFragment signupfragment;
-
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
     String mCurrentPhotoPath;
@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -75,11 +74,13 @@ public class MainActivity extends AppCompatActivity
         profileFragment = new ProfileFragment();
         settingsFragment = new SettingsFragment();
         signupfragment = new SignUpFragment();
+        loginFragment = new LoginFragment();
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_fragment, fragment, "findThisFragment")
+                .replace(R.id.main_fragment, loginFragment, "LoginFragment")
                 .addToBackStack(null)
                 .commit();
+        
 
 
     }
@@ -159,16 +160,14 @@ public class MainActivity extends AppCompatActivity
                     .addToBackStack(null)
                     .commit();
 
-        }else if(id==R.id.nav_login){
+        }
+        else if (id==R.id.nav_logout){
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, loginFragment, "Login")
+                    .replace(R.id.main_fragment, loginFragment, "LoginFragment")
                     .addToBackStack(null)
                     .commit();
-        }else if(id==R.id.nav_signup){
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, signupfragment, "Sign Up")
-                    .addToBackStack(null)
-                    .commit();
+
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -185,9 +184,9 @@ public class MainActivity extends AppCompatActivity
 
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    HomeFragment home = new HomeFragment();
+                    EventFragment home = new EventFragment();
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, home,"HomeFragment")
+                            .replace(R.id.main_fragment,home,"EventFragment")
                             .addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_camera:

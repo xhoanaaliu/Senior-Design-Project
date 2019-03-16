@@ -45,13 +45,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/profilePicture"
-        android:layout_width="140dp"
-        android:layout_height="109dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="136dp"
-        android:layout_marginRight="136dp"
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="146dp"
+        android:layout_marginRight="146dp"
         android:src="@drawable/pp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -60,22 +60,23 @@
         android:id="@+id/userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="154dp"
-        android:layout_marginRight="154dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="152dp"
+        android:layout_marginRight="152dp"
         android:text="Alison Parker"
         android:textSize="18sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilePicture" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="75dp"
-        android:layout_marginRight="75dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="76dp"
+        android:layout_marginRight="76dp"
+        android:scaleType="centerCrop"
         android:text="Bilkent University Cs, Traveller"
         android:textSize="18sp"
         android:textStyle="italic"

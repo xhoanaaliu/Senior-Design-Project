@@ -1,10 +1,12 @@
 package com.example.gerard.afinal.Login_SignUp;
+
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,24 +16,28 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.gerard.afinal.Account.OrganizationInformationFragment;
+import com.example.gerard.afinal.Account.UserInformationFragment;
 import com.example.gerard.afinal.R;
 
-import butterknife.ButterKnife;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
 
-public class SignUpFragment extends Fragment implements View.OnClickListener {
+public class OrganizationSignUp extends Fragment implements View.OnClickListener {
+
     private static final String TAG = "SignupActivity";
     private LoginFragment loginFragment;
 
-    @BindView(R.id.input_name) EditText _nameText;
-    @BindView(R.id.input_surname) EditText _surnameText;
-    @BindView(R.id.input_email) EditText _emailText;
-    @BindView(R.id.input_password) EditText _passwordText;
-    @BindView(R.id.input_confirmpassword) EditText _confirmpasswordText;
-    @BindView(R.id.btn_signup) Button _signupButton;
-    @BindView(R.id.link_login) TextView _loginLink;
+    @BindView(R.id.input_orgName)
+    EditText _nameText;
+    @BindView(R.id.input_orgEmail) EditText _emailText;
+    @BindView(R.id.input_orgPassword) EditText _passwordText;
+    @BindView(R.id.input_orgConfirmPassword) EditText _confirmpasswordText;
+    @BindView(R.id.btn_orgSignUp) Button _signupButton;
+    @BindView(R.id.org_link_login)
+    TextView _loginLink;
 
 
     @Override
@@ -42,7 +48,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.signup, container, false);
+        View view =inflater.inflate(R.layout.fragment_organization_information, container, false);
 
         ButterKnife.bind(this,view);
 
@@ -86,7 +92,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         progressDialog.show();
 
         String name = _nameText.getText().toString();
-        String surname = _surnameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
         String confirmpassword = _confirmpasswordText.getText().toString();
@@ -120,7 +125,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     }
 
     public void onSignupFailed() {
-        Toast.makeText(getContext(), "Sign Up Failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "Sign Up failed", Toast.LENGTH_LONG).show();
 
         _signupButton.setEnabled(true);
     }
@@ -129,7 +134,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         boolean valid = true;
 
         String name = _nameText.getText().toString();
-        String surname = _surnameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
         String confirmpassword = _confirmpasswordText.getText().toString();
@@ -140,12 +144,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         } else {
             _nameText.setError(null);
         }
-        if (surname.isEmpty() || surname.length() < 3) {
-            _surnameText.setError("at least 3 characters");
-            valid = false;
-        } else {
-            _surnameText.setError(null);
-        }
+
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             _emailText.setError("enter a valid email address");
             valid = false;

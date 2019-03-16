@@ -1,51 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    tools:context=".Account.OrganizationInformationFragment">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/signup_fragment"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true">
 
-    <EditText
-        android:id="@+id/organizationName"
-        android:layout_width="250dp"
-        android:layout_marginTop="75dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/organization_name" />
+        android:orientation="vertical"
+        android:paddingLeft="24dp"
+        android:paddingTop="56dp"
+        android:paddingRight="24dp">
 
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="250dp"
-        android:layout_marginTop="30dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/useremail" />
-    <EditText
-        android:id="@+id/editPassword"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:hint="@string/user_password" />
-    <EditText
-        android:id="@+id/confirmPassword"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:hint="@string/confirm_password" />
+        <!--  Name Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
 
-    <Button
-        android:id="@+id/signupnoworg"
-        android:layout_marginTop="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SIGN UP"
-        android:background="@color/colorPrimary"/>
+            <EditText
+                android:id="@+id/input_orgName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Organization Name"
+                android:inputType="textCapWords" />
+        </android.support.design.widget.TextInputLayout>
 
+        <!-- Email Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
 
-</LinearLayout>
+            <EditText
+                android:id="@+id/input_orgEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:inputType="textEmailAddress" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Password Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <EditText
+                android:id="@+id/input_orgPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textPassword" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <EditText
+                android:id="@+id/input_orgConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Confirm Password"
+                android:inputType="textPassword" />
+        </android.support.design.widget.TextInputLayout>
+        <!-- Signup Button -->
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_orgSignUp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="36dp"
+            android:background="@color/colorPrimary"
+            android:padding="12dp"
+            android:text="Create Account"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/org_link_login"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="42dp"
+            android:gravity="center"
+            android:text="Already a member? SignIn"
+            android:textSize="16dip" />
+
+    </LinearLayout>
+</ScrollView>
