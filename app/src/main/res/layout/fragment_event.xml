@@ -7,22 +7,21 @@
 
 
     <com.github.florent37.shapeofview.shapes.ArcView
+        android:id="@+id/florent"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:elevation="5dp"
-        app:shape_arc_height="25dp"
-        app:shape_arc_position="bottom"
         android:layout_gravity="center"
+        android:elevation="5dp"
         android:scaleType="centerCrop"
-        android:id="@+id/florent"
-        >
+        app:shape_arc_height="25dp"
+        app:shape_arc_position="bottom">
+
         <com.flaviofaria.kenburnsview.KenBurnsView
+            android:id="@+id/eventPoster"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@mipmap/ic_launcher"
-            android:id="@+id/eventPoster"
-            />
+            android:src="@mipmap/ic_launcher" />
 
     </com.github.florent37.shapeofview.shapes.ArcView>
 

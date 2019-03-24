@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Final</string>
+    <string name="app_name">resInventa</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -14,6 +14,8 @@
     <string name="need_account">Need an account?</string>
     <string name="signIn">Sign In</string>
     <string name="signUp">Sign Up</string>
+    <string name="facebook_app_id">300600260610477</string>
+    <string name="fb_login_protocol_scheme">fb300600260610477</string>
     <string name="resinventa">resInventa</string>
     <string name="askOrgOrUser">Are you an organization?</string>
     <string name="yesIamOrganization">YES</string>
@@ -25,8 +27,7 @@
     <string name="facebook">Sign in with Facebook</string>
     <string name="info"> By continuing you accept our Privacy Policy and Terms of Use</string>
     <string name="google">SIGN IN WITH GOOGLE</string>
-    <string name="facebook_app_id">388033508442144</string>
-    <string name="fb_login_protocol_scheme">fb388033508442144</string>
+
     <string name="string_password">Enter your password</string>
     <string name="string_name">Enter your name</string>
     <string name="or">OR</string>

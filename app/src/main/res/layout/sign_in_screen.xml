@@ -4,7 +4,9 @@
     android:id="@+id/sign_in"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+
     <LinearLayout
+        android:id="@+id/log_fr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -57,18 +59,35 @@
             android:id="@+id/btn_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="10dp"
             android:background="@color/colorPrimary"
             android:padding="12dp"
             android:text="Logın"
             android:textColor="#FFFFFF" />
 
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/googleBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:gravity="center"
+            android:singleLine="true"
+            android:textAlignment="gravity"></com.google.android.gms.common.SignInButton>
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_facebookbutton"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" />
+
+
         <TextView
             android:id="@+id/link_signup"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="14dp"
             android:gravity="center"
             android:text="No account yet? Create account for Normal User"
             android:textSize="16dip" />
@@ -77,7 +96,7 @@
             android:id="@+id/link_signuporganization"
             android:layout_width="364dp"
             android:layout_height="22dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="34dp"
             android:gravity="center"
             android:text="No account yet? Create account for Organization"
             android:textSize="16dip" />

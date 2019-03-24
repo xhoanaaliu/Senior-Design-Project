@@ -19,6 +19,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,6 +29,17 @@ import com.example.gerard.afinal.Account.ProfileFragment;
 import com.example.gerard.afinal.Login_SignUp.LoginFragment;
 import com.example.gerard.afinal.Login_SignUp.SignUpFragment;
 import com.example.gerard.afinal.Settings.SettingsFragment;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,8 +55,11 @@ public class MainActivity extends AppCompatActivity
     private ImageView imageView;
     private LoginFragment loginFragment;
     private SignUpFragment signupfragment;
+    private GoogleApiClient mGoogleApiClient;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
     String mCurrentPhotoPath;
 
 
@@ -52,7 +68,21 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
+       mAuthListener= new FirebaseAuth.AuthStateListener() {
+           @Override
+           public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+                if(firebaseAuth.getCurrentUser()==null){
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_fragment, loginFragment, "LoginFragment")
+                            .addToBackStack(null)
+                            .commit();
+                }
+           }
+       };
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -80,8 +110,6 @@ public class MainActivity extends AppCompatActivity
                 .replace(R.id.main_fragment, loginFragment, "LoginFragment")
                 .addToBackStack(null)
                 .commit();
-        
-
 
     }
     @Override
@@ -162,6 +190,18 @@ public class MainActivity extends AppCompatActivity
 
         }
         else if (id==R.id.nav_logout){
+            mAuth.signOut();
+            FirebaseAuth.getInstance().signOut();
+            new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
+                    .Callback() {
+                @Override
+                public void onCompleted(GraphResponse graphResponse) {
+
+                    LoginManager.getInstance().logOut();
+
+                }
+            }).executeAsync();
+
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, loginFragment, "LoginFragment")
                     .addToBackStack(null)
@@ -279,5 +319,9 @@ public class MainActivity extends AppCompatActivity
         this.sendBroadcast(mediaScanIntent);
     }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
 }

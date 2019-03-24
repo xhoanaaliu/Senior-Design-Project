@@ -19,6 +19,12 @@ import android.widget.Toast;
 import com.example.gerard.afinal.Account.OrganizationInformationFragment;
 import com.example.gerard.afinal.Account.UserInformationFragment;
 import com.example.gerard.afinal.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +35,7 @@ public class OrganizationSignUp extends Fragment implements View.OnClickListener
 
     private static final String TAG = "SignupActivity";
     private LoginFragment loginFragment;
-
+    private FirebaseAuth mAuth;
     @BindView(R.id.input_orgName)
     EditText _nameText;
     @BindView(R.id.input_orgEmail) EditText _emailText;
@@ -51,7 +57,7 @@ public class OrganizationSignUp extends Fragment implements View.OnClickListener
         View view =inflater.inflate(R.layout.fragment_organization_information, container, false);
 
         ButterKnife.bind(this,view);
-
+        mAuth = FirebaseAuth.getInstance();
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,6 +101,8 @@ public class OrganizationSignUp extends Fragment implements View.OnClickListener
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
         String confirmpassword = _confirmpasswordText.getText().toString();
+
+
 
         // TODO: Implement your own signup logic here.
 

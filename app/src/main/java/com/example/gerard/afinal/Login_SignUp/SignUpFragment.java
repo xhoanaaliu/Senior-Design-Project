@@ -15,16 +15,33 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gerard.afinal.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import butterknife.ButterKnife;
 import butterknife.BindView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
 
 public class SignUpFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "SignupActivity";
     private LoginFragment loginFragment;
-
+    private FirebaseDatabase database;
+    private DatabaseReference myRefUsers;
+    private CircleImageView profilePic;
+    private FirebaseAuth mAuth;
+    private LoginFragment lfr;
     @BindView(R.id.input_name) EditText _nameText;
     @BindView(R.id.input_surname) EditText _surnameText;
     @BindView(R.id.input_email) EditText _emailText;
@@ -32,7 +49,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.input_confirmpassword) EditText _confirmpasswordText;
     @BindView(R.id.btn_signup) Button _signupButton;
     @BindView(R.id.link_login) TextView _loginLink;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +61,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         View view =inflater.inflate(R.layout.signup, container, false);
 
         ButterKnife.bind(this,view);
-
+        mAuth = FirebaseAuth.getInstance();
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,8 +106,34 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
         String confirmpassword = _confirmpasswordText.getText().toString();
+        String location="";
+        String preferences ="";
+       String profile_picture = "";
 
-        // TODO: Implement your own signup logic here.
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "createUserWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                           /* Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(getContext(), "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();*/
+                            FirebaseAuthException e = (FirebaseAuthException)task.getException();
+                            Toast.makeText(getContext(), "Failed Registration: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+
+                    }
+                });
+
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
@@ -174,12 +216,16 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         return valid;
     }
 
+
+
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        database = FirebaseDatabase.getInstance();
+        myRefUsers = database.getReference("Users");
+        profilePic = view.findViewById(R.id.profile_image);
+        lfr=new LoginFragment();
     }
-
     @Override
     public void onClick(View v) {
 

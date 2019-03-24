@@ -10,7 +10,7 @@
     tools:context=".Login_SignUp.LoginFragment">
 
     <FrameLayout
-        android:id="@+id/loginFr"
+        android:id="@+id/login_fragment"
         android:layout_width="395dp"
         android:layout_height="587dp"
         android:layout_marginEnd="8dp"
