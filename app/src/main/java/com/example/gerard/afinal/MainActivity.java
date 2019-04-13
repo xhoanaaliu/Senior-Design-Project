@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -37,6 +38,7 @@ import com.facebook.login.LoginManager;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+//import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     String mCurrentPhotoPath;
+    BottomNavigationView navigation;
 
 
 
@@ -72,7 +75,7 @@ public class MainActivity extends AppCompatActivity
         mAuth = FirebaseAuth.getInstance();
 
        mAuthListener= new FirebaseAuth.AuthStateListener() {
-           @Override
+           //@Override
            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
                 if(firebaseAuth.getCurrentUser()==null){
@@ -87,7 +90,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         imageView = findViewById(R.id.imageView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -116,11 +119,18 @@ public class MainActivity extends AppCompatActivity
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        super.onBackPressed();
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.main_fragment);
+        if(f instanceof EventFragment) {
+            navigation.getMenu().findItem(R.id.navigation_home).setChecked(true);
+        } else if (f instanceof NewEventFragment){
+            navigation.getMenu().findItem(R.id.navigation_camera).setChecked(true);
+        } else if (f instanceof ProfileFragment){
+            navigation.getMenu().findItem(R.id.navigation_profile).setChecked(true);
+        } else if (f instanceof LocationFragment){
+            navigation.getMenu().findItem(R.id.navigation_change_location).setChecked(true);
+        } else if (f instanceof EventHistoryFragment){
+            navigation.getMenu().findItem(R.id.navigation_my_events).setChecked(true);
         }
 
     }
@@ -189,7 +199,7 @@ public class MainActivity extends AppCompatActivity
                     .commit();
 
         }
-        else if (id==R.id.nav_logout){
+       else if (id==R.id.nav_logout){
             mAuth.signOut();
             FirebaseAuth.getInstance().signOut();
             new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest

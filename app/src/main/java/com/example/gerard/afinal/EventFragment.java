@@ -19,7 +19,7 @@ import com.github.florent37.shapeofview.ShapeOfView;
 public class EventFragment extends Fragment implements View.OnClickListener{
 
     //private OnFragmentInteractionListener mListener;
-    private KenBurnsView poster;
+    public KenBurnsView poster;
     private TextView title, location, date, description;
     private ImageView googleLoc, calendarDate;
     private Button interestedButton, goingToButton;
@@ -77,6 +77,7 @@ public class EventFragment extends Fragment implements View.OnClickListener{
         calendarDate.setOnClickListener(this);
         goingToButton.setOnClickListener(this);
         interestedButton.setOnClickListener(this);
+
     }
 
     @Override

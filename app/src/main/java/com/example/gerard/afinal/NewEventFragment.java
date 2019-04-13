@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.fourmob.datetimepicker.date.CalendarDay;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.jaredrummler.materialspinner.MaterialSpinner;
@@ -43,15 +44,6 @@ import static android.app.Activity.RESULT_OK;
 public class NewEventFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, View.OnClickListener{
 
 
-    private OnFragmentInteractionListener mListener;
-
-    // The system "short" animation time duration, in milliseconds. This
-    // duration is ideal for subtle animations or animations that occur
-    // very frequently.
-
-    private int mShortAnimationDuration;
-
-
     private static final String DATEPICKER_TAG = "datepicker";
     private static final String TIMEPICKER_TAG = "timepicker";
 
@@ -61,11 +53,7 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
     private Button dateButton;
     private Button timeButton;
     private MaterialSpinner spinner;
-    boolean camera = false;
-
-
-
-
+    private KenBurnsView new_poster;
 
     public NewEventFragment() {
         // Required empty public constructor
@@ -107,6 +95,9 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
 
         dateButton.setOnClickListener(this);
         timeButton.setOnClickListener(this);
+
+        new_poster = view.findViewById(R.id.new_event_poster);
+
     }
 
 
@@ -148,9 +139,7 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+
     }
 
     @Override

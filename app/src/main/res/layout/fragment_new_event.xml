@@ -12,11 +12,24 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.vatsal.imagezoomer.ImageZoomButton
+        <com.github.florent37.shapeofview.shapes.ArcView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher"
-            android:layout_gravity="top"/>
+            android:layout_height="200dp"
+            android:elevation="5dp"
+            app:shape_arc_height="25dp"
+            app:shape_arc_position="bottom"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop">
+
+            <com.flaviofaria.kenburnsview.KenBurnsView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_launcher"
+                android:id="@+id/new_event_poster"
+                />
+
+        </com.github.florent37.shapeofview.shapes.ArcView>
 
         <com.github.florent37.materialtextfield.MaterialTextField
             android:layout_width="350dp"
