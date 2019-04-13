@@ -47,6 +47,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity
     private FirebaseAuth.AuthStateListener mAuthListener;
     String mCurrentPhotoPath;
     BottomNavigationView navigation;
+    private DatabaseReference dataref;
 
 
 
@@ -71,8 +74,17 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
         mAuth = FirebaseAuth.getInstance();
+
+        dataref = FirebaseDatabase.getInstance().getReference();
+
+        Map<String, String> em = new HashMap<>();
+        em.put("title" , "IEEE meeting");
+        em.put("location" , "Bilkent");
+        em.put("date" , "15 March");
+
+        dataref.child("Event").child("1").setValue(em);
 
        mAuthListener= new FirebaseAuth.AuthStateListener() {
            //@Override
