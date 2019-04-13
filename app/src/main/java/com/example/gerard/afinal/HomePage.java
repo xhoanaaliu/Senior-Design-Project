@@ -37,6 +37,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -59,7 +60,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  * create an instance of this fragment.
  */
 public class HomePage extends Fragment implements OnMapReadyCallback, LocationListener, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener {
 
     private MapView mMapView;
     private GoogleMap googleMap;
@@ -150,7 +151,9 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
     public void addMarker(GoogleMap mMap, double latitude, double longtitude){
         LatLng temp = new LatLng(latitude, longtitude);
 
-        mMap.addMarker(new MarkerOptions().position(temp).title(""));
+        mMap.addMarker(new MarkerOptions().position(temp).title("")).setTag(temp);
+
+        mMap.setOnMarkerClickListener(this);
     }
 
     @Override
@@ -161,6 +164,7 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
         LatLng curr = new LatLng(lat,lng);
         CameraPosition cameraPosition = new CameraPosition.Builder().target(curr).zoom(12).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        addMarker(googleMap, lat, lng);
 
     }
 
@@ -197,6 +201,14 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
     @Override
     public void onProviderDisabled(String s) {
 
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+
+        LatLng position = (LatLng) marker.getTag();
+        Toast.makeText(getActivity(), "tıkladı", Toast.LENGTH_SHORT).show();
+        return false;
     }
 
     /**
