@@ -11,6 +11,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -39,6 +41,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 //import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -51,7 +54,7 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
-    private EventFragment fragment;
+    private HomePage fragment;
     private ProfileFragment profileFragment;
     private SettingsFragment settingsFragment;
     private ImageView imageView;
@@ -102,7 +105,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        fragment = new EventFragment();
+        fragment = new HomePage();
         loginFragment = new LoginFragment();
         profileFragment = new ProfileFragment();
         settingsFragment = new SettingsFragment();
@@ -185,9 +188,9 @@ public class MainActivity extends AppCompatActivity
                     .addToBackStack(null).commit();
 
         } else if (id == R.id.nav_home) {
-            EventFragment home = new EventFragment();
+            HomePage home = new HomePage();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment,home,"EventFragment")
+                    .replace(R.id.main_fragment,home,"HomeFragment")
                     .addToBackStack(null).commit();
 
         } else if (id == R.id.nav_share) {
@@ -234,9 +237,9 @@ public class MainActivity extends AppCompatActivity
 
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    EventFragment home = new EventFragment();
+                    HomePage home = new HomePage();
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment,home,"EventFragment")
+                            .replace(R.id.main_fragment,home,"HomeFragment")
                             .addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_camera:
