@@ -89,7 +89,67 @@ public class MainActivity extends AppCompatActivity
 
         dataref.child("Event").child("1").setValue(em);
 
-       mAuthListener= new FirebaseAuth.AuthStateListener() {
+        //**************************************************************************************************//
+        dataref = FirebaseDatabase.getInstance().getReference();
+
+        Map<String, String> user = new HashMap<>();
+        user.put("email" , "test email");
+        user.put("password" , "test password");
+        user.put("name" , "test name");
+        user.put("surname" , "test surname");
+        user.put("birthday" , "test birthday");
+        user.put("picture" , "test picture");
+        dataref.child("User").child("user 1").setValue(user);
+
+        Map<String, String> be_friend = new HashMap<>();
+        be_friend.put("email_user" , "test email user");
+        be_friend.put("email_friend" , "test email friend");
+        dataref.child("BeFriend").child("be friend 1").setValue(be_friend);
+
+        Map<String, String> follow = new HashMap<>();
+        follow.put("email_user" , "test email user");
+        follow.put("email_organization" , "test email organization");
+        dataref.child("Follow").child("follow 1").setValue(follow);
+
+        Map<String, String> interest = new HashMap<>();
+        interest.put("interest_type" , "test interest type");
+        interest.put("ineterest_name" , "test interest name");
+        dataref.child("Interest").child("interest 1").setValue(interest);
+
+        Map<String, String> interest_event = new HashMap<>();
+        interest_event.put("interest_event_id" , "test interest event");
+        interest_event.put("ineterest_id" , "test interest");
+        dataref.child("InterestEvent").child("interest event 1").setValue(interest_event);
+
+        Map<String, String> interest_user = new HashMap<>();
+        interest_user.put("interest_user_id" , "test interest user");
+        interest_user.put("ineterest_id" , "test interest");
+        dataref.child("InterestUser").child("interest user 1").setValue(interest_user);
+
+        Map<String, String> organization = new HashMap<>();
+        organization.put("organization_email" , "test organization_email");
+        organization.put("organization_name" , "test organization name");
+        dataref.child("Organization").child("organization 1").setValue(organization);
+
+        Map<String, String> interested_in = new HashMap<>();
+        interested_in.put("user_id" , "test user");
+        interested_in.put("event_id" , "test event");
+        dataref.child("InterestedIn").child("ineterested in 1").setValue(interested_in);
+
+        Map<String, String> participated_in = new HashMap<>();
+        participated_in.put("user_id" , "test user");
+        participated_in.put("event_id" , "test event");
+        dataref.child("ParticipatedIn").child("participated in 1").setValue(participated_in);
+
+        Map<String, String> going_to = new HashMap<>();
+        going_to.put("user_id" , "test user");
+        going_to.put("event_id" , "test event");
+        dataref.child("GoingTo").child("going to 1").setValue(going_to);
+
+        //**************************************************************************************************//
+
+
+        mAuthListener= new FirebaseAuth.AuthStateListener() {
            //@Override
            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
