@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.gerard.afinal.R;
 
@@ -51,15 +55,6 @@ public class AccountFragment extends PreferenceFragmentCompat implements SharedP
         addPreferencesFromResource(R.xml.fragment_account);
 
     }
-
-    //@Override
-   /* public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
-        View v = inflater.inflate(R.layout.fragment_account,container,false);
-        return v;
-    }*/
 
 
     // TODO: Rename method, update argument and hook method into UI event

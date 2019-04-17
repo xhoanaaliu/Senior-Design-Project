@@ -9,7 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.gerard.afinal.R;
 
@@ -30,7 +33,8 @@ public class CommentFragment extends Fragment {
     private ArrayList<String> contact = new ArrayList<>();
     private ArrayAdapter<String> adapter;
     private OnFragmentInteractionListener mListener;
-
+    private Button buttonComment;
+    private EditText editEmail,editSuggestion;
 
     public CommentFragment() {
         // Required empty public constructor
@@ -78,12 +82,24 @@ public class CommentFragment extends Fragment {
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         spinner=view.findViewById(R.id.spinner);
+        buttonComment = view.findViewById(R.id.buttonComment);
+        editEmail = view.findViewById(R.id.editEmail);
+        editSuggestion=view.findViewById(R.id.editSuggestion);
         contact.add("New Feature Idea");
         contact.add("Compliment");
         contact.add("Bug or issue");
         contact.add("General Feedback");
         adapter = new ArrayAdapter<String >(getContext(),android.R.layout.simple_list_item_1,android.R.id.text1,contact);
         spinner.setAdapter(adapter);
+        buttonComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),"Thank you for your comment!",Toast.LENGTH_SHORT).show();
+                editEmail.setText("");
+                editSuggestion.setText("");
+
+            }
+        });
 
     }
 

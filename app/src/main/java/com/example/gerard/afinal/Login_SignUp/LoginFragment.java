@@ -15,6 +15,7 @@ import android.app.ProgressDialog;
 
 import com.example.gerard.afinal.Account.ProfileFragment;
 import com.example.gerard.afinal.EventFragment;
+import com.example.gerard.afinal.HomePage;
 import com.example.gerard.afinal.R;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -72,6 +73,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
     private EventFragment event = new EventFragment();
+    private HomePage hmp = new HomePage();
     private SignUpFragment signUpFragment;
     private NormalUser user;
     private FirebaseDatabase database;
@@ -203,7 +205,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
              //else Authentication Successful
              Toast.makeText(getContext(), "Authentication Successful", Toast.LENGTH_SHORT).show();
              getActivity().getSupportFragmentManager().beginTransaction()
-                     .replace(R.id.main_fragment, event, "Home")
+                     .replace(R.id.main_fragment, hmp, "Home")
                      .addToBackStack(null)
                      .commit();
          }

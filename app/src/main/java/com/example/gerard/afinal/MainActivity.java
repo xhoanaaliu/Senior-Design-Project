@@ -27,6 +27,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gerard.afinal.Account.ProfileFragment;
 import com.example.gerard.afinal.Login_SignUp.LoginFragment;
@@ -43,12 +44,16 @@ import com.google.android.gms.common.api.Status;
 //import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,10 +71,12 @@ public class MainActivity extends AppCompatActivity
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
     private FirebaseAuth mAuth;
+    private FirebaseDatabase database;
     private FirebaseAuth.AuthStateListener mAuthListener;
     String mCurrentPhotoPath;
     BottomNavigationView navigation;
     private DatabaseReference dataref;
+
 
 
 
@@ -79,13 +86,17 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
-
+       database = FirebaseDatabase.getInstance();
         dataref = FirebaseDatabase.getInstance().getReference();
 
+
         Map<String, String> em = new HashMap<>();
+        em.put("category","EE");
         em.put("title" , "IEEE meeting");
         em.put("location" , "Bilkent");
         em.put("date" , "15 March");
+        em.put("description","Robotics");
+        em.put("time","19:30");
 
         dataref.child("Event").child("1").setValue(em);
 
@@ -138,7 +149,6 @@ public class MainActivity extends AppCompatActivity
 
         Map<String, String> participated_in = new HashMap<>();
         participated_in.put("user_id" , "test user");
-        participated_in.put("event_id" , "test event");
         dataref.child("ParticipatedIn").child("participated in 1").setValue(participated_in);
 
         Map<String, String> going_to = new HashMap<>();
@@ -190,6 +200,11 @@ public class MainActivity extends AppCompatActivity
                 .commit();
 
     }
+
+
+
+
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

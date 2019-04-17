@@ -21,8 +21,10 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -33,12 +35,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gerard.afinal.EventHistoryFragment;
 import com.example.gerard.afinal.InterestsFragment;
 import com.example.gerard.afinal.MainActivity;
 import com.example.gerard.afinal.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -65,6 +73,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private static Bitmap rotateImage = null;
     private Bitmap resized;
     SharedPreferences sp;
+    private DatabaseReference reff;
     private static final int CAMERA = 0;
     private static final int GALLERY = 1;
     public ProfileFragment() {
@@ -114,6 +123,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         viewPager=(ViewPager) view.findViewById(R.id.viewPager);
         profilePicture = view.findViewById(R.id.profile_image);
         sp=getActivity().getSharedPreferences("profilePicture",MODE_PRIVATE);
+
 
         if(!sp.getString("dp","").equals("")){
             byte[] decodedString = Base64.decode(sp.getString("dp", ""), Base64.DEFAULT);

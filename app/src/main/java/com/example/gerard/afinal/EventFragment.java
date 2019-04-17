@@ -24,8 +24,13 @@ public class EventFragment extends Fragment implements View.OnClickListener{
     private ImageView googleLoc, calendarDate;
     private Button interestedButton, goingToButton;
     private ImageButton  f;
+    private String event_id;
+    public EventFragment() {
 
-    public EventFragment() {}
+    }
+    public EventFragment(String event_id){
+        this.event_id=event_id;
+    }
 
     public static EventFragment newInstance() {
         EventFragment fragment = new EventFragment();
@@ -43,8 +48,12 @@ public class EventFragment extends Fragment implements View.OnClickListener{
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_event, container, false);
     }
-
-
+    public void setEvent_id(String event_id){
+        this.event_id=event_id;
+    }
+    public String getEvent_id(){
+        return event_id;
+    }
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -58,6 +67,30 @@ public class EventFragment extends Fragment implements View.OnClickListener{
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public TextView getTitle() {
+        return title;
+    }
+
+    public void setTitle(TextView title) {
+        this.title = title;
+    }
+
+    public TextView getLocation() {
+        return location;
+    }
+
+    public void setLocation(TextView location) {
+        this.location = location;
+    }
+
+    public TextView getDate() {
+        return date;
+    }
+
+    public void setDate(TextView date) {
+        this.date = date;
     }
 
     @Override

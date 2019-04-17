@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.gerard.afinal.Account.FollowingFragment;
 import com.example.gerard.afinal.Account.MyAdapter;
@@ -94,6 +95,10 @@ public class ContactFragment extends Fragment {
         submit_contact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getContext(),"Thank you for your message!",Toast.LENGTH_SHORT).show();
+                contact_name.setText("");
+                contact_email.setText("");
+                contact_message.setText("");
             }
         });
 

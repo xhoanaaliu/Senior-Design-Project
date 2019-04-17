@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".Account.ProfileFragment">
 
+    <ListView
+        android:layout_marginTop="35dp"
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <TextView
         android:id="@+id/textViewEventHistory"
         android:layout_width="wrap_content"
@@ -13,7 +19,6 @@
         android:layout_marginTop="168dp"
         android:layout_marginEnd="156dp"
         android:layout_marginRight="156dp"
-        android:text="Event History"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
