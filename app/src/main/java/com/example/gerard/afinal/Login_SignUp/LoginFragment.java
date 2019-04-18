@@ -173,12 +173,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         mAuth.addAuthStateListener(mAuthListener);
         FirebaseUser currentUser=mAuth.getCurrentUser();
         if(currentUser!=null){
-            updateUI();
+            updateUI(currentUser);
         }
 
     }
 
-    private void updateUI() {
+    private void updateUI(FirebaseUser user) {
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_fragment, event, "Home")
                 .addToBackStack(null)
@@ -290,10 +290,10 @@ return valid;
         super.onViewCreated(view, savedInstanceState);
         database=FirebaseDatabase.getInstance();
         myRefUsers=database.getReference("Users");
+        mAuth = FirebaseAuth.getInstance();
+        mCallbackManager = CallbackManager.Factory.create();
         facebookloginButton= view.findViewById(R.id.login_facebookbutton);
         facebookloginButton.setFragment(this);
-        mCallbackManager = CallbackManager.Factory.create();
-        mAuth = FirebaseAuth.getInstance();
         // Initialize Facebook Login button
 
 
@@ -303,7 +303,7 @@ return valid;
 
                 LoginManager.getInstance().logInWithReadPermissions(getActivity(), Arrays.asList("email","public_profile"));
 
-                LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+                facebookloginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
 
                     @Override
                     public void onSuccess(LoginResult loginResult) {
@@ -430,7 +430,7 @@ return valid;
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("FACELOG", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI();
+                            updateUI(user);
 
 
                         } else {
@@ -438,6 +438,7 @@ return valid;
                             Log.w("FACELOG", "signInWithCredential:failure", task.getException());
                             Toast.makeText(getContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                            updateUI(null);
                         }
 
                         // ...
