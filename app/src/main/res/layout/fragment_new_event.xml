@@ -40,6 +40,7 @@
             app:mtf_openKeyboardOnFocus="true">
 
             <EditText
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Title"
@@ -79,6 +80,7 @@
                 app:mtf_openKeyboardOnFocus="true">
 
                 <EditText
+                    android:id="@+id/address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Address"
@@ -111,6 +113,7 @@
         </com.jaredrummler.materialspinner.MaterialSpinner>
 
         <EditText
+            android:id="@+id/description"
             android:layout_width="350dp"
             android:layout_height="150dp"
             android:layout_gravity="center"

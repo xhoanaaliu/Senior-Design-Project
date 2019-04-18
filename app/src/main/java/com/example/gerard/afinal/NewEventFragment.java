@@ -16,10 +16,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.fourmob.datetimepicker.date.CalendarDay;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
@@ -29,6 +33,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -52,8 +58,14 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
     private TimePickerDialog timePickerDialog;
     private Button dateButton;
     private Button timeButton;
+    private Button submitButton;
     private MaterialSpinner spinner;
     private KenBurnsView new_poster;
+    private DatabaseReference dataref;
+    private EditText titleField;
+    private EditText addressField;
+    private EditText descriptionField;
+
 
     public NewEventFragment() {
         // Required empty public constructor
@@ -82,6 +94,10 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
 
         dateButton = view.findViewById(R.id.dateButton);
         timeButton =  view.findViewById(R.id.timeButton);
+        submitButton = view.findViewById(R.id.submit);
+        titleField = view.findViewById(R.id.title);
+        addressField = view.findViewById(R.id.address);
+        descriptionField = view.findViewById(R.id.description);
 
         spinner =  view.findViewById(R.id.spinner);
         spinner.setItems("Ice Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow");
@@ -95,12 +111,12 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
 
         dateButton.setOnClickListener(this);
         timeButton.setOnClickListener(this);
+        submitButton.setOnClickListener(this);
 
         new_poster = view.findViewById(R.id.new_event_poster);
 
+        dataref = FirebaseDatabase.getInstance().getReference();
     }
-
-
 
     @Override
     public void onResume() {
@@ -212,11 +228,20 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
 
                 break;
 
+            case R.id.submit:
+
+                Map<String, String> em = new HashMap<>();
+                em.put("title" , titleField.getText().toString());
+                em.put("date" , "15 March");
+                em.put("time" , "20:00");
+                em.put("location" , addressField.getText().toString() );
+                em.put("category" , "CS");
+                em.put("description" , descriptionField.getText().toString());
+
+                dataref.child("Event").child("event2").setValue(em);
+
         }
 
-    }
-
-    private void isVibrate() {
 
     }
 
