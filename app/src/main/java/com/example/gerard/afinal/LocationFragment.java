@@ -14,40 +14,26 @@ import android.view.ViewGroup;
 
 import com.example.gerard.afinal.Account.MyAdapter;
 
+import com.google.android.gms.common.api.Status;
+/*import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
+//import com.google.android.libraries.places.compat.Place;
+import com.google.android.gms.location.places.Place;*/
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link LocationFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LocationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.Arrays;
+
 public class LocationFragment extends Fragment {
-
-
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
-
-    private OnFragmentInteractionListener mListener;
-
+    final String apiKey ="AIzaSyAT0Qg5FjgR_2WNOXKBb_SwmuBP6Jw72Zg";
     public LocationFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     nFragment.
-     */
     // TODO: Rename and change types and number of parameters
     public static LocationFragment newInstance() {
         LocationFragment fragment = new LocationFragment();
-        Bundle args = new Bundle();
-
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -67,16 +53,41 @@ public class LocationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // Initialize Places.
+        //Places.initialize(getActivity().getApplicationContext(), apiKey);
 
-        recyclerView = view.findViewById(R.id.my_recycler_view);
+// Create a new Places client instance.
+        //PlacesClient placesClient = Places.createClient(getActivity().getApplicationContext());
 
-    }
+        // Define a Place ID.
+        String placeId = "INSERT_PLACE_ID_HERE";
+        /*final TextView txtVw = findViewById(R.id.placeName);
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+       AutocompleteFilter filter = new AutocompleteFilter.Builder()
+                .setCountry("IN")
+                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
+                .build();
+        autocompleteFragment.setFilter(filter);
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                txtVw.setText(place.getName());
+            }
+            @Override
+            public void onError(Status status) {
+                txtVw.setText(status.toString());
+            }
+        });*/
+/*
+// Specify the fields to return.
+        List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
+
+// Construct a request object, passing the place ID and fields array.
+        FetchPlaceRequest request = FetchPlaceRequest.builder(placeId, placeFields)
+                .build();*/
     }
 
     @Override
@@ -88,21 +99,6 @@ public class LocationFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }

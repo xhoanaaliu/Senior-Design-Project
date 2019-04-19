@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.example.gerard.afinal.Account.ProfileFragment;
 import com.example.gerard.afinal.Login_SignUp.LoginFragment;
 import com.example.gerard.afinal.Login_SignUp.SignUpFragment;
+import com.example.gerard.afinal.Settings.CategoriesFragment;
 import com.example.gerard.afinal.Settings.SettingsFragment;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -105,18 +106,13 @@ public class MainActivity extends AppCompatActivity
 
 
 
-
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
-       database = FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance();
         dataref = FirebaseDatabase.getInstance().getReference();
 
 
@@ -205,7 +201,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-         navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
         imageView = findViewById(R.id.imageView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -231,10 +227,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
-
-
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -252,7 +244,6 @@ public class MainActivity extends AppCompatActivity
         } else if (f instanceof EventHistoryFragment){
             navigation.getMenu().findItem(R.id.navigation_my_events).setChecked(true);
         }
-
     }
 
     @Override
@@ -268,8 +259,6 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -280,14 +269,16 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            NewEventFragment nextFrag = new NewEventFragment();
+            //NewEventFragment nextFrag = new NewEventFragment();
+            EventFragment nextFrag = new EventFragment();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, nextFrag, "findThisFragment")
                     .addToBackStack(null)
                     .commit();
 
         } else if (id == R.id.nav_my_events) {
-            EventHistoryFragment eventHistoryFragment = new EventHistoryFragment();
+            //EventHistoryFragment eventHistoryFragment = new EventHistoryFragment();
+            CategoriesFragment eventHistoryFragment = new CategoriesFragment();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, eventHistoryFragment, "eventhistory")
                     .addToBackStack(null).commit();
@@ -336,15 +327,12 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.main_fragment, loginFragment, "LoginFragment")
                     .addToBackStack(null)
                     .commit();
-
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -488,6 +476,7 @@ public class MainActivity extends AppCompatActivity
             Log.e(LOG_TAG, "Null image was returned.");
         }
     }
+
     public Bitmap resizeBitmap(Bitmap bitmap) {
 
         int maxDimension = 1024;
