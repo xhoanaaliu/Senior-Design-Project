@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flaviofaria.kenburnsview.KenBurnsView;
@@ -34,19 +35,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link NewEventFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link NewEventFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class NewEventFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, View.OnClickListener{
 
 
@@ -65,7 +59,14 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
     private EditText titleField;
     private EditText addressField;
     private EditText descriptionField;
+    private TextView date_field;
+    private TextView time_field;
+    HashMap<String,String> mMap;
 
+    private static final String ARG_PARAM1 = "hashmap";
+    private String mParam1;
+
+    HashMap<String, String> n;
 
     public NewEventFragment() {
         // Required empty public constructor
@@ -82,7 +83,14 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
         super.onCreate(savedInstanceState);
 
 
-    }
+        mMap = new HashMap<>();
+        Bundle b = this.getArguments();
+
+        if(b.getSerializable("hashmap") != null)
+            mMap = (HashMap<String,String>)b.getSerializable("hashmap");
+
+        }
+
 
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
@@ -91,13 +99,16 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
         calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),false);
         timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY) ,calendar.get(Calendar.MINUTE), false, false);
+        addressField =  view.findViewById(R.id.address);
 
         dateButton = view.findViewById(R.id.dateButton);
         timeButton =  view.findViewById(R.id.timeButton);
         submitButton = view.findViewById(R.id.submit);
         titleField = view.findViewById(R.id.title);
-        addressField = view.findViewById(R.id.address);
+
         descriptionField = view.findViewById(R.id.description);
+        date_field = view.findViewById(R.id.date_field);
+        time_field = view.findViewById(R.id.time_field);
 
         spinner =  view.findViewById(R.id.spinner);
         spinner.setItems("Ice Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow");
@@ -116,6 +127,15 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
         new_poster = view.findViewById(R.id.new_event_poster);
 
         dataref = FirebaseDatabase.getInstance().getReference();
+
+        for (HashMap.Entry<String, String> entry : mMap.entrySet()) {
+            System.out.println(entry.getKey() + " = " + entry.getValue());
+
+            if( entry.getValue().equals("Place")){
+                addressField.setHint(entry.getKey());
+            }
+
+        }
     }
 
     @Override

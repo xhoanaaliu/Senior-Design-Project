@@ -64,6 +64,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.textrazor.AnalysisException;
+import com.textrazor.NetworkException;
+import com.textrazor.TextRazor;
+import com.textrazor.account.AccountManager;
+import com.textrazor.account.model.Account;
+import com.textrazor.annotations.AnalyzedText;
+import com.textrazor.annotations.Entity;
 
 import org.junit.Test;
 
@@ -74,6 +81,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -103,11 +111,8 @@ public class MainActivity extends AppCompatActivity
     private static final String ANDROID_PACKAGE_HEADER = "X-Android-Package";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
 
-
-
-
-
-
+    String API_KEY = "5d9a93f99b0aab73d3f8be94453d6d83f3ea2b193b7780ca43751893";
+    HashMap<String, String> u;
 
 
     @Override
@@ -193,12 +198,12 @@ public class MainActivity extends AppCompatActivity
            //@Override
            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
-                if(firebaseAuth.getCurrentUser()==null){
+            /*    if(firebaseAuth.getCurrentUser()==null){
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.main_fragment, loginFragment, "LoginFragment")
                             .addToBackStack(null)
                             .commit();
-                }
+                }*/
            }
        };
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -230,10 +235,6 @@ public class MainActivity extends AppCompatActivity
                 .commit();
 
     }
-
-
-
-
 
     @Override
     public void onBackPressed() {
@@ -556,10 +557,6 @@ public class MainActivity extends AppCompatActivity
                     textDetection.setMaxResults(10);
                     featureList.add(textDetection);
 
-                    Feature landmarkDetection = new Feature();
-                    landmarkDetection.setType("LANDMARK_DETECTION");
-                    landmarkDetection.setMaxResults(10);
-                    featureList.add(landmarkDetection);
 
                     List<AnnotateImageRequest> imageList = new ArrayList<>();
                     AnnotateImageRequest annotateImageRequest = new AnnotateImageRequest();
@@ -591,15 +588,7 @@ public class MainActivity extends AppCompatActivity
 
             protected void onPostExecute(String result) {
 
-                //resultTextView.setText(result);
-                //startActivity(new Intent(MainActivity.this, Information.class));
-
-                Intent myIntent = new Intent(MainActivity.this, Information.class);
-                myIntent.putExtra("result",result);
-                startActivity(myIntent);
-
-                new NER().execute();
-
+                getAuth(result);
             }
         }.execute();
     }
@@ -636,11 +625,63 @@ public class MainActivity extends AppCompatActivity
         return message.toString();
     }
 
-
-
     @Override
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
+
+    public void getAuth(final String result) {
+
+        new AsyncTask<Void, Void, HashMap>() {
+            @Override
+            protected HashMap doInBackground(Void... params) {
+                try {
+
+                    AccountManager manager = new AccountManager(API_KEY);
+                    Account account = manager.getAccount();
+                    System.out.println("Your current account plan is " + account.getPlan() + ", which includes " + account.getPlanDailyRequestsIncluded() + " daily requests, " + account.getRequestsUsedToday() + " used today");
+                    System.out.println(result);
+                    TextRazor client = new TextRazor(API_KEY);
+
+                    client.addExtractor("words");
+                    client.addExtractor("entities");
+
+                    AnalyzedText response = client.analyze(result);
+
+                    u = new HashMap<>();
+
+                    for (Entity entity : response.getResponse().getEntities()) {
+                        //System.out.println(entity.getEntityId() + ": " + entity.getDBPediaTypes().get(0));
+                        u.put(entity.getEntityId(), entity.getDBPediaTypes().get(0));
+                    }
+                    return u;
+
+
+                } catch (NetworkException e) {
+                    e.printStackTrace();
+                } catch (AnalysisException a) {
+                    a.printStackTrace();
+                }
+
+                return null;
+
+            }
+            protected void onPostExecute(HashMap u) {
+
+                NewEventFragment new_event = new NewEventFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("hashmap",u);
+                new_event.setArguments(bundle);
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.main_fragment, new_event, "new_event")
+                        .addToBackStack(null).commit();
+            }
+        }.execute();
+    }
+
+
+
+
 }
