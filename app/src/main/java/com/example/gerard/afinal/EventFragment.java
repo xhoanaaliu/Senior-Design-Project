@@ -3,8 +3,10 @@ package com.example.gerard.afinal;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,13 @@ import android.widget.TextView;
 
 import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.github.florent37.shapeofview.ShapeOfView;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 public class EventFragment extends Fragment implements View.OnClickListener{
 
@@ -25,13 +34,17 @@ public class EventFragment extends Fragment implements View.OnClickListener{
     private Button interestedButton, goingToButton;
     private ImageButton  f;
     private String event_id;
+
+    private static ArrayList<String> events_retrieved;
+    DatabaseReference databaseReference;
+
     public EventFragment() {
 
     }
-    public EventFragment(String event_id){
+    /*public EventFragment(String event_id){
         this.event_id=event_id;
     }
-
+    */
     public static EventFragment newInstance() {
         EventFragment fragment = new EventFragment();
         return fragment;
@@ -111,6 +124,9 @@ public class EventFragment extends Fragment implements View.OnClickListener{
         goingToButton.setOnClickListener(this);
         interestedButton.setOnClickListener(this);
 
+        databaseReference = FirebaseDatabase.getInstance().getReference("Event/event1");
+        events_retrieved = new ArrayList<String>();
+
     }
 
     @Override
@@ -137,6 +153,59 @@ public class EventFragment extends Fragment implements View.OnClickListener{
     public void onStart() {
         super.onStart();
         // EventBus.getDefault().register(this);
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String value = dataSnapshot.getValue(String.class);
+                System.out.print(value);
+                //Log.i("lllll", value);
+                events_retrieved.add(value);
+                System.out.print(events_retrieved.size());
+                //String title_retrieved =  events_retrieved.get(0);
+                /*for (int i = 0; i < events_retrieved.size(); i++)
+                {
+                    Log.i("lllll", i+" "+events_retrieved.get(i).toString());
+                }
+                */
+                for (int i = 0; i < events_retrieved.size(); i++)
+                {
+                    Log.i("lllll", "again"+i+" "+events_retrieved.get(i).toString());
+                    if(events_retrieved.size()==3){
+                        String title_retrieved = events_retrieved.get(0);
+                        String location_retrieved = events_retrieved.get(1);
+                        String date_retrieved = events_retrieved.get(2);
+                        title.setText(title_retrieved);
+                        location.setText(location_retrieved);
+                        date.setText(date_retrieved);
+                    }
+                }
+                //Map<String, String> map = dataSnapshot.getValue(Map.class);
+                //String title_retrieved =  map.get("title");
+                //String location_retrieved = map.get("location");
+                //String date_retrieved = map.get("date");
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                //setEvent();
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("lllll", databaseError.getMessage());
+            }
+        });
     }
 
     @Override
