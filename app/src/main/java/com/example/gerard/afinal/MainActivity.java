@@ -638,7 +638,11 @@ public class MainActivity extends AppCompatActivity
 
                     for (Entity entity : response.getResponse().getEntities()) {
                         //System.out.println(entity.getEntityId() + ": " + entity.getDBPediaTypes().get(0));
-                        u.put(entity.getEntityId(), entity.getDBPediaTypes().get(0));
+                        if(entity.getEntityId() == null || entity.getDBPediaTypes().get(0) == null){
+                            return null;
+                        }else {
+                            u.put(entity.getEntityId(), entity.getDBPediaTypes().get(0));
+                        }
                     }
                     return u;
 

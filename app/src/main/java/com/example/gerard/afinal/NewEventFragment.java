@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,8 +58,8 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
     private static Calendar calendar;
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
-    private Button dateButton;
-    private Button timeButton;
+    private ImageView dateButton;
+    private ImageView timeButton;
     private Button submitButton;
     private MaterialSpinner spinner;
     private KenBurnsView new_poster;

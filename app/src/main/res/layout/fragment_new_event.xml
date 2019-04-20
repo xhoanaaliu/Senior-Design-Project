@@ -3,6 +3,7 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -57,19 +58,20 @@
 
             <TextView
                 android:id="@+id/date_field"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
                 android:text="Date" />
 
-            <Button
+            <ImageView
                 android:id="@+id/dateButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginLeft="205dp"
-                android:text="Select Date" />
+                android:layout_marginLeft="90dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/new_event_calendar" />
 
 
         </LinearLayout>
@@ -84,19 +86,22 @@
 
         <TextView
             android:id="@+id/time_field"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:text="Time" />
 
-        <Button
+
+        <ImageView
             android:id="@+id/timeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginLeft="205dp"
-            android:text="Select Time" />
+            android:layout_marginLeft="90dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/new_event_clock" />
+
 
     </LinearLayout>
 
@@ -104,8 +109,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp">
-
-
 
             <com.github.florent37.materialtextfield.MaterialTextField
                 android:layout_width="270dp"
