@@ -13,17 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.codemybrainsout.placesearch.PlaceSearchDialog;
 import com.example.gerard.afinal.Account.MyAdapter;
 
 import com.google.android.gms.common.api.Status;
-/*import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+/*import com.google.android.libraries.places.compat.ui.PlaceAutocompleteFragment;
+import com.google.android.libraries.places.compat.ui.PlaceSelectionListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 //import com.google.android.libraries.places.compat.Place;
-import com.google.android.gms.location.places.Place;*/
+import com.google.android.libraries.places.compat.Place;*/
 
 import java.util.Arrays;
 
@@ -58,21 +57,7 @@ public class LocationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recLoc = view.findViewById(R.id.rec_loc);
-        recLoc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PlaceSearch placeSearchDialog = new PlaceSearch.Builder(getContext())
-                        .setLocationNameListener(new PlaceSearch.LocationNameListener() {
-                            @Override
-                            public void locationName(String locationName) {
-                                //set textview or edittext
-                                recLoc.setText(locationName);
-                            }
-                        })
-                        .build();
-                placeSearchDialog.show();
-            }
-        });
+
 
     }
 
