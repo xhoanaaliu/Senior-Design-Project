@@ -22,16 +22,10 @@ import com.example.gerard.afinal.R;
 
 public class AccountFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-
-    private OnFragmentInteractionListener mListener;
-
-
     public AccountFragment() {
 
     }
 
-
-    // TODO: Rename and change types and number of parameters
     public static AccountFragment newInstance() {
         AccountFragment fragment = new AccountFragment();
         return fragment;
@@ -40,7 +34,6 @@ public class AccountFragment extends PreferenceFragmentCompat implements SharedP
    //@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -53,27 +46,16 @@ public class AccountFragment extends PreferenceFragmentCompat implements SharedP
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
         addPreferencesFromResource(R.xml.fragment_account);
-
-    }
-
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     /**
@@ -90,7 +72,6 @@ public class AccountFragment extends PreferenceFragmentCompat implements SharedP
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
     }
-
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

@@ -101,6 +101,7 @@
         android:background="#243447"
          />
 
+
         <TextView
             android:id="@+id/rec_loc"
             android:layout_width="wrap_content"

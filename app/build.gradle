@@ -66,6 +66,8 @@ dependencies {
     implementation 'pub.devrel:easypermissions:2.0.1'
     android.defaultConfig.javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
 
+    //implementation 'com.google.android.gms:play-services-places:16.0.0'
+
     implementation 'com.google.apis:google-api-services-vision:v1-rev16-1.22.0'
     implementation ('com.google.api-client:google-api-client-android:1.22.0') {
         exclude module: 'httpclient'
@@ -77,6 +79,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:17.3.2'
 
     implementation 'com.textrazor:textrazor:1.0.12'
+
+    implementation 'com.codemybrainsout.placesearchdialog:placesearch:1.0.1'
+    implementation 'com.google.android.libraries.places:places:1.1.0'
+    //implementation "com.google.android.libraries.places:places-compat:${2}"
+
+    implementation 'com.google.android.libraries.places:places-compat:1.1.0'
 
 }
 apply plugin: 'com.google.gms.google-services'

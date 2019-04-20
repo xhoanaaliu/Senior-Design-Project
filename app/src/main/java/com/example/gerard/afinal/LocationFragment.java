@@ -11,7 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.codemybrainsout.placesearch.PlaceSearchDialog;
 import com.example.gerard.afinal.Account.MyAdapter;
 
 import com.google.android.gms.common.api.Status;
@@ -27,6 +29,8 @@ import java.util.Arrays;
 
 public class LocationFragment extends Fragment {
     final String apiKey ="AIzaSyAT0Qg5FjgR_2WNOXKBb_SwmuBP6Jw72Zg";
+    TextView recLoc;
+
     public LocationFragment() {
         // Required empty public constructor
     }
@@ -53,41 +57,23 @@ public class LocationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Initialize Places.
-        //Places.initialize(getActivity().getApplicationContext(), apiKey);
-
-// Create a new Places client instance.
-        //PlacesClient placesClient = Places.createClient(getActivity().getApplicationContext());
-
-        // Define a Place ID.
-        String placeId = "INSERT_PLACE_ID_HERE";
-        /*final TextView txtVw = findViewById(R.id.placeName);
-
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-
-       AutocompleteFilter filter = new AutocompleteFilter.Builder()
-                .setCountry("IN")
-                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
-                .build();
-        autocompleteFragment.setFilter(filter);
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+        recLoc = view.findViewById(R.id.rec_loc);
+        recLoc.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onPlaceSelected(Place place) {
-                txtVw.setText(place.getName());
+            public void onClick(View view) {
+                PlaceSearch placeSearchDialog = new PlaceSearch.Builder(getContext())
+                        .setLocationNameListener(new PlaceSearch.LocationNameListener() {
+                            @Override
+                            public void locationName(String locationName) {
+                                //set textview or edittext
+                                recLoc.setText(locationName);
+                            }
+                        })
+                        .build();
+                placeSearchDialog.show();
             }
-            @Override
-            public void onError(Status status) {
-                txtVw.setText(status.toString());
-            }
-        });*/
-/*
-// Specify the fields to return.
-        List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
+        });
 
-// Construct a request object, passing the place ID and fields array.
-        FetchPlaceRequest request = FetchPlaceRequest.builder(placeId, placeFields)
-                .build();*/
     }
 
     @Override
