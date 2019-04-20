@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.gerard.afinal;
+package com.example.gerard.afinal.OCR;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;

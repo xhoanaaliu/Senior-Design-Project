@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.fourmob.datetimepicker.date.CalendarDay;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.google.android.gms.common.api.Api;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jaredrummler.materialspinner.MaterialSpinner;
@@ -31,12 +32,18 @@ import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Target;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -128,14 +135,8 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
 
         dataref = FirebaseDatabase.getInstance().getReference();
 
-        for (HashMap.Entry<String, String> entry : mMap.entrySet()) {
-            System.out.println(entry.getKey() + " = " + entry.getValue());
+        setFields();
 
-            if( entry.getValue().equals("Place")){
-                addressField.setHint(entry.getKey());
-            }
-
-        }
     }
 
     @Override
@@ -264,5 +265,51 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
 
 
     }
+
+    public void setFields(){
+
+        for (HashMap.Entry<String, String> entry : mMap.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+
+            switch(entry.getValue()){
+                case("Place"):
+                    addressField.setHint(entry.getKey());
+                    break;
+                case("Date"):
+                case("Time"):
+                    try {
+                         DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'+'00:00");
+                        Date date = inputFormat.parse(entry.getKey());
+
+                        DateFormat outputFormatDate = new SimpleDateFormat("dd-MM-yyyy");
+                        String outputStringDate = outputFormatDate.format(date);
+
+                        DateFormat outputFormatTime = new SimpleDateFormat("HH:mm");
+                        String outputStringTime = outputFormatTime.format(date);
+
+                        if(outputStringTime.equals("00:00")){
+                            //nothing
+                        }else {
+                            time_field.setText(outputStringTime);
+                        }
+
+                        date_field.setText(outputStringDate);
+
+                    }catch (ParseException p){
+                        p.printStackTrace();
+                    }
+                    break;
+
+            }
+
+
+
+
+        }
+
+
+    }
+
+
 
 }

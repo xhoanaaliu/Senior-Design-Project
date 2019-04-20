@@ -2,7 +2,6 @@ package com.example.gerard.afinal;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,8 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -23,16 +20,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.gerard.afinal.Account.ProfileFragment;
 import com.example.gerard.afinal.Login_SignUp.LoginFragment;
 import com.example.gerard.afinal.Login_SignUp.SignUpFragment;
+import com.example.gerard.afinal.OCR.PackageManagerUtils;
+import com.example.gerard.afinal.OCR.PermissionUtils;
 import com.example.gerard.afinal.Settings.SettingsFragment;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -40,10 +34,7 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 //import com.google.firebase.auth.FirebaseAuth;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpTransport;
@@ -59,11 +50,8 @@ import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.textrazor.AnalysisException;
 import com.textrazor.NetworkException;
 import com.textrazor.TextRazor;
@@ -72,8 +60,6 @@ import com.textrazor.account.model.Account;
 import com.textrazor.annotations.AnalyzedText;
 import com.textrazor.annotations.Entity;
 
-import org.junit.Test;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -81,7 +67,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -547,10 +532,10 @@ public class MainActivity extends AppCompatActivity
                     Vision vision = builder.build();
 
                     List<Feature> featureList = new ArrayList<>();
-                    Feature labelDetection = new Feature();
+                   /* Feature labelDetection = new Feature();
                     labelDetection.setType("LABEL_DETECTION");
                     labelDetection.setMaxResults(10);
-                    featureList.add(labelDetection);
+                    featureList.add(labelDetection);*/
 
                     Feature textDetection = new Feature();
                     textDetection.setType("TEXT_DETECTION");
@@ -604,9 +589,9 @@ public class MainActivity extends AppCompatActivity
 
     private String convertResponseToString(BatchAnnotateImagesResponse response) {
 
-        StringBuilder message = new StringBuilder("Results:\n\n");
+        StringBuilder message = new StringBuilder();
 
-        message.append("Texts:\n");
+        //message.append("Texts:\n");
 
         List<EntityAnnotation> texts = response.getResponses().get(0)
                 .getTextAnnotations();

@@ -1,4 +1,4 @@
-package com.example.gerard.afinal;
+package com.example.gerard.afinal.OCR;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
