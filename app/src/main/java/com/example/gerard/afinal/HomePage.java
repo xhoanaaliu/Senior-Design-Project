@@ -3,6 +3,8 @@ package com.example.gerard.afinal;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -15,6 +17,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +27,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -39,12 +45,25 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -66,6 +85,15 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
     private GoogleMap googleMap;
     public final double lat = 39.875275;
     public final double lng = 32.748524;
+    private static List<Event> events_retrieved;
+    DatabaseReference databaseReference;
+    DatabaseReference databaseReference2;
+    RecyclerView recyclerView;
+    RecyclerView.Adapter adapter;
+    private StorageReference mStorageRef;
+    private List<Bitmap> imageList;
+    private boolean imChanged = false;
+    private boolean strChanged = false;
 
     public HomePage() {
         // Required empty public constructor
@@ -105,9 +133,102 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
             e.printStackTrace();
         }
         mMapView.getMapAsync(this);
+
+        //mStorageRef = FirebaseStorage.getInstance().getReferenceFromUrl("gs://resinventa.appspot.com/");
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference("Event");
+        events_retrieved = new ArrayList<>();
+        imageList = new ArrayList<>();
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.home_recycle);
+        adapter = new MyAdapter(events_retrieved, imageList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+        StorageReference islandRef = mStorageRef.child("concert_poster.png");
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                imageList.add(bitmap);
+                adapter.notifyDataSetChanged();
+                Log.d("IMAGE","IMAGE CHANGED");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+
+        /*try {
+            final File localFile = File.createTempFile("concert_poster", "png");
+            mStorageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    imageList.add(bitmap);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                }
+            });
+        } catch (IOException e) {}*/
+
+        // EventBus.getDefault().register(this);
+
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Map<String, String> value = (Map<String,String>) dataSnapshot.getValue();
+                String category = value.get("category");
+                String date = value.get("date");
+                String description = value.get("description");
+                String location = value.get("location");
+                String time = value.get("time");
+                String title = value.get("title");
+
+                Event temp = new Event(title, location, date);
+                events_retrieved.add(temp);
+
+                adapter.notifyDataSetChanged();
+                Log.d("DATASET","CHANGED");
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("lllll", databaseError.getMessage());
+            }
+        });
+
         return view;
 
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -225,4 +346,41 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public class Event{
+        private String title;
+        private String location;
+        private String date;
+
+        public Event(String title, String location, String date){
+            this.title = title;
+            this.location = location;
+            this.date = date;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setLocation(String location) {
+            this.location = location;
+        }
+
+        public String getLocation() {
+            return location;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+        public String getDate() {
+            return date;
+        }
+    }
+
 }
