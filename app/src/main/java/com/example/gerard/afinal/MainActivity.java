@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity
         dataref = FirebaseDatabase.getInstance().getReference();
 
 
+        /*
         Map<String, String> em = new HashMap<>();
         em.put("category","EE");
         em.put("title" , "IEEE meeting");
@@ -117,8 +118,8 @@ public class MainActivity extends AppCompatActivity
         em.put("date" , "15 March");
         em.put("description","Robotics");
         em.put("time","19:30");
-
         dataref.child("Event").child("1").setValue(em);
+        */
 
         //**************************************************************************************************//
         dataref = FirebaseDatabase.getInstance().getReference();

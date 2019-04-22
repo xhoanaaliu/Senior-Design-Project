@@ -63,6 +63,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -141,11 +142,11 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
         imageList = new ArrayList<>();
 
         recyclerView = (RecyclerView) view.findViewById(R.id.home_recycle);
-        adapter = new MyAdapter(events_retrieved, imageList);
+        adapter = new MyAdapter(events_retrieved);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
+        /*
         StorageReference islandRef = mStorageRef.child("concert_poster.png");
 
         final long ONE_MEGABYTE = 1024 * 1024;
@@ -164,6 +165,7 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
             }
         });
 
+        */
         /*try {
             final File localFile = File.createTempFile("concert_poster", "png");
             mStorageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
@@ -188,13 +190,32 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
                 String category = value.get("category");
                 String date = value.get("date");
                 String description = value.get("description");
+                String URL = value.get("imageName");
                 String location = value.get("location");
                 String time = value.get("time");
                 String title = value.get("title");
 
-                Event temp = new Event(title, location, date);
-                events_retrieved.add(temp);
+                /*
+                StorageReference islandRef = mStorageRef.child(URL);
 
+                final long ONE_MEGABYTE = 1024 * 1024;
+                islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        imageList.add(bitmap);
+                        adapter.notifyDataSetChanged();
+                        Log.d("IMAGE","IMAGE CHANGED");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle any errors
+                    }
+                });*/
+
+                Event temp = new Event(title, location, date, URL);
+                events_retrieved.add(temp);
                 adapter.notifyDataSetChanged();
                 Log.d("DATASET","CHANGED");
             }
@@ -347,15 +368,17 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
         void onFragmentInteraction(Uri uri);
     }
 
-    public class Event{
+    public class Event {
         private String title;
         private String location;
         private String date;
+        private String URL;
 
-        public Event(String title, String location, String date){
+        public Event(String title, String location, String date, String URL) {
             this.title = title;
             this.location = location;
             this.date = date;
+            this.URL = URL;
         }
 
         public void setTitle(String title) {
@@ -380,6 +403,14 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
 
         public String getDate() {
             return date;
+        }
+
+        public String getURL() {
+            return URL;
+        }
+
+        public void setURL(String URL) {
+            this.URL = URL;
         }
     }
 

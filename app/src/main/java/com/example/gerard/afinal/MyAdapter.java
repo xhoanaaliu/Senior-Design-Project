@@ -1,6 +1,10 @@
 package com.example.gerard.afinal;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,13 +13,30 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Registry;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     private List<HomePage.Event> mDataset;
-    private List<Bitmap> imageList;
+    //private List<Bitmap> imageList;
     private static int counter = 0;
+    private StorageReference mStorageRef;
+    private Bitmap bitmap;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -36,9 +57,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(List<HomePage.Event> myDataset, List<Bitmap> image) {
+    public MyAdapter(List<HomePage.Event> myDataset) {
         mDataset = myDataset;
-        imageList = image;
+        mStorageRef = FirebaseStorage.getInstance().getReference();
     }
 
     // Create new views (invoked by the layout manager)
@@ -53,14 +74,27 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        if(!imageList.isEmpty())
-            holder.img.setImageBitmap(imageList.get(0));
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
         if(!mDataset.isEmpty()) {
             holder.title.setText(mDataset.get(position).getTitle());
             holder.location.setText(mDataset.get(position).getLocation());
             holder.date.setText(mDataset.get(position).getDate());
-            Log.d("SIZEEEEEEEE", "" + mDataset.size());
+            String url = mDataset.get(position).getURL();
+
+            final StorageReference islandRef = mStorageRef.child(url);
+
+            islandRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    String imageURL = uri.toString();
+                    Glide.with(getApplicationContext()).load(imageURL).into(holder.img);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
         }
     }
 
