@@ -15,15 +15,22 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.github.florent37.shapeofview.ShapeOfView;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class EventFragment extends Fragment implements View.OnClickListener{
 
@@ -34,6 +41,7 @@ public class EventFragment extends Fragment implements View.OnClickListener{
     private Button interestedButton, goingToButton;
     private ImageButton  f;
     private String event_id;
+    private StorageReference mStorageRef;
 
     private static ArrayList<String> events_retrieved;
     DatabaseReference databaseReference;
@@ -152,60 +160,86 @@ public class EventFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onStart() {
         super.onStart();
-        // EventBus.getDefault().register(this);
-        databaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                String value = dataSnapshot.getValue(String.class);
-                System.out.print(value);
-                //Log.i("lllll", value);
-                events_retrieved.add(value);
-                System.out.print(events_retrieved.size());
-                //String title_retrieved =  events_retrieved.get(0);
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+        Bundle bundle = this.getArguments();
+        if(bundle != null){
+            title.setText(bundle.getString("title"));
+            location.setText(bundle.getString("location"));
+            date.setText(bundle.getString("date"));
+            description.setText(bundle.getString("description"));
+            String url = bundle.getString("url");
+            final StorageReference islandRef = mStorageRef.child(url);
+
+
+            islandRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    String imageURL = uri.toString();
+                    Glide.with(getApplicationContext()).load(imageURL).into(poster);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
+        }
+        else {
+            // EventBus.getDefault().register(this);
+            databaseReference.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    String value = dataSnapshot.getValue(String.class);
+                    System.out.print(value);
+                    //Log.i("lllll", value);
+                    events_retrieved.add(value);
+                    System.out.print(events_retrieved.size());
+                    //String title_retrieved =  events_retrieved.get(0);
                 /*for (int i = 0; i < events_retrieved.size(); i++)
                 {
                     Log.i("lllll", i+" "+events_retrieved.get(i).toString());
                 }
                 */
-                for (int i = 0; i < events_retrieved.size(); i++)
-                {
-                    Log.i("lllll", "again"+i+" "+events_retrieved.get(i).toString());
-                    if(events_retrieved.size()==3){
-                        String title_retrieved = events_retrieved.get(0);
-                        String location_retrieved = events_retrieved.get(1);
-                        String date_retrieved = events_retrieved.get(2);
-                        title.setText(title_retrieved);
-                        location.setText(location_retrieved);
-                        date.setText(date_retrieved);
+                    for (int i = 0; i < events_retrieved.size(); i++) {
+                        Log.i("lllll", "again" + i + " " + events_retrieved.get(i).toString());
+                        if (events_retrieved.size() == 3) {
+                            String title_retrieved = events_retrieved.get(0);
+                            String location_retrieved = events_retrieved.get(1);
+                            String date_retrieved = events_retrieved.get(2);
+
+                            title.setText(title_retrieved);
+                            location.setText(location_retrieved);
+                            date.setText(date_retrieved);
+                        }
                     }
+                    //Map<String, String> map = dataSnapshot.getValue(Map.class);
+                    //String title_retrieved =  map.get("title");
+                    //String location_retrieved = map.get("location");
+                    //String date_retrieved = map.get("date");
+
                 }
-                //Map<String, String> map = dataSnapshot.getValue(Map.class);
-                //String title_retrieved =  map.get("title");
-                //String location_retrieved = map.get("location");
-                //String date_retrieved = map.get("date");
 
-            }
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    //setEvent();
+                }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                //setEvent();
-            }
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                }
 
-            }
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                }
 
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("lllll", databaseError.getMessage());
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.d("lllll", databaseError.getMessage());
+                }
+            });
+        }
     }
 
     @Override

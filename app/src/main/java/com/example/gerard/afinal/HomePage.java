@@ -88,13 +88,10 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
     public final double lng = 32.748524;
     private static List<Event> events_retrieved;
     DatabaseReference databaseReference;
-    DatabaseReference databaseReference2;
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     private StorageReference mStorageRef;
     private List<Bitmap> imageList;
-    private boolean imChanged = false;
-    private boolean strChanged = false;
 
     public HomePage() {
         // Required empty public constructor
@@ -142,7 +139,7 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
         imageList = new ArrayList<>();
 
         recyclerView = (RecyclerView) view.findViewById(R.id.home_recycle);
-        adapter = new MyAdapter(events_retrieved);
+        adapter = new MyAdapter(events_retrieved, getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -214,7 +211,7 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
                     }
                 });*/
 
-                Event temp = new Event(title, location, date, URL);
+                Event temp = new Event(title, location, date, URL, description);
                 events_retrieved.add(temp);
                 adapter.notifyDataSetChanged();
                 Log.d("DATASET","CHANGED");
@@ -347,7 +344,6 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-
         LatLng position = (LatLng) marker.getTag();
         Toast.makeText(getActivity(), "tıkladı", Toast.LENGTH_SHORT).show();
         return false;
@@ -373,12 +369,14 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
         private String location;
         private String date;
         private String URL;
+        private String description;
 
-        public Event(String title, String location, String date, String URL) {
+        public Event(String title, String location, String date, String URL, String description) {
             this.title = title;
             this.location = location;
             this.date = date;
             this.URL = URL;
+            this.description = description;
         }
 
         public void setTitle(String title) {
@@ -411,6 +409,14 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
 
         public void setURL(String URL) {
             this.URL = URL;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
         }
     }
 
