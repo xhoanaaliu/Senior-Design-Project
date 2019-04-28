@@ -105,6 +105,7 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
     private final int REQUEST_LOCATION_CODE2 = 98;
     private Location lastLoc;
     private boolean gotLocation = false;
+    private Map<LatLng, Event> markerList = new HashMap<>();
 
     public HomePage() {
         // Required empty public constructor
@@ -222,6 +223,8 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
                     String time = value.get("time");
                     String title = value.get("title");
 
+                    Event temp = new Event(title, location, date, URL, description);
+
                     Geocoder geocoder1 = new Geocoder(getContext(), Locale.getDefault());
                     List<Address> addresses = new ArrayList<>();
                     try {
@@ -232,11 +235,10 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
                     }
 
                     if (!addresses.isEmpty()){
-                        addMarker(googleMap, addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
+                        addMarker(googleMap, addresses.get(0).getLatitude(), addresses.get(0).getLongitude(), temp);
                         Log.d("THIS","REACHEDDDDDDDDDD");
                     }
 
-                    Event temp = new Event(title, location, date, URL, description);
                     events_retrieved.add(temp);
                     adapter.notifyDataSetChanged();
                     Log.d("DATASET", "CHANGED");
@@ -310,8 +312,10 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
         super.onDetach();
     }
 
-    public void addMarker(GoogleMap mMap, double latitude, double longtitude){
+    public void addMarker(GoogleMap mMap, double latitude, double longtitude, Event event){
         LatLng temp = new LatLng(latitude, longtitude);
+
+        markerList.put(temp, event);
 
         mMap.addMarker(new MarkerOptions().position(temp)).setTag(temp);
 
@@ -331,7 +335,7 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
         else {
             curr = new LatLng(lat, lng);
         }
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(curr).zoom(12).build();
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(curr).zoom(11).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
 
@@ -376,7 +380,22 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
     @Override
     public boolean onMarkerClick(Marker marker) {
         LatLng position = (LatLng) marker.getTag();
-        Toast.makeText(getActivity(), "tıkladı", Toast.LENGTH_SHORT).show();
+
+        if(markerList.containsKey(position)){
+            Event temp = markerList.get(position);
+            Bundle bundle = new Bundle();
+            bundle.putString("title", temp.getTitle());
+            bundle.putString("location", temp.getLocation());
+            bundle.putString("date", temp.getDate());
+            bundle.putString("description", temp.getDescription());
+            bundle.putString("url", temp.getURL());
+
+            Fragment fragment = new EventFragment();
+            fragment.setArguments(bundle);
+            AppCompatActivity activity = (AppCompatActivity) getContext();
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, fragment).commit();
+        }
+
         return false;
     }
 
