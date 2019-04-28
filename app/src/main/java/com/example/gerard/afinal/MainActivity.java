@@ -1,16 +1,25 @@
 package com.example.gerard.afinal;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -21,6 +30,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.gerard.afinal.Account.ProfileFragment;
 import com.example.gerard.afinal.Login_SignUp.LoginFragment;
@@ -33,8 +43,20 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 //import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpTransport;
@@ -49,6 +71,7 @@ import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
+import com.google.api.services.vision.v1.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -71,9 +94,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import io.nlopez.smartlocation.OnLocationUpdatedListener;
+import io.nlopez.smartlocation.SmartLocation;
+
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private HomePage fragment;
     private ProfileFragment profileFragment;
     private SettingsFragment settingsFragment;
@@ -95,6 +121,10 @@ public class MainActivity extends AppCompatActivity
     private static final String CLOUD_VISION_API_KEY = "AIzaSyCvkaYZjqjAm9jgQyiS0pMr-CE6f3ZVExU";
     private static final String ANDROID_PACKAGE_HEADER = "X-Android-Package";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
+    private final int REQUEST_LOCATION_CODE = 99;
+    private final int REQUEST_LOCATION_CODE2 = 98;
+    Location lastLoc;
+    boolean gotLocation = false;
 
     String API_KEY = "5d9a93f99b0aab73d3f8be94453d6d83f3ea2b193b7780ca43751893";
     HashMap<String, String> u;
@@ -106,9 +136,28 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
-       database = FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance();
         dataref = FirebaseDatabase.getInstance().getReference();
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.d("REQUEST LOCATION", "NOT GRANTED");
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_CODE2);
+            //ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION_CODE);
+        }
+        if(!gotLocation){
+                SmartLocation.with(this).location()
+                        .oneFix()
+                        .start(new OnLocationUpdatedListener() {
+                            @Override
+                            public void onLocationUpdated(Location location) {
+                                if (location != null) {
+                                    Log.d("LOCATION VAAAR22222", location.toString());
+                                    lastLoc = location;
+                                    gotLocation = true;
+                                }
+                            }
+                        });
+        }
 
         /*
         Map<String, String> em = new HashMap<>();
@@ -125,64 +174,64 @@ public class MainActivity extends AppCompatActivity
         dataref = FirebaseDatabase.getInstance().getReference();
 
         Map<String, String> user = new HashMap<>();
-        user.put("email" , "test email");
-        user.put("password" , "test password");
-        user.put("name" , "test name");
-        user.put("surname" , "test surname");
-        user.put("birthday" , "test birthday");
-        user.put("picture" , "test picture");
+        user.put("email", "test email");
+        user.put("password", "test password");
+        user.put("name", "test name");
+        user.put("surname", "test surname");
+        user.put("birthday", "test birthday");
+        user.put("picture", "test picture");
         dataref.child("User").child("user 1").setValue(user);
 
         Map<String, String> be_friend = new HashMap<>();
-        be_friend.put("email_user" , "test email user");
-        be_friend.put("email_friend" , "test email friend");
+        be_friend.put("email_user", "test email user");
+        be_friend.put("email_friend", "test email friend");
         dataref.child("BeFriend").child("be friend 1").setValue(be_friend);
 
         Map<String, String> follow = new HashMap<>();
-        follow.put("email_user" , "test email user");
-        follow.put("email_organization" , "test email organization");
+        follow.put("email_user", "test email user");
+        follow.put("email_organization", "test email organization");
         dataref.child("Follow").child("follow 1").setValue(follow);
 
         Map<String, String> interest = new HashMap<>();
-        interest.put("interest_type" , "test interest type");
-        interest.put("ineterest_name" , "test interest name");
+        interest.put("interest_type", "test interest type");
+        interest.put("ineterest_name", "test interest name");
         dataref.child("Interest").child("interest 1").setValue(interest);
 
         Map<String, String> interest_event = new HashMap<>();
-        interest_event.put("interest_event_id" , "test interest event");
-        interest_event.put("ineterest_id" , "test interest");
+        interest_event.put("interest_event_id", "test interest event");
+        interest_event.put("ineterest_id", "test interest");
         dataref.child("InterestEvent").child("interest event 1").setValue(interest_event);
 
         Map<String, String> interest_user = new HashMap<>();
-        interest_user.put("interest_user_id" , "test interest user");
-        interest_user.put("ineterest_id" , "test interest");
+        interest_user.put("interest_user_id", "test interest user");
+        interest_user.put("ineterest_id", "test interest");
         dataref.child("InterestUser").child("interest user 1").setValue(interest_user);
 
         Map<String, String> organization = new HashMap<>();
-        organization.put("organization_email" , "test organization_email");
-        organization.put("organization_name" , "test organization name");
+        organization.put("organization_email", "test organization_email");
+        organization.put("organization_name", "test organization name");
         dataref.child("Organization").child("organization 1").setValue(organization);
 
         Map<String, String> interested_in = new HashMap<>();
-        interested_in.put("user_id" , "test user");
-        interested_in.put("event_id" , "test event");
+        interested_in.put("user_id", "test user");
+        interested_in.put("event_id", "test event");
         dataref.child("InterestedIn").child("ineterested in 1").setValue(interested_in);
 
         Map<String, String> participated_in = new HashMap<>();
-        participated_in.put("user_id" , "test user");
+        participated_in.put("user_id", "test user");
         dataref.child("ParticipatedIn").child("participated in 1").setValue(participated_in);
 
         Map<String, String> going_to = new HashMap<>();
-        going_to.put("user_id" , "test user");
-        going_to.put("event_id" , "test event");
+        going_to.put("user_id", "test user");
+        going_to.put("event_id", "test event");
         dataref.child("GoingTo").child("going to 1").setValue(going_to);
 
         //**************************************************************************************************//
 
 
-        mAuthListener= new FirebaseAuth.AuthStateListener() {
-           //@Override
-           public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            //@Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
             /*    if(firebaseAuth.getCurrentUser()==null){
                     getSupportFragmentManager().beginTransaction()
@@ -190,13 +239,13 @@ public class MainActivity extends AppCompatActivity
                             .addToBackStack(null)
                             .commit();
                 }*/
-           }
-       };
+            }
+        };
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
-         navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
         imageView = findViewById(R.id.imageView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -228,15 +277,15 @@ public class MainActivity extends AppCompatActivity
 
         super.onBackPressed();
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.main_fragment);
-        if(f instanceof EventFragment) {
+        if (f instanceof EventFragment) {
             navigation.getMenu().findItem(R.id.navigation_home).setChecked(true);
-        } else if (f instanceof NewEventFragment){
+        } else if (f instanceof NewEventFragment) {
             navigation.getMenu().findItem(R.id.navigation_camera).setChecked(true);
-        } else if (f instanceof ProfileFragment){
+        } else if (f instanceof ProfileFragment) {
             navigation.getMenu().findItem(R.id.navigation_profile).setChecked(true);
-        } else if (f instanceof LocationFragment){
+        } else if (f instanceof LocationFragment) {
             navigation.getMenu().findItem(R.id.navigation_change_location).setChecked(true);
-        } else if (f instanceof EventHistoryFragment){
+        } else if (f instanceof EventHistoryFragment) {
             navigation.getMenu().findItem(R.id.navigation_my_events).setChecked(true);
         }
 
@@ -293,8 +342,14 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_home) {
             HomePage home = new HomePage();
+            Bundle bundle = new Bundle();
+            if(lastLoc != null){
+                bundle.putDouble("latitude", lastLoc.getLatitude());
+                bundle.putDouble("longtitude", lastLoc.getLongitude());
+                home.setArguments(bundle);
+            }
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment,home,"HomeFragment")
+                    .replace(R.id.main_fragment, home, "HomeFragment")
                     .addToBackStack(null).commit();
 
         } else if (id == R.id.nav_share) {
@@ -305,8 +360,7 @@ public class MainActivity extends AppCompatActivity
                     .addToBackStack(null)
                     .commit();
 
-        }
-       else if (id==R.id.nav_logout){
+        } else if (id == R.id.nav_logout) {
             mAuth.signOut();
             FirebaseAuth.getInstance().signOut();
             new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
@@ -342,13 +396,19 @@ public class MainActivity extends AppCompatActivity
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     HomePage home = new HomePage();
+                    Bundle bundle = new Bundle();
+                    if(lastLoc != null){
+                        bundle.putDouble("latitude", lastLoc.getLatitude());
+                        bundle.putDouble("longtitude", lastLoc.getLongitude());
+                        home.setArguments(bundle);
+                    }
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment,home,"HomeFragment")
+                            .replace(R.id.main_fragment, home, "HomeFragment")
                             .addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_camera:
 
-                   dispatchTakePictureIntent();
+                    dispatchTakePictureIntent();
 
                     return true;
                 case R.id.navigation_change_location:
@@ -387,7 +447,7 @@ public class MainActivity extends AppCompatActivity
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                 photoURI = FileProvider.getUriForFile(this,
+                photoURI = FileProvider.getUriForFile(this,
                         "com.example.gerard.afinal.fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
@@ -398,13 +458,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
+        super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
 
             galleryAddPic();
-            if(requestCode == REQUEST_IMAGE_CAPTURE ) {
+            if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 uploadImage(photoURI);
             }
            /* NewEventFragment newEventFragment = new NewEventFragment();
@@ -452,6 +517,14 @@ public class MainActivity extends AppCompatActivity
                     dispatchTakePictureIntent();
                 }
                 break;
+            case REQUEST_LOCATION_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                }
+            case REQUEST_LOCATION_CODE2:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                }
           /*  case GALLERY_PERMISSIONS_REQUEST:
                 if (PermissionUtils.permissionGranted(requestCode, GALLERY_PERMISSIONS_REQUEST, grantResults)) {
                     //startGalleryChooser();
@@ -672,6 +745,21 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+    }
 
+    @Override
+    public void onConnectionSuspended(int i) {
 
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    private void getLocation(){
+
+    }
 }
