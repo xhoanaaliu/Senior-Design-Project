@@ -94,7 +94,7 @@ dependencies {
         exclude group: 'com.google.guava'
     }
 
-    implementation 'com.github.Shashank02051997:FancyGifDialog-Android:1.1'
+    implementation 'com.bestsoft32.tayyab:tt-fancy-gif-dialog:1.0.2'
 
 
 }

@@ -33,6 +33,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bestsoft32.tt_fancy_gif_dialog_lib.TTFancyGifDialog;
+import com.bestsoft32.tt_fancy_gif_dialog_lib.TTFancyGifDialogListener;
 import com.example.gerard.afinal.Account.ProfileFragment;
 import com.example.gerard.afinal.Login_SignUp.LoginFragment;
 import com.example.gerard.afinal.Login_SignUp.SignUpFragment;
@@ -76,8 +78,6 @@ import com.google.api.services.vision.v1.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.shashank.sony.fancygifdialoglib.FancyGifDialog;
-import com.shashank.sony.fancygifdialoglib.FancyGifDialogListener;
 import com.textrazor.AnalysisException;
 import com.textrazor.NetworkException;
 import com.textrazor.TextRazor;
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity
     String API_KEY = "5d9a93f99b0aab73d3f8be94453d6d83f3ea2b193b7780ca43751893";
     HashMap<String, String> u;
 
-    FancyGifDialog fgd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -715,12 +715,17 @@ public class MainActivity extends AppCompatActivity
 
                     u = new HashMap<>();
 
-                    for (Entity entity : response.getResponse().getEntities()) {
-                        //System.out.println(entity.getEntityId() + ": " + entity.getDBPediaTypes().get(0));
-                        if(entity.getEntityId() == null || entity.getDBPediaTypes().get(0) == null){
-                            return null;
-                        }else {
-                            u.put(entity.getEntityId(), entity.getDBPediaTypes().get(0));
+                    if(u.isEmpty()){
+                        // Do nothing
+                    }else {
+
+                        for (Entity entity : response.getResponse().getEntities()) {
+                            //System.out.println(entity.getEntityId() + ": " + entity.getDBPediaTypes().get(0));
+                            if (entity.getEntityId() == null || entity.getDBPediaTypes().get(0) == null) {
+                                return null;
+                            } else {
+                                u.put(entity.getEntityId(), entity.getDBPediaTypes().get(0));
+                            }
                         }
                     }
                     return u;
@@ -742,15 +747,13 @@ public class MainActivity extends AppCompatActivity
                 bundle.putSerializable("hashmap",u);
                 new_event.setArguments(bundle);
 
-                new FancyGifDialog.Builder(MainActivity.this)
+                new TTFancyGifDialog.Builder(MainActivity.this)
                         .setTitle("Poster Processed")
                         .setMessage("Your Poster has been processed. Press OK to be redirected to the event page.")
                         .setPositiveBtnBackground("#32CD32")
-                        .setNegativeBtnText("CANCEL")
-                        .setNegativeBtnBackground("#DC143C")
                         .setPositiveBtnText("OK")
                         .setGifResource(R.drawable.gif8)   //Pass your Gif here
-                        .OnPositiveClicked(new FancyGifDialogListener() {
+                        .OnPositiveClicked(new TTFancyGifDialogListener() {
                             @Override
                             public void OnClick() {
                                 //Toast.makeText(MainActivity.this,"Ok",Toast.LENGTH_SHORT).show();
@@ -759,16 +762,7 @@ public class MainActivity extends AppCompatActivity
                                         .addToBackStack(null).commit();
                             }
                         })
-                        .OnNegativeClicked(new FancyGifDialogListener() {
-                            @Override
-                            public void OnClick() {
-                                Toast.makeText(MainActivity.this,"You can upload your poster later again",Toast.LENGTH_SHORT).show();
-                            }
-                        })
                         .build();
-
-
-
             }
         }.execute();
     }
