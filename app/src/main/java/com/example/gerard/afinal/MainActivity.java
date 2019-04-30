@@ -261,6 +261,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
         fragment = new HomePage();
         loginFragment = new LoginFragment();
         profileFragment = new ProfileFragment();
@@ -784,10 +785,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-    private void getLocation(){
 
     }
 }

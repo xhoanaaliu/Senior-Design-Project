@@ -144,7 +144,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                         Fragment fragment = new EventFragment();
                         fragment.setArguments(bundle);
                         AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, fragment).commit();
+                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, fragment)
+                                .addToBackStack(null).commit();
                     }
                     else {
                         Log.d("Clicked",""+position);
@@ -158,7 +159,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                         Fragment fragment = new EventFragment();
                         fragment.setArguments(bundle);
                         AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, fragment).commit();
+                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, fragment)
+                                .addToBackStack(null).commit();
                     }
 
                 }

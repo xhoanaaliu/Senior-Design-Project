@@ -121,7 +121,6 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         Bundle arguments = this.getArguments();
         if(arguments != null){
             lat = arguments.getDouble("latitude");
@@ -153,13 +152,15 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
                                         homePage.setArguments(bundle);
 
                                         AppCompatActivity activity = (AppCompatActivity) getContext();
-                                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, homePage).commit();
+                                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, homePage)
+                                                .addToBackStack(null).commit();
                                     }
                                 }
                             });
                 }
             }
         }
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -393,7 +394,8 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
             Fragment fragment = new EventFragment();
             fragment.setArguments(bundle);
             AppCompatActivity activity = (AppCompatActivity) getContext();
-            activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, fragment).commit();
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, fragment)
+                    .addToBackStack(null).commit();
         }
 
         return false;
@@ -433,11 +435,6 @@ public class HomePage extends Fragment implements OnMapReadyCallback, LocationLi
                                     }
                                 }});
                 }
-          /*  case GALLERY_PERMISSIONS_REQUEST:
-                if (PermissionUtils.permissionGranted(requestCode, GALLERY_PERMISSIONS_REQUEST, grantResults)) {
-                    //startGalleryChooser();
-                }
-                break;*/
         }
 
     }
