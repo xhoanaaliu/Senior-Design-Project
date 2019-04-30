@@ -341,18 +341,18 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_change_location) {
             LocationFragment locationFragment = new LocationFragment();
+            Bundle bundle = new Bundle();
+            if(lastLoc != null){
+                bundle.putDouble("latitude", lastLoc.getLatitude());
+                bundle.putDouble("longtitude", lastLoc.getLongitude());
+                locationFragment.setArguments(bundle);
+            }
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, locationFragment, "location")
                     .addToBackStack(null).commit();
 
         } else if (id == R.id.nav_home) {
             HomePage home = new HomePage();
-            Bundle bundle = new Bundle();
-            if(lastLoc != null){
-                bundle.putDouble("latitude", lastLoc.getLatitude());
-                bundle.putDouble("longtitude", lastLoc.getLongitude());
-                home.setArguments(bundle);
-            }
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, home, "HomeFragment")
                     .addToBackStack(null).commit();
@@ -401,12 +401,6 @@ public class MainActivity extends AppCompatActivity
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     HomePage home = new HomePage();
-                    Bundle bundle = new Bundle();
-                    if(lastLoc != null){
-                        bundle.putDouble("latitude", lastLoc.getLatitude());
-                        bundle.putDouble("longtitude", lastLoc.getLongitude());
-                        home.setArguments(bundle);
-                    }
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.main_fragment, home, "HomeFragment")
                             .addToBackStack(null).commit();
@@ -418,6 +412,12 @@ public class MainActivity extends AppCompatActivity
                     return true;
                 case R.id.navigation_change_location:
                     LocationFragment locationFragment = new LocationFragment();
+                    Bundle bundle = new Bundle();
+                    if(lastLoc != null){
+                        bundle.putDouble("latitude", lastLoc.getLatitude());
+                        bundle.putDouble("longtitude", lastLoc.getLongitude());
+                        locationFragment.setArguments(bundle);
+                    }
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.main_fragment, locationFragment, "location")
                             .addToBackStack(null).commit();
