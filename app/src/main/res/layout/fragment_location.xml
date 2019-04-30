@@ -47,13 +47,6 @@
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
         />
 
-
-    <fragment android:id="@+id/autocomplete_fragment"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment" />
-
-
     <ImageView
         android:id="@+id/search_btn"
         android:layout_width="wrap_content"
