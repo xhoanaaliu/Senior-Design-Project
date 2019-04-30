@@ -1,11 +1,17 @@
 package com.example.gerard.afinal.Login_SignUp;
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +66,8 @@ import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.nlopez.smartlocation.OnLocationUpdatedListener;
+import io.nlopez.smartlocation.SmartLocation;
 
 import android.support.v7.app.AppCompatActivity;
 
@@ -91,6 +99,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     @BindView(R.id.input_password) EditText _passwordText;
     @BindView(R.id.btn_login) Button _loginButton;
     boolean value;
+    Location lastLoc;
+    boolean gotLocation = false;
+    private final int REQUEST_LOCATION_CODE = 99;
+    private final int REQUEST_LOCATION_CODE2 = 98;
 
     @BindView(R.id.link_signup) TextView _signupLink;
     @BindView(R.id.link_signuporganization) TextView _orgsignupLink;
@@ -101,6 +113,24 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.d("REQUEST LOCATION", "NOT GRANTED");
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_CODE2);
+            //ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION_CODE);
+        }
+        if(!gotLocation){
+            SmartLocation.with(getContext()).location()
+                    .oneFix()
+                    .start(new OnLocationUpdatedListener() {
+                        @Override
+                        public void onLocationUpdated(Location location) {
+                            if (location != null) {
+                                lastLoc = location;
+                                gotLocation = true;
+                            }
+                        }
+                    });
+        }
         super.onCreate(savedInstanceState);
         ScrollView scrl = new ScrollView(getContext());
         signUpFragment = new SignUpFragment();
@@ -118,8 +148,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
              if(firebaseAuth.getCurrentUser()!=null){
+                 Bundle bundle = new Bundle();
+                 if(lastLoc != null){
+                     bundle.putDouble("latitude", lastLoc.getLatitude());
+                     bundle.putDouble("longtitude", lastLoc.getLongitude());
+                     hmp.setArguments(bundle);
+                 }
                  getActivity().getSupportFragmentManager().beginTransaction()
-                         .replace(R.id.main_fragment, event, "Home")
+                         .replace(R.id.main_fragment, hmp, "Home")
                          .addToBackStack(null)
                          .commit();
              }
@@ -179,8 +215,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     }
 
     private void updateUI(FirebaseUser user) {
+        Bundle bundle = new Bundle();
+        if(lastLoc != null){
+            bundle.putDouble("latitude", lastLoc.getLatitude());
+            bundle.putDouble("longtitude", lastLoc.getLongitude());
+            hmp.setArguments(bundle);
+        }
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_fragment, event, "Home")
+                .replace(R.id.main_fragment, hmp, "Home")
                 .addToBackStack(null)
                 .commit();
     }
@@ -204,6 +246,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
              }
              //else Authentication Successful
              Toast.makeText(getContext(), "Authentication Successful", Toast.LENGTH_SHORT).show();
+             Bundle bundle = new Bundle();
+             if(lastLoc != null){
+                 bundle.putDouble("latitude", lastLoc.getLatitude());
+                 bundle.putDouble("longtitude", lastLoc.getLongitude());
+                 hmp.setArguments(bundle);
+             }
              getActivity().getSupportFragmentManager().beginTransaction()
                      .replace(R.id.main_fragment, hmp, "Home")
                      .addToBackStack(null)
@@ -333,8 +381,14 @@ return valid;
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
             if(firebaseAuth.getCurrentUser()!=null){
+                Bundle bundle = new Bundle();
+                if(lastLoc != null){
+                    bundle.putDouble("latitude", lastLoc.getLatitude());
+                    bundle.putDouble("longtitude", lastLoc.getLongitude());
+                    hmp.setArguments(bundle);
+                }
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.main_fragment, event, "Home")
+                        .replace(R.id.main_fragment, hmp, "Home")
                         .addToBackStack(null)
                         .commit();
             }
@@ -454,6 +508,44 @@ return valid;
 
     @Override
     public void onClick(View v) {
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case REQUEST_LOCATION_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("LOCATION PERMISSION", "GRANTEEEED");
+                    SmartLocation.with(getContext()).location()
+                            .oneFix()
+                            .start(new OnLocationUpdatedListener() {
+                                @Override
+                                public void onLocationUpdated(Location location) {
+                                    if(location != null){
+                                        Log.d("LOCATION VAAAR", location.toString());
+                                        lastLoc = location;
+                                    }
+                                }});
+                }
+            case REQUEST_LOCATION_CODE2:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("LOCATION PERMISSION", "GRANTEEEED");
+                    SmartLocation.with(getContext()).location()
+                            .oneFix()
+                            .start(new OnLocationUpdatedListener() {
+                                @Override
+                                public void onLocationUpdated(Location location) {
+                                    if(location != null){
+                                        Log.d("LOCATION VAAAR", location.toString());
+                                        lastLoc = location;
+                                    }
+                                }});
+                }
+        }
 
     }
 }
