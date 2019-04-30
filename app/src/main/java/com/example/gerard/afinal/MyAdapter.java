@@ -60,6 +60,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         public TextView title;
         public TextView location;
         public TextView date;
+        public TextView times;
         public ImageView img;
         private static ItemClickListener itemClickListener;
         public MyViewHolder(View v) {
@@ -68,6 +69,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             location = (TextView) v.findViewById(R.id.textLocation);
             date = (TextView) v.findViewById(R.id.textDate);
             img = (ImageView) v.findViewById(R.id.listImage);
+            times = (TextView) v.findViewById(R.id.textTime);
             v.setOnClickListener(this);
             v.setOnLongClickListener(this);
         }
@@ -112,6 +114,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             holder.title.setText(mDataset.get(position).getTitle());
             holder.location.setText(mDataset.get(position).getLocation());
             holder.date.setText(mDataset.get(position).getDate());
+            holder.times.setText(mDataset.get(position).getTime());
             String url = mDataset.get(position).getURL();
 
             final StorageReference islandRef = mStorageRef.child(url);
@@ -139,6 +142,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                         bundle.putString("location", mDataset.get(position).getLocation());
                         bundle.putString("date", mDataset.get(position).getDate());
                         bundle.putString("description", mDataset.get(position).getDescription());
+                        bundle.putString("time", mDataset.get(position).getTime());
                         bundle.putString("url", mDataset.get(position).getURL());
 
                         Fragment fragment = new EventFragment();
@@ -154,6 +158,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                         bundle.putString("location", mDataset.get(position).getLocation());
                         bundle.putString("date", mDataset.get(position).getDate());
                         bundle.putString("description", mDataset.get(position).getDescription());
+                        bundle.putString("time", mDataset.get(position).getTime());
                         bundle.putString("url", mDataset.get(position).getURL());
 
                         Fragment fragment = new EventFragment();

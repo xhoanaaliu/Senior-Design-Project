@@ -12,11 +12,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -29,9 +32,13 @@ public class EventHistoryFragment extends Fragment {
     private ArrayList<String> eventHistoryList = new ArrayList<>();
     private ArrayAdapter<String> adapter;
     private DatabaseReference datarefEvents;
+    private DatabaseReference databaseReference;
     private ArrayList<String> eventFragmentArrayList = new ArrayList<>();
     private EventFragment evt;
-
+    private DatabaseReference ref2;
+    private String eventTitle;
+    FirebaseUser user;
+    private String userID;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -41,23 +48,28 @@ public class EventHistoryFragment extends Fragment {
         textViewEventHistory = (TextView) rootView.findViewById(R.id.textViewEventHistory);
         listView = rootView.findViewById(R.id.listView);
         datarefEvents = FirebaseDatabase.getInstance().getReference("Event");
+        ref2 = FirebaseDatabase.getInstance().getReference("GoingTo");
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        userID=user.getUid();
         adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,eventFragmentArrayList);
         listView.setAdapter(adapter);
-        datarefEvents.addChildEventListener(new ChildEventListener() {
+        Query q1 = ref2.orderByChild("user_id").equalTo(userID);
+
+        q1.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-             Map<String, String> value = (Map<String,String>) dataSnapshot.getValue();
-             String item="";
-             String category = value.get("category");
-             String date = value.get("date");
-             String description = value.get("description");
-             String location = value.get("location");
-             String time = value.get("time");
-             String title = value.get("title");
-             item = "Category : " + category + " " + "\nDate : " +  date + " " + "\nDescription : " +
-                     description + " " + "\nLocation : " +  location + " " + "\nTime : " +  time + " " + "\nTitle : " + title;
-             eventFragmentArrayList.add(item);
-             adapter.notifyDataSetChanged();
+                Map<String, String> value = (Map<String,String>) dataSnapshot.getValue();
+                String item="";
+                String category = value.get("category");
+                String date = value.get("date");
+                String description = value.get("description");
+                String location = value.get("location");
+                String time = value.get("time");
+                String title = value.get("title");
+                item = "Category : " + category + " " + "\nDate : " +  date + " " + "\nDescription : " +
+                        description + " " + "\nLocation : " +  location + " " + "\nTime : " +  time + " " + "\nTitle : " + title;
+                eventFragmentArrayList.add(item);
+                adapter.notifyDataSetChanged();
             }
 
             @Override

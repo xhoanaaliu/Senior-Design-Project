@@ -135,7 +135,7 @@ public class HomePage extends Fragment implements GoogleApiClient.ConnectionCall
                     String time = value.get("time");
                     String title = value.get("title");
 
-                    Event temp = new Event(title, location, date, URL, description);
+                    Event temp = new Event(title, location, date,time,URL, description);
 
                     events_retrieved.add(temp);
                     adapter.notifyDataSetChanged();
@@ -240,39 +240,52 @@ public class HomePage extends Fragment implements GoogleApiClient.ConnectionCall
         private String title;
         private String location;
         private String date;
+        private String time;
         private String URL;
         private String description;
 
-        public Event(String title, String location, String date, String URL, String description) {
+        public Event() {
+        }
+
+        public Event(String title, String location, String date, String time, String URL, String description) {
             this.title = title;
             this.location = location;
             this.date = date;
+            this.time = time;
             this.URL = URL;
             this.description = description;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
         }
 
         public String getTitle() {
             return title;
         }
 
-        public void setLocation(String location) {
-            this.location = location;
+        public void setTitle(String title) {
+            this.title = title;
         }
 
         public String getLocation() {
             return location;
         }
 
-        public void setDate(String date) {
-            this.date = date;
+        public void setLocation(String location) {
+            this.location = location;
         }
 
         public String getDate() {
             return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+        public String getTime() {
+            return time;
+        }
+
+        public void setTime(String time) {
+            this.time = time;
         }
 
         public String getURL() {

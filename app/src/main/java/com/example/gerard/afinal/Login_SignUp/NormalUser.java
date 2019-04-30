@@ -3,6 +3,7 @@ package com.example.gerard.afinal.Login_SignUp;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NormalUser {
+    private String user_id;
     private String username;
     private String usersurname;
     private String email;
@@ -10,15 +11,14 @@ public class NormalUser {
     private String location;
     private String preferences;
     private String profile_picture;
-    private String user_key;
+
 
 
     public NormalUser() {
     }
 
-
-    public NormalUser(String user_key, String username, String usersurname, String email, String password, String location, String preferences,String profile_picture) {
-        this.user_key =user_key;
+    public NormalUser(String user_id, String username, String usersurname, String email, String password, String location, String preferences, String profile_picture) {
+        this.user_id = user_id;
         this.username = username;
         this.usersurname = usersurname;
         this.email = email;
@@ -28,27 +28,27 @@ public class NormalUser {
         this.profile_picture = profile_picture;
     }
 
-    public String getusername() {
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getUsername() {
         return username;
     }
 
-    public String getUser_key() {
-        return user_key;
-    }
-
-    public void setUser_key(String user_key) {
-        this.user_key = user_key;
-    }
-
-    public void setusername(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getusersurname() {
+    public String getUsersurname() {
         return usersurname;
     }
 
-    public void setusersurname(String usersurname) {
+    public void setUsersurname(String usersurname) {
         this.usersurname = usersurname;
     }
 
@@ -91,6 +91,4 @@ public class NormalUser {
     public void setProfile_picture(String profile_picture) {
         this.profile_picture = profile_picture;
     }
-
-
 }

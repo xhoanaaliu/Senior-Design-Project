@@ -23,38 +23,6 @@ import java.util.ArrayList;
 
 
 public class FollowingFragment extends Fragment {
-    private TextView textViewFollowing;
-    private DatabaseReference reff;
-    private ListView listViewFollow;
-    private ArrayList<String> followList = new ArrayList<>();
-    private ArrayAdapter<String> adapter;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView= inflater.inflate(R.layout.fragment_following, container, false);
-        textViewFollowing = (TextView) rootView.findViewById(R.id.textViewFollowing);
-        listViewFollow = rootView.findViewById(R.id.listViewFollow);
-        reff = FirebaseDatabase.getInstance().getReference().child("Follow").child("follow 1");
-        reff.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String follow= dataSnapshot.child("email_organization").getValue().toString();
-                followList.add(follow);
-                adapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,android.R.id.text1,followList);
-                listViewFollow.setAdapter(adapter);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        return rootView;
-    }
 
 
 }

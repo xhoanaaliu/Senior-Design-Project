@@ -20,6 +20,8 @@ import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.github.florent37.shapeofview.ShapeOfView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,6 +31,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -36,16 +40,21 @@ public class EventFragment extends Fragment implements View.OnClickListener{
 
     //private OnFragmentInteractionListener mListener;
     public KenBurnsView poster;
-    private TextView title, location, date, description;
-    private ImageView googleLoc, calendarDate;
+    private TextView title, location, date, description,times;
+    private ImageView googleLoc, calendarDate,buttonTime;
     private Button interestedButton, goingToButton;
     private ImageButton  f;
     private String event_id;
+    private FirebaseAuth mAuth;
     private StorageReference mStorageRef;
-
+    String userID;
+    FirebaseUser user;
     private static ArrayList<String> events_retrieved;
     DatabaseReference databaseReference;
-
+    DatabaseReference myRef;
+    DatabaseReference interestRef;
+    DatabaseReference eventRef;
+    private ArrayList<EventInfo> eventsArrayList;
     public EventFragment() {
 
     }
@@ -113,6 +122,14 @@ public class EventFragment extends Fragment implements View.OnClickListener{
     public void setDate(TextView date) {
         this.date = date;
     }
+    public TextView getTime() {
+        return times;
+    }
+
+    public void setTime(TextView times) {
+        this.times = times;
+    }
+
 
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
@@ -122,16 +139,25 @@ public class EventFragment extends Fragment implements View.OnClickListener{
         location = view.findViewById(R.id.location);
         date = view.findViewById(R.id.date);
         description = view.findViewById(R.id.description);
+        times = view.findViewById(R.id.times);
         poster = view.findViewById(R.id.eventPoster);
-        interestedButton = view.findViewById(R.id.button);
-        goingToButton = view.findViewById(R.id.button2);
+        goingToButton = view.findViewById(R.id.button);
+        interestedButton = view.findViewById(R.id.button2);
         googleLoc = view.findViewById(R.id.googleLocation);
         calendarDate = view.findViewById(R.id.calendarDate);
+        buttonTime=view.findViewById(R.id.buttonTime);
         googleLoc.setOnClickListener(this);
         calendarDate.setOnClickListener(this);
+        buttonTime.setOnClickListener(this);
         goingToButton.setOnClickListener(this);
         interestedButton.setOnClickListener(this);
-
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        userID=user.getUid();
+        eventsArrayList = new ArrayList<>();
+        eventRef=FirebaseDatabase.getInstance().getReference("Event");
+        myRef = FirebaseDatabase.getInstance().getReference("GoingTo");
+        interestRef = FirebaseDatabase.getInstance().getReference("Interested");
+        mAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("Event/event1");
         events_retrieved = new ArrayList<String>();
 
@@ -167,6 +193,61 @@ public class EventFragment extends Fragment implements View.OnClickListener{
             location.setText(bundle.getString("location"));
             date.setText(bundle.getString("date"));
             description.setText(bundle.getString("description"));
+            times.setText(bundle.getString("time"));
+            goingToButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EventInfo e1 = new EventInfo();
+                    e1.setTitle(title.getText().toString());
+                    e1.setLocation(location.getText().toString());
+                    e1.setDate(date.getText().toString());
+                    e1.setDescription(description.getText().toString());
+                    e1.setTime(times.getText().toString());
+
+                    String value = e1.getTitle();
+                    String value2 = e1.getLocation();
+                    String value3 = e1.getDate();
+                    String value4 = e1.getDescription();
+                    String value5 = e1.getTime();
+                    Map<String, String> goingTo = new HashMap<>();
+                    goingTo.put("title",value);
+                    goingTo.put("location",value2);
+                    goingTo.put("date",value3);
+                    goingTo.put("description",value4);
+                    goingTo.put("time",value5);
+                    goingTo.put("user_id",userID);
+
+                    DatabaseReference db = myRef.push();
+                    db.setValue(goingTo);
+
+                }
+            });
+            interestedButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EventInfo e2 = new EventInfo();
+                    e2.setTitle(title.getText().toString());
+                    e2.setLocation(location.getText().toString());
+                    e2.setDate(date.getText().toString());
+                    e2.setDescription(description.getText().toString());
+                    e2.setTime(times.getText().toString());
+                    String value = e2.getTitle();
+                    String value2 = e2.getLocation();
+                    String value3 = e2.getDate();
+                    String value4 = e2.getDescription();
+                    String value5 = e2.getTime();
+                    Map<String, String> interested = new HashMap<>();
+                    interested.put("title",value);
+                    interested.put("location",value2);
+                    interested.put("date",value3);
+                    interested.put("description",value4);
+                    interested.put("time",value5);
+                    interested.put("user_id",userID);
+                    DatabaseReference db2 = interestRef.push();
+                    db2.setValue(interested);
+
+                }
+            });
             String url = bundle.getString("url");
             final StorageReference islandRef = mStorageRef.child(url);
 
@@ -202,14 +283,17 @@ public class EventFragment extends Fragment implements View.OnClickListener{
                 */
                     for (int i = 0; i < events_retrieved.size(); i++) {
                         Log.i("lllll", "again" + i + " " + events_retrieved.get(i).toString());
-                        if (events_retrieved.size() == 3) {
+                        if (events_retrieved.size() == 4) {
                             String title_retrieved = events_retrieved.get(0);
                             String location_retrieved = events_retrieved.get(1);
                             String date_retrieved = events_retrieved.get(2);
-
+                            String time_retrieved = events_retrieved.get(3);
                             title.setText(title_retrieved);
                             location.setText(location_retrieved);
                             date.setText(date_retrieved);
+                            times.setText(time_retrieved);
+
+
                         }
                     }
                     //Map<String, String> map = dataSnapshot.getValue(Map.class);

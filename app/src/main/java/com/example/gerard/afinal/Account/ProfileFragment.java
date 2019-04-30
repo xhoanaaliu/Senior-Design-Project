@@ -40,12 +40,16 @@ import android.widget.Toast;
 
 import com.example.gerard.afinal.EventHistoryFragment;
 import com.example.gerard.afinal.InterestsFragment;
+import com.example.gerard.afinal.Login_SignUp.NormalUser;
 import com.example.gerard.afinal.MainActivity;
 import com.example.gerard.afinal.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -63,11 +67,19 @@ import static android.graphics.Bitmap.createScaledBitmap;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-public class ProfileFragment extends Fragment implements View.OnClickListener {
 
+public class ProfileFragment extends Fragment implements View.OnClickListener {
+    private static final String TAG = "ProfilePage";
     private TabLayout tabs;
     private ViewPager viewPager;
     private MyAdapter adapter;
+    private TextView userName;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private DatabaseReference databaseReference;
+    private FirebaseDatabase database;
+    private  String userID;
+    FirebaseUser user;
     CircleImageView profilePicture;
     private static Bitmap Image = null;
     private static Bitmap rotateImage = null;
@@ -92,6 +104,25 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
 
 
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+
+                }
+                // ...
+            }
+        };
+
+
+
     }
 
     @Override
@@ -99,10 +130,43 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView= inflater.inflate(R.layout.fragment_profile, container, false);
+        mAuth= FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        userID=user.getUid();
+        databaseReference=database.getReference("Users");
+        userName = rootView.findViewById(R.id.userName);
+        Query q1 = databaseReference.orderByChild("user_id").equalTo(userID);
+
+        q1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot d:dataSnapshot.getChildren()){
+                    NormalUser u1 = d.getValue(NormalUser.class);
+                    String name = u1.getUsername();
+                    userName.setText(name);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         return rootView;
     }
-
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -121,6 +185,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         tabs=(TabLayout) view.findViewById(R.id.tabs);
         viewPager=(ViewPager) view.findViewById(R.id.viewPager);
+
+
         profilePicture = view.findViewById(R.id.profile_image);
         sp=getActivity().getSharedPreferences("profilePicture",MODE_PRIVATE);
 
@@ -131,19 +197,19 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             profilePicture.setImageBitmap(decodedByte);
         }
 
-       profilePicture.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
+        profilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 profilePicture.setImageBitmap(null);
                 if(Image!= null){
-                  Image.recycle();
+                    Image.recycle();
                 }
                 Intent intent = new Intent();
-               intent.setType("image/*");
+                intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent,"Select Picture"),GALLERY);
-           }
-       });
+            }
+        });
         adapter= new MyAdapter(getChildFragmentManager());
         adapter.addFragment(new InterestsFragment(),"Interests");
         adapter.addFragment(new EventHistoryFragment(),"EventHıstory");
@@ -171,7 +237,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 } else{
 
                     rotateImage= handleSamplingAndRotationBitmap(getContext(),mImageUri);
-                     Bitmap resized = getResizedBitmap(rotateImage,1024,1024);
+                    Bitmap resized = getResizedBitmap(rotateImage,1024,1024);
                     profilePicture.setImageBitmap(resized);
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     resized.compress(Bitmap.CompressFormat.PNG,100,baos);
