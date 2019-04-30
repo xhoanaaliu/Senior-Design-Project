@@ -89,7 +89,9 @@ dependencies {
 
     implementation 'com.textrazor:textrazor:1.0.12'
 
-
+    implementation ('com.google.android.libraries.places:places:1.0.0') {
+        exclude group: 'com.google.guava'
+    }
 }
 apply plugin: 'com.google.gms.google-services'
 googleServices { disableVersionCheck = true }

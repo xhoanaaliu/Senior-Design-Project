@@ -311,6 +311,4 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
 
     }
 
-
-
 }
