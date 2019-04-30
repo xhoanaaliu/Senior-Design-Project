@@ -29,6 +29,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -75,6 +76,8 @@ import com.google.api.services.vision.v1.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.shashank.sony.fancygifdialoglib.FancyGifDialog;
+import com.shashank.sony.fancygifdialoglib.FancyGifDialogListener;
 import com.textrazor.AnalysisException;
 import com.textrazor.NetworkException;
 import com.textrazor.TextRazor;
@@ -129,6 +132,7 @@ public class MainActivity extends AppCompatActivity
     String API_KEY = "5d9a93f99b0aab73d3f8be94453d6d83f3ea2b193b7780ca43751893";
     HashMap<String, String> u;
 
+    FancyGifDialog fgd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -732,14 +736,38 @@ public class MainActivity extends AppCompatActivity
             }
             protected void onPostExecute(HashMap u) {
 
-                NewEventFragment new_event = new NewEventFragment();
+                final NewEventFragment new_event = new NewEventFragment();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("hashmap",u);
                 new_event.setArguments(bundle);
 
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.main_fragment, new_event, "new_event")
-                        .addToBackStack(null).commit();
+                new FancyGifDialog.Builder(MainActivity.this)
+                        .setTitle("Poster Processed")
+                        .setMessage("Your Poster has been processed. Press OK to be redirected to the event page.")
+                        .setPositiveBtnBackground("#32CD32")
+                        .setNegativeBtnText("CANCEL")
+                        .setNegativeBtnBackground("#DC143C")
+                        .setPositiveBtnText("OK")
+                        .setGifResource(R.drawable.gif8)   //Pass your Gif here
+                        .OnPositiveClicked(new FancyGifDialogListener() {
+                            @Override
+                            public void OnClick() {
+                                //Toast.makeText(MainActivity.this,"Ok",Toast.LENGTH_SHORT).show();
+                                getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.main_fragment, new_event, "new_event")
+                                        .addToBackStack(null).commit();
+                            }
+                        })
+                        .OnNegativeClicked(new FancyGifDialogListener() {
+                            @Override
+                            public void OnClick() {
+                                Toast.makeText(MainActivity.this,"You can upload your poster later again",Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .build();
+
+
+
             }
         }.execute();
     }

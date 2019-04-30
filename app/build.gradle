@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.gerard.afinal"
-        minSdkVersion 16
+        minSdkVersion 19
         multiDexEnabled true
         targetSdkVersion 28
         versionCode 1
@@ -25,6 +25,7 @@ android {
 }
 repositories {
     jcenter()
+    maven { url "https://jitpack.io" }
 }
 dependencies {
 
@@ -88,6 +89,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:17.3.2'
 
     implementation 'com.textrazor:textrazor:1.0.12'
+
+    implementation 'com.google.android.libraries.places:places:1.1.0'
+
+    implementation 'com.github.Shashank02051997:FancyGifDialog-Android:1.1'
 
 
 }
