@@ -44,7 +44,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -82,6 +84,7 @@ public class HomePage extends Fragment implements GoogleApiClient.ConnectionCall
     private Location lastLoc;
     private boolean gotLocation = false;
     private Map<LatLng, Event> markerList = new HashMap<>();
+    private Date currentDate = new Date();
 
     public HomePage() {
         // Required empty public constructor
@@ -103,15 +106,15 @@ public class HomePage extends Fragment implements GoogleApiClient.ConnectionCall
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-            Date date = new Date();
-            String curr = sdf.format(date);
+            //SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            //Date date = new Date();
+            //String curr = sdf.format(date);
 
 
             // Inflate the layout for this fragment
             View view = inflater.inflate(R.layout.fragment_home_page, container, false);
             TextView currDate = view.findViewById(R.id.textView9);
-            currDate.setText(curr + " Events");
+            currDate.setText("Recent Events");
 
             mStorageRef = FirebaseStorage.getInstance().getReference();
             databaseReference = FirebaseDatabase.getInstance().getReference("Event");
@@ -135,11 +138,34 @@ public class HomePage extends Fragment implements GoogleApiClient.ConnectionCall
                     String time = value.get("time");
                     String title = value.get("title");
 
-                    Event temp = new Event(title, location, date,time,URL, description);
+                    Event temp = new Event(title, location, date, time, URL, description);
 
-                    events_retrieved.add(temp);
-                    adapter.notifyDataSetChanged();
-                    Log.d("DATASET", "CHANGED");
+                    Date currDate = new Date();
+                    String dateInString = date;
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                    long days = 0;
+                    try {
+                        currDate = formatter.parse(dateInString);
+                        if (currDate.getTime() >= currentDate.getTime()){
+                            long diff = currDate.getTime() - currentDate.getTime();
+                            long seconds = diff / 1000;
+                            long minutes = seconds / 60;
+                            long hours = minutes / 60;
+                            days = hours / 24;
+                        }
+                    }catch (ParseException e) {
+                        //handle exception if date is not in "dd-MM-yyyy" format
+                    }
+
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("LLLL");
+                    String a = dateFormat.format(currDate);
+                    Log.d("DATE", a);
+
+                    if((days < 15) && (days != 0)){
+                        events_retrieved.add(temp);
+                        adapter.notifyDataSetChanged();
+                        Log.d("DATASET", "CHANGED");
+                    }
                 }
 
                 @Override
