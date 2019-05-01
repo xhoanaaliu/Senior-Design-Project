@@ -207,12 +207,17 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
 
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
-
+        Toast.makeText(getActivity(), "Time Set", Toast.LENGTH_LONG).show();
+        String new_time = hourOfDay + " : " + minute;
+        time_field.setText(new_time);
     }
 
     @Override
     public void onDateSet(com.fourmob.datetimepicker.date.DatePickerDialog datePickerDialog, int year, int month, int day) {
-
+        Toast.makeText(getActivity(), "Date Set", Toast.LENGTH_LONG).show();
+        // Month might be -1
+        String new_date = day + " - " + month + " - " + year;
+        date_field.setText(new_date);
     }
 
     @Override
@@ -227,7 +232,7 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
 
                 Calendar maxDate = Calendar.getInstance();
                 maxDate.setTime(new Date());
-                maxDate.add(Calendar.DAY_OF_YEAR, 20);
+                maxDate.add(Calendar.DAY_OF_YEAR, 365);
 
                 datePickerDialog.setDateConstraints(new CalendarDay(minDate), new CalendarDay(maxDate));
                 datePickerDialog.show(getActivity().getSupportFragmentManager(), DATEPICKER_TAG);
