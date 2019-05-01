@@ -2,6 +2,7 @@ package com.example.gerard.afinal;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -76,6 +77,8 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
 
     HashMap<String, String> n;
 
+    Bitmap bitmapimage;
+
     public NewEventFragment() {
         // Required empty public constructor
     }
@@ -90,12 +93,15 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         mMap = new HashMap<>();
         Bundle b = this.getArguments();
 
+        bitmapimage = getArguments().getParcelable("BitmapImage");
+
         if(b.getSerializable("hashmap") != null)
             mMap = (HashMap<String,String>)b.getSerializable("hashmap");
+
+        b.clear();
 
         }
 
@@ -117,6 +123,9 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
         descriptionField = view.findViewById(R.id.description);
         date_field = view.findViewById(R.id.date_field);
         time_field = view.findViewById(R.id.time_field);
+        new_poster = view.findViewById(R.id.new_event_poster);
+
+        new_poster.setImageBitmap(bitmapimage);
 
         spinner =  view.findViewById(R.id.spinner);
         spinner.setItems("Ice Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow");
@@ -150,7 +159,7 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
     @Override
     public void onStart() {
         super.onStart();
-        // EventBus.getDefault().register(this);
+
     }
 
     @Override
@@ -215,8 +224,7 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
     @Override
     public void onDateSet(com.fourmob.datetimepicker.date.DatePickerDialog datePickerDialog, int year, int month, int day) {
         Toast.makeText(getActivity(), "Date Set", Toast.LENGTH_LONG).show();
-        // Month might be -1
-        String new_date = day + " - " + month + " - " + year;
+        String new_date = day + " - " + month+1 + " - " + year;
         date_field.setText(new_date);
     }
 

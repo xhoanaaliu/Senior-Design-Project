@@ -136,6 +136,8 @@ public class MainActivity extends AppCompatActivity
     String API_KEY = "5d9a93f99b0aab73d3f8be94453d6d83f3ea2b193b7780ca43751893";
     HashMap<String, String> u;
 
+    Bitmap bitmap;
+
 
 
 
@@ -478,7 +480,6 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-
             galleryAddPic();
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 uploadImage(photoURI);
@@ -547,7 +548,7 @@ public class MainActivity extends AppCompatActivity
     public void uploadImage(Uri uri) {
         if (uri != null) {
             try {
-                Bitmap bitmap = resizeBitmap(
+                bitmap = resizeBitmap(
                         MediaStore.Images.Media.getBitmap(getContentResolver(), uri));
 
                 ConnectivityManager cm =
@@ -777,6 +778,7 @@ public class MainActivity extends AppCompatActivity
                 final NewEventFragment new_event = new NewEventFragment();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("hashmap",u);
+                bundle.putParcelable("BitmapImage",bitmap);
                 new_event.setArguments(bundle);
 
                 new TTFancyGifDialog.Builder(MainActivity.this)
