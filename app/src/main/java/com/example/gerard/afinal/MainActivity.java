@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -89,6 +91,8 @@ import com.textrazor.annotations.Entity;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -134,6 +138,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,6 +147,7 @@ public class MainActivity extends AppCompatActivity
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         dataref = FirebaseDatabase.getInstance().getReference();
+
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.d("REQUEST LOCATION", "NOT GRANTED");
@@ -536,7 +542,6 @@ public class MainActivity extends AppCompatActivity
                 }
                 break;*/
         }
-
     }
 
     public void uploadImage(Uri uri) {
@@ -544,7 +549,35 @@ public class MainActivity extends AppCompatActivity
             try {
                 Bitmap bitmap = resizeBitmap(
                         MediaStore.Images.Media.getBitmap(getContentResolver(), uri));
-                callCloudVision(bitmap);
+
+                ConnectivityManager cm =
+                        (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+                boolean isConnected = activeNetwork != null &&
+                        activeNetwork.isConnectedOrConnecting();
+
+                if(!isConnected){
+                    new TTFancyGifDialog.Builder(MainActivity.this)
+                            .setTitle("No Internet Connection")
+                            .setMessage("Please check your internet connection and try again")
+                            .setPositiveBtnBackground("#32CD32")
+                            .setPositiveBtnText("OK")
+                            .setGifResource(R.drawable.no_internet)   //Pass your Gif here
+                            .OnPositiveClicked(new TTFancyGifDialogListener() {
+                                @Override
+                                public void OnClick() {
+                                    //Toast.makeText(MainActivity.this,"Ok",Toast.LENGTH_SHORT).show();
+                                    HomePage hm = new HomePage();
+                                     getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.main_fragment, hm, "no internet")
+                                            .addToBackStack(null).commit();
+                                }
+                            })
+                            .build();
+                }else {
+                    callCloudVision(bitmap);
+                }
                 //selectedImage.setImageBitmap(bitmap);
             } catch (IOException e) {
                 Log.e(LOG_TAG, e.getMessage());
@@ -575,7 +608,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void callCloudVision(final Bitmap bitmap) throws IOException {
-
         //resultTextView.setText("Retrieving results from cloud");
 
         new AsyncTask<Object, Void, String>() {
@@ -732,7 +764,7 @@ public class MainActivity extends AppCompatActivity
 
 
                 } catch (NetworkException e) {
-                    e.printStackTrace();
+
                 } catch (AnalysisException a) {
                     a.printStackTrace();
                 }
@@ -766,7 +798,6 @@ public class MainActivity extends AppCompatActivity
             }
         }.execute();
     }
-
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
