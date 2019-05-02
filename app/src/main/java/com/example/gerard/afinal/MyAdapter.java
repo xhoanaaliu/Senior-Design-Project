@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,9 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -69,7 +73,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             location = (TextView) v.findViewById(R.id.textLocation);
             date = (TextView) v.findViewById(R.id.textDate);
             img = (ImageView) v.findViewById(R.id.listImage);
-            times = (TextView) v.findViewById(R.id.textTime);
             v.setOnClickListener(this);
             v.setOnLongClickListener(this);
         }
@@ -111,10 +114,37 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         if(!mDataset.isEmpty()) {
-            holder.title.setText(mDataset.get(position).getTitle());
-            holder.location.setText(mDataset.get(position).getLocation());
-            holder.date.setText(mDataset.get(position).getDate());
-            holder.times.setText(mDataset.get(position).getTime());
+            String newDateFormat;
+            if(mDataset.get(position).getDate() != null) {
+                Date date = new Date();
+                String dateIn = mDataset.get(position).getDate();
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                try {
+                    date = formatter.parse(dateIn);
+                }
+                catch (ParseException e){
+
+                }
+                SimpleDateFormat dateFormat = new SimpleDateFormat("LLLL");
+                newDateFormat = dateFormat.format(date);
+                String day  = (String) DateFormat.format("dd", date);
+                newDateFormat = day + " " + newDateFormat;
+                holder.date.setText(newDateFormat);
+            }
+            else {
+                holder.date.setVisibility(View.GONE);
+            }
+            if(mDataset.get(position).getTitle() != null)
+                holder.title.setText(mDataset.get(position).getTitle());
+            else
+                holder.title.setVisibility(View.GONE);
+
+            if(mDataset.get(position).getLocation() != null)
+                holder.location.setText(mDataset.get(position).getLocation());
+            else
+                holder.location.setVisibility(View.GONE);
+
+           // holder.times.setText(mDataset.get(position).getTime());
             String url = mDataset.get(position).getURL();
 
             final StorageReference islandRef = mStorageRef.child(url);
@@ -146,6 +176,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                         bundle.putString("url", mDataset.get(position).getURL());
                         bundle.putString("category", mDataset.get(position).getCategory());
                         bundle.putString("ID", mDataset.get(position).getID());
+
 
                         Fragment fragment = new EventFragment();
                         fragment.setArguments(bundle);

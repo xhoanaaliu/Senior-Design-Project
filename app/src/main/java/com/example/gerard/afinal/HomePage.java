@@ -82,7 +82,6 @@ public class HomePage extends Fragment implements GoogleApiClient.ConnectionCall
     private final int REQUEST_LOCATION_CODE = 99;
     private final int REQUEST_LOCATION_CODE2 = 98;
     private Location lastLoc;
-    private boolean gotLocation = false;
     private Map<LatLng, Event> markerList = new HashMap<>();
     private Date currentDate = new Date();
 
@@ -101,19 +100,71 @@ public class HomePage extends Fragment implements GoogleApiClient.ConnectionCall
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.d("REQUEST LOCATION", "NOT GRANTED");
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_CODE2);
+            //ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION_CODE);
+        }
+        else{
+            SmartLocation.with(getContext()).location()
+                    .oneFix()
+                    .start(new OnLocationUpdatedListener() {
+                        @Override
+                        public void onLocationUpdated(Location location) {
+                            if (location != null) {
+                                lastLoc = location;
+                                lat = location.getLatitude();
+                                lng = location.getLongitude();
+                            }
+                        }
+                    });
+        }
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.fragment_home_page, container, false);
             //SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             //Date date = new Date();
             //String curr = sdf.format(date);
 
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Log.d("REQUEST LOCATION", "NOT GRANTED");
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_CODE2);
+                //ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION_CODE);
+            }
+            else{
+                SmartLocation.with(getContext()).location()
+                        .oneFix()
+                        .start(new OnLocationUpdatedListener() {
+                            @Override
+                            public void onLocationUpdated(Location location) {
+                                if (location != null) {
+                                    lastLoc = location;
+                                    lat = location.getLatitude();
+                                    lng = location.getLongitude();
+                                }
+                            }
+                        });
+            }
 
-            // Inflate the layout for this fragment
-            View view = inflater.inflate(R.layout.fragment_home_page, container, false);
+            TextView locationName = view.findViewById(R.id.textView10);
+            final Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+            List<Address> addressList = new ArrayList<>();
+            try {
+                addressList = geocoder.getFromLocation(lat, lng, 10);
+                Log.d("Address", addressList.get(0).toString());
+            }
+            catch (IOException io){
+                Log.d("IO", "Service is not available");
+            }
+
+            if(!addressList.isEmpty()) {
+                locationName.setText(addressList.get(0).getAdminArea());
+            }
+
             TextView currDate = view.findViewById(R.id.textView9);
             currDate.setText("Recent Events");
 
@@ -278,6 +329,7 @@ public class HomePage extends Fragment implements GoogleApiClient.ConnectionCall
         }
 
         public Event(String title, String location, String date, String time, String URL, String description, String category, String ID) {
+
             this.title = title;
             this.location = location;
             this.date = date;

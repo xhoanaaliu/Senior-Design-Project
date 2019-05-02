@@ -27,7 +27,7 @@
       android:layout_height="wrap_content"
       android:layout_gravity="center"
       android:layout_marginStart="16dp"
-      android:layout_marginLeft="16dp"
+      android:layout_marginTop="16dp"
       android:padding="5dp"
       app:layout_constraintStart_toEndOf="@+id/listImage"
       app:layout_constraintTop_toTopOf="parent"
@@ -58,7 +58,7 @@
       app:layout_constraintStart_toEndOf="@+id/listImage"
       app:layout_constraintTop_toBottomOf="@+id/textLocation"
       tools:text="@tools:sample/lorem" />
-  <TextView
+  <!--<TextView
       android:id="@+id/textTime"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -69,5 +69,5 @@
       android:padding="5dp"
       app:layout_constraintStart_toEndOf="@+id/listImage"
       app:layout_constraintTop_toBottomOf="@+id/textDate"
-      tools:text="@tools:sample/lorem" />
+      tools:text="@tools:sample/lorem" />-->
 </android.support.constraint.ConstraintLayout>
