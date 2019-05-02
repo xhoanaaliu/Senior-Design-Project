@@ -70,7 +70,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                 signup();
                 categoryfragment = new CategoriesFragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.main_fragment, loginFragment, "LogIn")
+                        .replace(R.id.main_fragment, categoryfragment, "CategoryOpen")
                         .addToBackStack(null)
                         .commit();
 
@@ -116,7 +116,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         String confirmpassword = _confirmpasswordText.getText().toString();
         String location="";
         String preferences ="";
-       String profile_picture = "";
+        String profile_picture = "";
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
