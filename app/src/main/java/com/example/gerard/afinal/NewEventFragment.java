@@ -94,6 +94,7 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
     Bitmap bitmapimage;
     String userID;
     FirebaseUser user;
+    String category;
 
     public NewEventFragment() {
         // Required empty public constructor
@@ -147,12 +148,13 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
         userID = user.getUid();
         storageRef = FirebaseStorage.getInstance().getReference();
         spinner =  view.findViewById(R.id.spinner);
-        spinner.setItems("Ice Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow");
+        spinner.setItems("Conference", "Cultural", "Workshop", "Concert", "Festival", "Exhibition");
 
         spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
 
             @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
                 Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show();
+                category = item;
             }
         });
 
@@ -303,13 +305,7 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                    }
-                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                        // ...
+                        Toast.makeText(getActivity(), "Image Upload Failed", Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -318,7 +314,7 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
                 em.put("date" , date_field.getText().toString());
                 em.put("time" , time_field.getText().toString());
                 em.put("location" , addressField.getText().toString() );
-                em.put("category" , "CS");
+                em.put("category" , category);
                 em.put("description" , descriptionField.getText().toString());
                 em.put("imageName", bitmapimage.toString() + ".jpg");
                 em.put("user_id",userID);
