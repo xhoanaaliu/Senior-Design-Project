@@ -14,7 +14,6 @@
         android:orientation="vertical">
 
         <com.github.florent37.shapeofview.shapes.ArcView
-            android:id="@+id/new_poster"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:elevation="5dp"
@@ -24,12 +23,11 @@
             android:scaleType="centerCrop">
 
             <com.flaviofaria.kenburnsview.KenBurnsView
-                android:id="@+id/new_event_poster"
+                android:id="@+id/new_poster"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/ic_launcher"
-                />
+                android:src="@mipmap/ic_launcher" />
 
         </com.github.florent37.shapeofview.shapes.ArcView>
 

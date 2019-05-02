@@ -1,5 +1,6 @@
 package com.example.gerard.afinal;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.fourmob.datetimepicker.date.CalendarDay;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.common.api.Api;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -123,9 +125,10 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
         descriptionField = view.findViewById(R.id.description);
         date_field = view.findViewById(R.id.date_field);
         time_field = view.findViewById(R.id.time_field);
-        new_poster = view.findViewById(R.id.new_event_poster);
-
+        new_poster = view.findViewById(R.id.new_poster);
         new_poster.setImageBitmap(bitmapimage);
+
+        new_poster.setOnClickListener(this);
 
         spinner =  view.findViewById(R.id.spinner);
         spinner.setItems("Ice Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow");
@@ -140,8 +143,6 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
         dateButton.setOnClickListener(this);
         timeButton.setOnClickListener(this);
         submitButton.setOnClickListener(this);
-
-        new_poster = view.findViewById(R.id.new_event_poster);
 
         dataref = FirebaseDatabase.getInstance().getReference();
 
@@ -274,6 +275,17 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
                 em.put("description" , descriptionField.getText().toString());
 
                 dataref.child("Event").child("event2").setValue(em);
+
+                break;
+
+            case R.id.new_poster:
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+                View mView = getLayoutInflater().inflate(R.layout.dialog_custom_layout, null);
+                PhotoView photoView = mView.findViewById(R.id.imageView);
+                photoView.setImageBitmap(bitmapimage);
+                mBuilder.setView(mView);
+                AlertDialog mDialog = mBuilder.create();
+                mDialog.show();
 
         }
 
