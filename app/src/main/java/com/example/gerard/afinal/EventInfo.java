@@ -25,7 +25,29 @@ public class EventInfo {
         this.title = title;
     }
 
+    public String getEvent_id() {
+        return event_id;
+    }
 
+    public void setEvent_id(String event_id) {
+        this.event_id = event_id;
+    }
+
+    public String getTimes() {
+        return times;
+    }
+
+    public void setTimes(String times) {
+        this.times = times;
+    }
+
+    public String getURL() {
+        return URL;
+    }
+
+    public void setURL(String URL) {
+        this.URL = URL;
+    }
 
     public String getCategory() {
         return category;

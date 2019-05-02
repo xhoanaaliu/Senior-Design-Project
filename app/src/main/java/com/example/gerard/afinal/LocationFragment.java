@@ -266,28 +266,6 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Lo
                     }
                 });
 
-               /* // Initialize the AutocompleteSupportFragment.
-                AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-                        getActivity().getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
-                // Specify the types of place data to return.
-                autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
-
-                // Set up a PlaceSelectionListener to handle the response.
-                autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-                    @Override
-                    public void onPlaceSelected(Place place) {
-                        // TODO: Get info about the selected place.
-                        Log.i("k", "Place: " + place.getName() + ", " + place.getId());
-                        recLoc.setText(place.getAddress());
-                    }
-
-                    @Override
-                    public void onError(Status status) {
-                        // TODO: Handle the error.
-                        Log.i("k", "An error occurred: " + status);
-                    }
-                });*/
             }
         });
     }
