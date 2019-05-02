@@ -33,10 +33,9 @@ public class CategoriesFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private ArrayList<Category> categoryList;
-    private CategoryAdapter categoryListAdapter;
-    private TextView categoryName, categoryName1;
-    private ImageView categoryPicture, categoryPicture1;
-    private CategoryAdapter categoryAdapter;
+    private TextView categoryName, categoryName1, categoryName2, categoryName3, categoryName4, categoryName5;
+    private ImageView categoryPicture, categoryPicture1, categoryPicture2, categoryPicture3, categoryPicture4, categoryPicture5;
+
 
     public CategoriesFragment() {
         // Required empty public constructor
@@ -77,26 +76,39 @@ public class CategoriesFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = (RecyclerView) getView().findViewById(R.id.recycler_view);
-        categoryName = getView().findViewById(R.id.categoryName);
-        categoryName1 = getView().findViewById(R.id.categoryName1);
-        categoryPicture = getView().findViewById(R.id.categoryPicture);
-        categoryPicture1 = getView().findViewById(R.id.categoryPicture1);
 
+        categoryName = getView().findViewById(R.id.academic_event);
+        categoryName1 = getView().findViewById(R.id.cultural_event);
+        categoryName2 = getView().findViewById(R.id.concerts_event);
+        categoryName3 = getView().findViewById(R.id.festivals_event);
+        categoryName4 = getView().findViewById(R.id.workshop_event);
+        categoryName5 = getView().findViewById(R.id.exhibition_event);
+
+        categoryPicture = getView().findViewById(R.id.academic_picture);
+        categoryPicture1 = getView().findViewById(R.id.cultural_picture);
+        categoryPicture2 = getView().findViewById(R.id.concerts_picture);
+        categoryPicture3 = getView().findViewById(R.id.festivals_picture);
+        categoryPicture4 = getView().findViewById(R.id.workshop_picture);
+        categoryPicture5 = getView().findViewById(R.id.exhibition_picture);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
+
 
         categoryList = new ArrayList<>();
-        categoryList.add(new Category("as", "asa",R.drawable.com_facebook_profile_picture_blank_portrait,R.drawable.com_facebook_profile_picture_blank_square));
-        categoryList.add(new Category("as", "asa",R.drawable.com_facebook_profile_picture_blank_portrait,R.drawable.com_facebook_profile_picture_blank_square));
-        categoryList.add(new Category("as", "asa",R.drawable.com_facebook_profile_picture_blank_portrait,R.drawable.com_facebook_profile_picture_blank_square));
+        categoryList.add(new Category("Conferences", "Cultural",R.drawable.academic,R.drawable.cultural));
+        categoryList.add(new Category("Concerts", "Festival",R.drawable.entertainment,R.drawable.festivals));
+        categoryList.add(new Category("Workshops", "Exhibition",R.drawable.workshop,R.drawable.exhibition));
+
+
         System.out.print("ghfhjf"+categoryList.size());
-        categoryAdapter = new CategoryAdapter(new ArrayList<Category>(categoryList));
-        recyclerView.setAdapter(categoryAdapter);
+
+
 
         //DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         //recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
 }
+
+
+
