@@ -258,11 +258,77 @@ public class EventFragment extends Fragment implements View.OnClickListener{
                 }
             });
 
+            userRef = FirebaseDatabase.getInstance().getReference("GoingTo");
+            userRef.orderByChild("user_id").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getValue() != null) {
+                        userRef.orderByChild("eventID").equalTo(eventId.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.getValue() != null) {
+                                    goingToButton.setBackgroundResource(R.color.colorPrimary);
+                                    goingToButton.setTextColor(getResources().getColor(R.color.white));
+                                    isGoingToButtonClicked = true;
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {}});
+                        //Toast.makeText(getApplicationContext(),"Your user id is on going to table",Toast.LENGTH_SHORT).show();
+                        interestRef.orderByChild("eventID").equalTo(eventId.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.getValue() != null) {
+                                    interestedButton.setBackgroundResource(R.color.colorPrimary);
+                                    interestedButton.setTextColor(getResources().getColor(R.color.white));
+                                    isInterestedInButtonClicked = true;
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    } else {
+                        userRef.orderByChild("eventID").equalTo(eventId.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                /*if (dataSnapshot.getValue() != null) {
+                                    //Toast.makeText(getApplicationContext(),"You are already going to this event",Toast.LENGTH_SHORT).show();
+                                    goingToButton.setBackgroundResource(R.color.colorPrimary);
+                                    goingToButton.setTextColor(getResources().getColor(R.color.white));
+                                    isGoingToButtonClicked = true;
+                                }else{
+
+                                }*/
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {}});
+                        //Toast.makeText(getApplicationContext(),"WHatatattata",Toast.LENGTH_SHORT).show();
+                    }/*interestRef.orderByChild("eventID").equalTo(eventId.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() != null) {
+                                interestedButton.setBackgroundResource(R.color.colorPrimary);
+                                interestedButton.setTextColor(getResources().getColor(R.color.white));
+                                isInterestedInButtonClicked = true;
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });*/
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {}});
+
             goingToButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     isGoingToButtonClicked = !isGoingToButtonClicked; // toggle the boolean flag
-                    //setFocus(btn_unfocus, btn[0]);
 
                     if (isGoingToButtonClicked == true && isInterestedInButtonClicked == false) {
                         v.setBackgroundResource(R.color.colorPrimary);
@@ -271,7 +337,6 @@ public class EventFragment extends Fragment implements View.OnClickListener{
                         checkIfGoingToNew();
 
                     }else if(isGoingToButtonClicked == false && isInterestedInButtonClicked == false){
-                        //setFocus(btn_unfocus, btn[0]);
                         v.setBackgroundColor(Color.TRANSPARENT);
                         goingToButton.setTextColor(getResources().getColor(R.color.colorPrimary));
 
@@ -310,6 +375,9 @@ public class EventFragment extends Fragment implements View.OnClickListener{
                         //setFocus(btn_unfocus, btn[1]);
                         v.setBackgroundColor(Color.TRANSPARENT);
                         interestedButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+                        removeInterestedIn();
+
                     }else if(isInterestedInButtonClicked == true && isGoingToButtonClicked == true) {
                         v.setBackgroundResource(R.color.colorPrimary);
                         interestedButton.setTextColor(getResources().getColor(R.color.white));
@@ -345,27 +413,19 @@ public class EventFragment extends Fragment implements View.OnClickListener{
                             location.setText(location_retrieved);
                             date.setText(date_retrieved);
                             times.setText(time_retrieved);
-
-
                         }
                     }
                 }
-
                 @Override
                 public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     //setEvent();
                 }
-
                 @Override
                 public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
                 }
-
                 @Override
                 public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                     Log.d("lllll", databaseError.getMessage());
@@ -437,24 +497,24 @@ public class EventFragment extends Fragment implements View.OnClickListener{
    }
 
     public void removeGoingTo(){
-        /*eventRef = DatabaseReference.child("GoingTo").orderByChild("user_id").equalTo(userID).addChildEventListener(new ChildEventListener() {
+        eventRef =  FirebaseDatabase.getInstance().getReference();
+        eventRef.child("GoingTo").orderByChild("user_id").equalTo(userID).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                eventRef = (DatabaseReference) FirebaseDatabase.getInstance().getReference().child("GoingTo").orderByChild("eventID").equalTo(eventId.getText().toString()).addChildEventListener(new ChildEventListener() {
+                eventRef = FirebaseDatabase.getInstance().getReference();
+                eventRef.child("GoingTo").orderByChild("eventID").equalTo(eventId.getText().toString()).addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        dataSnapshot.getRef().setValue(null);
+                        if (isGoingToButtonClicked == false){
+                            dataSnapshot.getRef().setValue(null);
+                        }
                     }
-
                     @Override
                     public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
-
                     @Override
                     public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
-
                     @Override
                     public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {}
                 });
@@ -462,17 +522,13 @@ public class EventFragment extends Fragment implements View.OnClickListener{
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
-
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
-
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
-*/
     }
 
     public void checkIfInterestedInNew(){
@@ -528,57 +584,38 @@ public class EventFragment extends Fragment implements View.OnClickListener{
             public void onCancelled(@NonNull DatabaseError databaseError) {}});
     }
     public void removeInterestedIn(){
-        /*userRef = FirebaseDatabase.getInstance().getReference("Interested");
-        userRef.orderByChild("user_id").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+        eventRef =  FirebaseDatabase.getInstance().getReference();
+        eventRef.child("Interested").orderByChild("user_id").equalTo(userID).addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
-                    //it means user already registered Add code to show your prompt//showPrompt();
-                    Toast.makeText(getApplicationContext(),"You are already interested in this event",Toast.LENGTH_SHORT).show();
-                } else {
-                    //It is new users        //write an entry to your user table        //writeUserEntryToDB();
-                    userRef.orderByChild("eventID").equalTo(eventId.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue() != null) {
-                                Toast.makeText(getApplicationContext(),"You are already interested in this event hey",Toast.LENGTH_SHORT).show();
-                                //userRef.child(eventId.getText().toString()).removeValue();
-                            }else{
-                                Toast.makeText(getApplicationContext(),"Added",Toast.LENGTH_SHORT).show();
-                                EventInfo e2 = new EventInfo();
-                                e2.setEvent_id(eventId.getText().toString());
-                                //e2.setLocation(location.getText().toString());
-                                //e2.setDate(date.getText().toString());
-                                //e2.setDescription(description.getText().toString());
-                                //e2.setTime(times.getText().toString());
-                                String value = e2.getEvent_id();
-                                //String value2 = e2.getLocation();
-                                //String value3 = e2.getDate();
-                                //String value4 = e2.getDescription();
-                                //String value5 = e2.getTime();
-                                Map<String, String> interested = new HashMap<>();
-                                interested.put("eventID",value);
-                                //interested.put("location",value2);
-                                //interested.put("date",value3);
-                                //interested.put("description",value4);
-                                //interested.put("time",value5);
-                                interested.put("user_id",userID);
-                                DatabaseReference db2 = interestRef.push();
-                                db2.setValue(interested);
-                            }
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                eventRef = FirebaseDatabase.getInstance().getReference();
+                eventRef.child("Interested").orderByChild("eventID").equalTo(eventId.getText().toString()).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        if (isInterestedInButtonClicked == false){
+                            dataSnapshot.getRef().setValue(null);
                         }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {}
+                });
+            }
 
-                        }
-                    });
-                    Toast.makeText(getApplicationContext(),"WHatatattata",Toast.LENGTH_SHORT).show();
-                }
-            }
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });*/
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
     }
 
     //Remember to initialize this activityObj first, by calling initActivityObj(this) from your activity
