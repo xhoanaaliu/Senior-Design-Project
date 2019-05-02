@@ -86,6 +86,7 @@ public class HomePage extends Fragment implements GoogleApiClient.ConnectionCall
     private Map<LatLng, Event> markerList = new HashMap<>();
     private Date currentDate = new Date();
 
+
     public HomePage() {
         // Required empty public constructor
     }

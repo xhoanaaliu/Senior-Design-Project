@@ -14,7 +14,7 @@
         android:layout_gravity="center"
         android:elevation="5dp"
         android:scaleType="centerCrop"
-        app:shape_arc_height="25dp"
+        app:shape_arc_height="35dp"
         app:shape_arc_position="bottom">
 
         <com.flaviofaria.kenburnsview.KenBurnsView
@@ -47,7 +47,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/goingTo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="false"
@@ -59,7 +59,7 @@
                 />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/interestedIn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
