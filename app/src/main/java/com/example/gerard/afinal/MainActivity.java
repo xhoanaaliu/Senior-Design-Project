@@ -683,33 +683,6 @@ public class MainActivity extends AppCompatActivity
         return rotatedImg;
     }
 
-
-   /* public Bitmap resizeBitmap(Bitmap bitmap) {
-
-        int maxDimension = 1024;
-        int originalWidth = bitmap.getWidth();
-        int originalHeight = bitmap.getHeight();
-        int resizedWidth = maxDimension;
-        int resizedHeight = maxDimension;
-
-        if (originalHeight > originalWidth) {
-            resizedHeight = maxDimension;
-            resizedWidth = (int) (resizedHeight * (float) originalWidth / (float) originalHeight);
-        } else if (originalWidth > originalHeight) {
-            resizedWidth = maxDimension;
-            resizedHeight = (int) (resizedWidth * (float) originalHeight / (float) originalWidth);
-        } else if (originalHeight == originalWidth) {
-            resizedHeight = maxDimension;
-            resizedWidth = maxDimension;
-        }
-
-        img = rotateImageIfRequired(context, img, selectedImage);
-
-
-
-        return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
-    }
-*/
     private void callCloudVision(final Bitmap bitmap) throws IOException {
         //resultTextView.setText("Retrieving results from cloud");
 
@@ -805,7 +778,7 @@ public class MainActivity extends AppCompatActivity
 
         StringBuilder message = new StringBuilder();
 
-        //message.append("Texts:\n");
+        message.append("Texts:\n");
 
         List<EntityAnnotation> texts = response.getResponses().get(0)
                 .getTextAnnotations();
@@ -840,7 +813,7 @@ public class MainActivity extends AppCompatActivity
                     AccountManager manager = new AccountManager(API_KEY);
                     Account account = manager.getAccount();
                     System.out.println("Your current account plan is " + account.getPlan() + ", which includes " + account.getPlanDailyRequestsIncluded() + " daily requests, " + account.getRequestsUsedToday() + " used today");
-                    System.out.println(result);
+                    //System.out.println(result);
                     TextRazor client = new TextRazor(API_KEY);
 
                     client.addExtractor("words");
@@ -850,22 +823,15 @@ public class MainActivity extends AppCompatActivity
 
                     u = new HashMap<>();
 
-                    if(u.isEmpty()){
-                        // Do nothing
-                    }else {
+                    if(response != null) {
 
                         for (Entity entity : response.getResponse().getEntities()) {
-                            //System.out.println(entity.getEntityId() + ": " + entity.getDBPediaTypes().get(0));
-                            if (entity.getEntityId() == null || entity.getDBPediaTypes().get(0) == null) {
-                                return null;
-                            } else {
-                                u.put(entity.getEntityId(), entity.getDBPediaTypes().get(0));
-                            }
+                            System.out.println(entity.getEntityId() + ": " + entity.getDBPediaTypes().get(0));
+                            u.put(entity.getEntityId(), entity.getDBPediaTypes().get(0));
                         }
                     }
+
                     return u;
-
-
                 } catch (NetworkException e) {
 
                 } catch (AnalysisException a) {

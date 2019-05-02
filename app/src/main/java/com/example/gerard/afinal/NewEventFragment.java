@@ -166,6 +166,28 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
 
         setFields();
 
+
+        StorageReference imageRef = storageRef.child( bitmapimage.toString()+ ".jpg");
+
+        //Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmapimage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = imageRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(getActivity(), "Image Upload Failed", Toast.LENGTH_LONG).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(getActivity(), "Image Uploaded", Toast.LENGTH_LONG).show();
+                // ...
+            }
+        });
+
     }
 
     @Override
@@ -293,21 +315,6 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
                 break;
 
             case R.id.submit:
-
-                StorageReference imageRef = storageRef.child( bitmapimage.toString()+ ".jpg");
-
-                //Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmapimage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] data = baos.toByteArray();
-
-                UploadTask uploadTask = imageRef.putBytes(data);
-                uploadTask.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        Toast.makeText(getActivity(), "Image Upload Failed", Toast.LENGTH_LONG).show();
-                    }
-                });
 
                 Map<String, String> em = new HashMap<>();
                 em.put("title" , titleField.getText().toString());

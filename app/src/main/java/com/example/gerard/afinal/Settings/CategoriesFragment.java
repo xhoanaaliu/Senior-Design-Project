@@ -82,7 +82,7 @@ public class CategoriesFragment extends Fragment {
         categoryName2 = getView().findViewById(R.id.concerts_event);
         categoryName3 = getView().findViewById(R.id.festivals_event);
         categoryName4 = getView().findViewById(R.id.workshop_event);
-        categoryName5 = getView().findViewById(R.id.exhibition_event);
+        //categoryName5 = getView().findViewById(R.id.exhibition_event);
 
         categoryPicture = getView().findViewById(R.id.academic_picture);
         categoryPicture1 = getView().findViewById(R.id.cultural_picture);
