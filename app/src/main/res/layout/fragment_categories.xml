@@ -76,7 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="153dp"
                     android:paddingLeft="10dp"
-                    android:id="@id/cultural_picture"
+                    android:id="@+id/cultural_picture"
                     android:layout_weight="70"
                     android:src="@drawable/cultural"/>
 
@@ -86,7 +86,7 @@
                     android:layout_weight="30"
                     android:layout_marginTop="150dp"
                     android:gravity="center"
-                    android:id="@id/cultural_event"
+                    android:id="@+id/cultural_event"
                     android:text="Cultural"
                     android:textSize="20sp" />
             </android.support.v7.widget.CardView>
@@ -262,7 +262,7 @@
                     android:gravity="center"
                     android:layout_marginTop="150dp"
                     android:text="Exhibition"
-                    android:id="@id/workshop_event"
+                    android:id="@+id/exhibition_event"
                     android:textSize="20sp" />
             </android.support.v7.widget.CardView>
         </LinearLayout>

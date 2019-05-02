@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="cultural_picture" type="id">cultural_picture</item>
-    <item name="cultural_event" type="id">cultural_event</item>
-    <item name="exhibition_event" type="id">exhibition_event</item>
-    <item name="academic_event" type="id">academic_event</item>
+
 </resources>

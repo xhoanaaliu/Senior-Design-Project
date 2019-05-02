@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gerard.afinal.R;
+import com.example.gerard.afinal.Settings.CategoriesFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -37,6 +38,7 @@ import static android.app.Activity.RESULT_OK;
 public class SignUpFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "SignupActivity";
     private LoginFragment loginFragment;
+    private CategoriesFragment categoryfragment;
     private FirebaseDatabase database;
     private DatabaseReference myRefUsers;
     private CircleImageView profilePic;
@@ -66,6 +68,12 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 signup();
+                categoryfragment = new CategoriesFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.main_fragment, loginFragment, "LogIn")
+                        .addToBackStack(null)
+                        .commit();
+
             }
         });
 
