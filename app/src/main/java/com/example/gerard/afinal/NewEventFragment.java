@@ -4,10 +4,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
@@ -28,12 +30,20 @@ import com.fourmob.datetimepicker.date.CalendarDay;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.common.api.Api;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Target;
@@ -73,6 +83,8 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
     private TextView date_field;
     private TextView time_field;
     HashMap<String,String> mMap;
+    StorageReference storageRef;
+
 
     private static final String ARG_PARAM1 = "hashmap";
     private String mParam1;
@@ -80,6 +92,8 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
     HashMap<String, String> n;
 
     Bitmap bitmapimage;
+    String userID;
+    FirebaseUser user;
 
     public NewEventFragment() {
         // Required empty public constructor
@@ -129,7 +143,9 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
         new_poster.setImageBitmap(bitmapimage);
 
         new_poster.setOnClickListener(this);
-
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        userID = user.getUid();
+        storageRef = FirebaseStorage.getInstance().getReference();
         spinner =  view.findViewById(R.id.spinner);
         spinner.setItems("Ice Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow");
 
@@ -144,7 +160,7 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
         timeButton.setOnClickListener(this);
         submitButton.setOnClickListener(this);
 
-        dataref = FirebaseDatabase.getInstance().getReference();
+        dataref = FirebaseDatabase.getInstance().getReference("Event");
 
         setFields();
 
@@ -218,15 +234,25 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
         Toast.makeText(getActivity(), "Time Set", Toast.LENGTH_LONG).show();
-        String new_time = hourOfDay + " : " + minute;
+        String new_time = hourOfDay + ":" + minute;
         time_field.setText(new_time);
     }
 
     @Override
     public void onDateSet(com.fourmob.datetimepicker.date.DatePickerDialog datePickerDialog, int year, int month, int day) {
         Toast.makeText(getActivity(), "Date Set", Toast.LENGTH_LONG).show();
-        String new_date = day + " - " + month+1 + " - " + year;
-        date_field.setText(new_date);
+        int month_up = month + 1;
+        String new_date = day + "-" + month_up + "-" + year;
+        try {
+            DateFormat inputFormat = new SimpleDateFormat("d-M-yyyy");
+            Date date = inputFormat.parse(new_date);
+
+            DateFormat outputFormatDate = new SimpleDateFormat("dd-MM-yyyy");
+            String outputStringDate = outputFormatDate.format(date);
+            date_field.setText(outputStringDate);
+        }catch (ParseException p){
+            p.printStackTrace();
+        }
     }
 
     @Override
@@ -266,15 +292,44 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
 
             case R.id.submit:
 
+                StorageReference imageRef = storageRef.child( bitmapimage.toString()+ ".jpg");
+
+                //Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmapimage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] data = baos.toByteArray();
+
+                UploadTask uploadTask = imageRef.putBytes(data);
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                        // ...
+                    }
+                });
+
                 Map<String, String> em = new HashMap<>();
                 em.put("title" , titleField.getText().toString());
-                em.put("date" , "15 March");
-                em.put("time" , "20:00");
+                em.put("date" , date_field.getText().toString());
+                em.put("time" , time_field.getText().toString());
                 em.put("location" , addressField.getText().toString() );
                 em.put("category" , "CS");
                 em.put("description" , descriptionField.getText().toString());
+                em.put("imageName", bitmapimage.toString() + ".jpg");
+                em.put("user_id",userID);
 
-                dataref.child("Event").child("event2").setValue(em);
+                DatabaseReference db = dataref.push();
+                db.setValue(em);
+
+                HomePage hm = new HomePage();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.main_fragment, hm, "new_event")
+                        .addToBackStack(null).commit();
 
                 break;
 
@@ -304,7 +359,7 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
                 case("Date"):
                 case("Time"):
                     try {
-                         DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'+'00:00");
+                        DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'+'00:00");
                         Date date = inputFormat.parse(entry.getKey());
 
                         DateFormat outputFormatDate = new SimpleDateFormat("dd-MM-yyyy");
