@@ -137,8 +137,9 @@ public class HomePage extends Fragment implements GoogleApiClient.ConnectionCall
                     String location = value.get("location");
                     String time = value.get("time");
                     String title = value.get("title");
+                    String ID = dataSnapshot.getKey();
 
-                    Event temp = new Event(title, location, date, time, URL, description);
+                    Event temp = new Event(title, location, date, time, URL, description, category, ID);
 
                     Date currDate = new Date();
                     String dateInString = date;
@@ -263,23 +264,27 @@ public class HomePage extends Fragment implements GoogleApiClient.ConnectionCall
     }
 
     public class Event {
+        private String ID;
         private String title;
         private String location;
         private String date;
         private String time;
         private String URL;
         private String description;
+        private String category;
 
         public Event() {
         }
 
-        public Event(String title, String location, String date, String time, String URL, String description) {
+        public Event(String title, String location, String date, String time, String URL, String description, String category, String ID) {
             this.title = title;
             this.location = location;
             this.date = date;
             this.time = time;
             this.URL = URL;
             this.description = description;
+            this.category = category;
+            this.ID = ID;
         }
 
         public String getTitle() {
@@ -328,6 +333,22 @@ public class HomePage extends Fragment implements GoogleApiClient.ConnectionCall
 
         public void setDescription(String description) {
             this.description = description;
+        }
+
+        public String getCategory() {
+            return category;
+        }
+
+        public void setCategory(String category) {
+            this.category = category;
+        }
+
+        public String getID() {
+            return ID;
+        }
+
+        public void setID(String ID) {
+            this.ID = ID;
         }
     }
 }

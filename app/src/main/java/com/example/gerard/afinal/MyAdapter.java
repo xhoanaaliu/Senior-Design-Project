@@ -144,6 +144,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                         bundle.putString("description", mDataset.get(position).getDescription());
                         bundle.putString("time", mDataset.get(position).getTime());
                         bundle.putString("url", mDataset.get(position).getURL());
+                        bundle.putString("category", mDataset.get(position).getCategory());
+                        bundle.putString("ID", mDataset.get(position).getID());
 
                         Fragment fragment = new EventFragment();
                         fragment.setArguments(bundle);
@@ -160,6 +162,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                         bundle.putString("description", mDataset.get(position).getDescription());
                         bundle.putString("time", mDataset.get(position).getTime());
                         bundle.putString("url", mDataset.get(position).getURL());
+                        bundle.putString("category", mDataset.get(position).getCategory());
+                        bundle.putString("ID", mDataset.get(position).getID());
 
                         Fragment fragment = new EventFragment();
                         fragment.setArguments(bundle);
