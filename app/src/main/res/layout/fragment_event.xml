@@ -168,22 +168,22 @@
                     android:focusable="true" />
             </LinearLayout>
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:text="Title of the Event"
+                android:text="Category"
                 android:textStyle="bold"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:paddingTop="50dp"
                 android:textSize="20dp"/>
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/categoryID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:text="Title of the Event"
+                android:text="ID"
                 android:textStyle="bold"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"

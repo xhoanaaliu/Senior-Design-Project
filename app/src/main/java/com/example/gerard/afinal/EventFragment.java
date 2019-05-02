@@ -2,11 +2,13 @@ package com.example.gerard.afinal;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +29,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.flaviofaria.kenburnsview.KenBurnsView;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.github.florent37.shapeofview.ShapeOfView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -76,7 +79,8 @@ public class EventFragment extends Fragment implements View.OnClickListener{
     DatabaseReference interestRef;
     DatabaseReference eventRef;
     private ArrayList<EventInfo> eventsArrayList;
-
+    private Bitmap bitmap;
+    String imageURL;
     public EventFragment() {
 
     }
@@ -168,12 +172,15 @@ public class EventFragment extends Fragment implements View.OnClickListener{
         googleLoc = view.findViewById(R.id.googleLocation);
         calendarDate = view.findViewById(R.id.calendarDate);
         buttonTime=view.findViewById(R.id.buttonTime);
+        category = view.findViewById(R.id.category);
+        eventId = view.findViewById(R.id.categoryID);
 
         googleLoc.setOnClickListener(this);
         calendarDate.setOnClickListener(this);
         buttonTime.setOnClickListener(this);
         goingToButton.setOnClickListener(this);
         interestedButton.setOnClickListener(this);
+        poster.setOnClickListener(this);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         userID=user.getUid();
@@ -191,12 +198,25 @@ public class EventFragment extends Fragment implements View.OnClickListener{
         switch (view.getId()) {
             case R.id.googleLocation:
                 //ads
+                break;
             case R.id.calendarDate:
                 //adas
+                break;
             //case R.id.goingTo:
                 //sds
             //case R.id.interestedIn:
                 //sad
+            case R.id.eventPoster:
+                /*AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+                View mView = getLayoutInflater().inflate(R.layout.dialog_custom_layout, null);
+                PhotoView photoView = mView.findViewById(R.id.eventPoster);
+                //Glide.with(getApplicationContext()).load(imageURL).into(photoView);
+               // photoView.setImageBitmap(bitmapimage);
+                mBuilder.setView(mView);
+                AlertDialog mDialog = mBuilder.create();
+                mDialog.show();*/
+                break;
+
         }
     }
     @Override
@@ -217,7 +237,7 @@ public class EventFragment extends Fragment implements View.OnClickListener{
             date.setText(bundle.getString("date"));
             description.setText(bundle.getString("description"));
             times.setText(bundle.getString("time"));
-            //category.setText(bundle.getString("category"));
+            category.setText(bundle.getString("category"));
             eventId.setText(bundle.getString("ID"));
 
             String url = bundle.getString("url");
@@ -226,8 +246,10 @@ public class EventFragment extends Fragment implements View.OnClickListener{
             islandRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
-                    String imageURL = uri.toString();
+                    //String imageURL = uri.toString();
+                    imageURL = uri.toString();
                     Glide.with(getApplicationContext()).load(imageURL).into(poster);
+                    //bitmap = Glide.with(getApplicationContext()).load(imageURL).into(poster);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -252,6 +274,9 @@ public class EventFragment extends Fragment implements View.OnClickListener{
                         //setFocus(btn_unfocus, btn[0]);
                         v.setBackgroundColor(Color.TRANSPARENT);
                         goingToButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+                        removeGoingTo();
+
                     }else if(isGoingToButtonClicked == true && isInterestedInButtonClicked == true) {
                         checkIfGoingToNew();
 
@@ -261,9 +286,12 @@ public class EventFragment extends Fragment implements View.OnClickListener{
                         interestedButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                         interestedButton.setBackgroundColor(Color.TRANSPARENT);
                         isInterestedInButtonClicked = false;
+
                     }else if(isGoingToButtonClicked == false && isInterestedInButtonClicked == true) {
                         v.setBackgroundColor(Color.TRANSPARENT);
                         goingToButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+                        removeGoingTo();
                     }
                 }
             });
@@ -361,58 +389,146 @@ public class EventFragment extends Fragment implements View.OnClickListener{
            @Override
            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                if (dataSnapshot.getValue() != null) {
-                   //it means user already registered Add code to show your prompt//showPrompt();
-
-                   Toast.makeText(getApplicationContext(),"You are already going to this event",Toast.LENGTH_SHORT).show();
-               } else {
-                   //It is new users        //write an entry to your user table        //writeUserEntryToDB();
                    userRef.orderByChild("eventID").equalTo(eventId.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                        @Override
                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                            if (dataSnapshot.getValue() != null) {
-                               Toast.makeText(getApplicationContext(),"You are already going to this event hey",Toast.LENGTH_SHORT).show();
+                               Toast.makeText(getApplicationContext(),"You are already going to this event",Toast.LENGTH_SHORT).show();
                            }else{
                                Toast.makeText(getApplicationContext(),"Added",Toast.LENGTH_SHORT).show();
                                EventInfo e1 = new EventInfo();
                                e1.setEvent_id(eventId.getText().toString());
-                               //e1.setLocation(location.getText().toString());
-                               //e1.setDate(date.getText().toString());
-                               //e1.setDescription(description.getText().toString());
-                               //e1.setTime(times.getText().toString());
-
                                String value = e1.getEvent_id();
-                               //String value2 = e1.getLocation();
-                               //String value3 = e1.getDate();
-                               //String value4 = e1.getDescription();
-                               //String value5 = e1.getTime();
                                Map<String, String> goingTo = new HashMap<>();
                                goingTo.put("eventID",value);
-                               //goingTo.put("location",value2);
-                               //goingTo.put("date",value3);
-                               //goingTo.put("description",value4);
-                               //goingTo.put("time",value5);
                                goingTo.put("user_id",userID);
-
                                DatabaseReference db = myRef.push();
                                db.setValue(goingTo);
                            }
                        }
                        @Override
-                       public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                       public void onCancelled(@NonNull DatabaseError databaseError) {}});
+                   //Toast.makeText(getApplicationContext(),"Your user id is on going to table",Toast.LENGTH_SHORT).show();
+               } else {
+                   userRef.orderByChild("eventID").equalTo(eventId.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                       @Override
+                       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                           if (dataSnapshot.getValue() != null) {
+                               Toast.makeText(getApplicationContext(),"You are already going to this event",Toast.LENGTH_SHORT).show();
+                           }else{
+                               Toast.makeText(getApplicationContext(),"Added",Toast.LENGTH_SHORT).show();
+                               EventInfo e1 = new EventInfo();
+                               e1.setEvent_id(eventId.getText().toString());
+                               String value = e1.getEvent_id();
+                               Map<String, String> goingTo = new HashMap<>();
+                               goingTo.put("eventID",value);
+                               goingTo.put("user_id",userID);
+                               DatabaseReference db = myRef.push();
+                               db.setValue(goingTo);
+                           }
                        }
-                   });
-                   Toast.makeText(getApplicationContext(),"WHatatattata",Toast.LENGTH_SHORT).show();
+                       @Override
+                       public void onCancelled(@NonNull DatabaseError databaseError) {}});
+                   //Toast.makeText(getApplicationContext(),"WHatatattata",Toast.LENGTH_SHORT).show();
                }
            }
            @Override
-           public void onCancelled(@NonNull DatabaseError databaseError) {
-           }
-       });
+           public void onCancelled(@NonNull DatabaseError databaseError) {}});
    }
+
+    public void removeGoingTo(){
+        /*eventRef = DatabaseReference.child("GoingTo").orderByChild("user_id").equalTo(userID).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                eventRef = (DatabaseReference) FirebaseDatabase.getInstance().getReference().child("GoingTo").orderByChild("eventID").equalTo(eventId.getText().toString()).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        dataSnapshot.getRef().setValue(null);
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {}
+                });
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
+*/
+    }
 
     public void checkIfInterestedInNew(){
         userRef = FirebaseDatabase.getInstance().getReference("Interested");
+        userRef.orderByChild("user_id").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    userRef.orderByChild("eventID").equalTo(eventId.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() != null) {
+                                Toast.makeText(getApplicationContext(),"You are already interested in this event",Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(getApplicationContext(),"Added",Toast.LENGTH_SHORT).show();
+                                EventInfo e2 = new EventInfo();
+                                e2.setEvent_id(eventId.getText().toString());
+                                String value = e2.getEvent_id();
+                                Map<String, String> interested = new HashMap<>();
+                                interested.put("eventID",value);
+                                interested.put("user_id",userID);
+                                DatabaseReference db2 = interestRef.push();
+                                db2.setValue(interested);
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {}});
+                    //Toast.makeText(getApplicationContext(),"You are already in interested in table",Toast.LENGTH_SHORT).show();
+                } else {
+                    userRef.orderByChild("eventID").equalTo(eventId.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() != null) {
+                                Toast.makeText(getApplicationContext(),"You are already interested in this event",Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(getApplicationContext(),"Added",Toast.LENGTH_SHORT).show();
+                                EventInfo e2 = new EventInfo();
+                                e2.setEvent_id(eventId.getText().toString());
+                                String value = e2.getEvent_id();
+                                Map<String, String> interested = new HashMap<>();
+                                interested.put("eventID",value);
+                                interested.put("user_id",userID);
+                                DatabaseReference db2 = interestRef.push();
+                                db2.setValue(interested);
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {}});
+                    //Toast.makeText(getApplicationContext(),"WHatatattata",Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}});
+    }
+    public void removeInterestedIn(){
+        /*userRef = FirebaseDatabase.getInstance().getReference("Interested");
         userRef.orderByChild("user_id").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -462,7 +578,7 @@ public class EventFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
-        });
+        });*/
     }
 
     //Remember to initialize this activityObj first, by calling initActivityObj(this) from your activity
