@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity
     private final int REQUEST_LOCATION_CODE2 = 98;
     Location lastLoc;
     boolean gotLocation = false;
-
+    private Toolbar toolbar;
     String API_KEY = "5d9a93f99b0aab73d3f8be94453d6d83f3ea2b193b7780ca43751893";
     HashMap<String, String> u;
 
@@ -260,7 +260,7 @@ public class MainActivity extends AppCompatActivity
                 }*/
             }
         };
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
@@ -288,7 +288,11 @@ public class MainActivity extends AppCompatActivity
                 .replace(R.id.main_fragment, loginFragment, "LoginFragment")
                 .addToBackStack(null)
                 .commit();
-
+        hideBar(false);
+    }
+    public void hideBar(boolean isHidden){
+        navigation.setVisibility(isHidden ? View.GONE : View.VISIBLE);
+        toolbar.setVisibility(isHidden ? View.GONE : View.VISIBLE);
     }
 
     @Override

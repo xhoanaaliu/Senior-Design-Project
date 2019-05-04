@@ -6,6 +6,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ import android.app.ProgressDialog;
 import com.example.gerard.afinal.Account.ProfileFragment;
 import com.example.gerard.afinal.EventFragment;
 import com.example.gerard.afinal.HomePage;
+import com.example.gerard.afinal.MainActivity;
 import com.example.gerard.afinal.R;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -162,7 +164,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             }
         };
 
-
         ButterKnife.bind(this,view);
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -199,6 +200,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                         .commit();
             }
         });
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null)
+            activity.hideBar(true);
+
+
         return view;
 
     }
@@ -268,12 +274,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         progressDialog.setMessage("Authenticating...");
 
         progressDialog.show();
-
-
-
-
-
-
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
@@ -547,5 +547,14 @@ return valid;
                 }
         }
 
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null)
+            activity.hideBar(false);    // to show the bottom bar when
+        // we destroy this fragment
     }
 }
