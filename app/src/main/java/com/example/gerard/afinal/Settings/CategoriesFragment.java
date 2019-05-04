@@ -21,9 +21,11 @@ import android.widget.TextView;
 
 import com.example.gerard.afinal.MainActivity;
 import com.example.gerard.afinal.R;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -35,6 +37,9 @@ public class CategoriesFragment extends Fragment {
     private ArrayList<Category> categoryList;
     private TextView categoryName, categoryName1, categoryName2, categoryName3, categoryName4, categoryName5;
     private ImageView categoryPicture, categoryPicture1, categoryPicture2, categoryPicture3, categoryPicture4, categoryPicture5;
+    private FirebaseDatabase database;
+    private DatabaseReference myRefUsers;
+    FirebaseUser user;
 
 
     public CategoriesFragment() {
@@ -76,6 +81,9 @@ public class CategoriesFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        database = FirebaseDatabase.getInstance();
+        myRefUsers = database.getReference("Users");
+
 
         categoryName = getView().findViewById(R.id.academic_event);
         categoryName1 = getView().findViewById(R.id.cultural_event);
@@ -93,6 +101,56 @@ public class CategoriesFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
+        categoryPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String category0 = "Conferences";
+                myRefUsers.child("Interests").setValue(category0);
+            }
+        });
+        categoryPicture1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String category1 = "Cultural";
+                myRefUsers.child("Interests").setValue(category1);
+            }
+        });
+
+        categoryPicture2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String category2 = "Concerts";
+                myRefUsers.child("Interests").setValue(category2);
+            }
+        });
+        categoryPicture3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String category3 = "Festivals";
+                myRefUsers.child("Interests").setValue(category3);
+
+            }
+        });
+        categoryPicture4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String category4 = "Workshops";
+                myRefUsers.child("Interests").setValue(category4);
+
+            }
+        });
+        categoryPicture5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String category5 = "Exhibitions";
+                myRefUsers.child("Interests").setValue(category5);
+
+            }
+        });
 
         categoryList = new ArrayList<>();
         categoryList.add(new Category("Conferences", "Cultural",R.drawable.academic,R.drawable.cultural));
