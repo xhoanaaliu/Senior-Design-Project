@@ -344,10 +344,7 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
                 mBuilder.setView(mView);
                 AlertDialog mDialog = mBuilder.create();
                 mDialog.show();
-
         }
-
-
     }
 
     public void setFields(){

@@ -62,6 +62,7 @@ import com.google.firebase.database.ValueEventListener;
 import android.content.Intent;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -96,6 +97,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private boolean mIsResolving = false;
     private static int RC_SIGN_IN = 1;
     private LoginButton facebookloginButton;
+    private ImageView login_fb;
+    private ImageView login_google;
     private GoogleApiClient mGoogleApiClient;
     @BindView(R.id.input_email) EditText _emailText;
     @BindView(R.id.input_password) EditText _passwordText;
@@ -107,7 +110,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private final int REQUEST_LOCATION_CODE2 = 98;
 
     @BindView(R.id.link_signup) TextView _signupLink;
-    @BindView(R.id.link_signuporganization) TextView _orgsignupLink;
     public LoginFragment(){
 
     }
@@ -187,23 +189,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             }
         });
 
-        _orgsignupLink.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-
-                // Start the Signup activity
-                organizationSignUp = new OrganizationSignUp();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.main_fragment, organizationSignUp, "SignUp")
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null)
             activity.hideBar(true);
 
+        login_fb = view.findViewById(R.id.view_facebook_login);
+        login_google = view.findViewById(R.id.view_google_login);
 
         return view;
 
@@ -336,20 +328,19 @@ return valid;
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        database=FirebaseDatabase.getInstance();
-        myRefUsers=database.getReference("Users");
+        database = FirebaseDatabase.getInstance();
+        myRefUsers = database.getReference("Users");
         mAuth = FirebaseAuth.getInstance();
         mCallbackManager = CallbackManager.Factory.create();
-        facebookloginButton= view.findViewById(R.id.login_facebookbutton);
+
+        facebookloginButton = view.findViewById(R.id.login_facebookbutton);
         facebookloginButton.setFragment(this);
-        // Initialize Facebook Login button
 
-
-        facebookloginButton.setOnClickListener(new View.OnClickListener() {
+        login_fb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                LoginManager.getInstance().logInWithReadPermissions(getActivity(), Arrays.asList("email","public_profile"));
+                LoginManager.getInstance().logInWithReadPermissions(getActivity(), Arrays.asList("email", "public_profile"));
 
                 facebookloginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
 
@@ -376,26 +367,26 @@ return valid;
         });
 
 
-
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-            if(firebaseAuth.getCurrentUser()!=null){
-                Bundle bundle = new Bundle();
-                if(lastLoc != null){
-                    bundle.putDouble("latitude", lastLoc.getLatitude());
-                    bundle.putDouble("longtitude", lastLoc.getLongitude());
-                    hmp.setArguments(bundle);
+                if (firebaseAuth.getCurrentUser() != null) {
+                    Bundle bundle = new Bundle();
+                    if (lastLoc != null) {
+                        bundle.putDouble("latitude", lastLoc.getLatitude());
+                        bundle.putDouble("longtitude", lastLoc.getLongitude());
+                        hmp.setArguments(bundle);
+                    }
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_fragment, hmp, "Home")
+                            .addToBackStack(null)
+                            .commit();
                 }
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.main_fragment, hmp, "Home")
-                        .addToBackStack(null)
-                        .commit();
-            }
             }
         };
         mGoogleBtn = (SignInButton) view.findViewById(R.id.googleBtn);
         // Configure Google Sign In
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -403,11 +394,12 @@ return valid;
         mGoogleApiClient = new GoogleApiClient.Builder(getContext()).enableAutoManage(getActivity(), new GoogleApiClient.OnConnectionFailedListener() {
             @Override
             public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-               Toast.makeText(getContext(),"Connection Failed!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Connection Failed!", Toast.LENGTH_SHORT).show();
             }
         })
-                .addApi(Auth.GOOGLE_SIGN_IN_API,gso).build();
-        mGoogleBtn.setOnClickListener(new View.OnClickListener() {
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
+
+        login_google.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signIn();

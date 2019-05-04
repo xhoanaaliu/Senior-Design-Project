@@ -80,7 +80,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         _loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Finish the registration screen and return to the Login activity
+                // Finish the registration screen and return to the
                 loginFragment = new LoginFragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.main_fragment, loginFragment, "LogIn")

@@ -58,4 +58,8 @@
     <string name="event_time2">17:30 GMT +3</string>
     <string name="event_loc2">Presidential Conference Hall</string>
 
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
 </resources>

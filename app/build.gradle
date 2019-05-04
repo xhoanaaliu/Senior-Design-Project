@@ -38,7 +38,7 @@ dependencies {
     implementation 'com.android.support:cardview-v7:28.0.0'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
-    implementation  'com.firebaseui:firebase-ui-storage:4.1.0'
+    implementation 'com.firebaseui:firebase-ui-storage:4.1.0'
     implementation 'com.karumi:dexter:5.0.0'
     implementation 'io.nlopez.smartlocation:library:3.3.3'
 
@@ -90,13 +90,12 @@ dependencies {
 
     implementation 'com.textrazor:textrazor:1.0.12'
 
-    implementation ('com.google.android.libraries.places:places:1.0.0') {
+    implementation('com.google.android.libraries.places:places:1.0.0') {
         exclude group: 'com.google.guava'
     }
 
     implementation 'com.bestsoft32.tayyab:tt-fancy-gif-dialog:1.0.2'
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
-
 
 }
 

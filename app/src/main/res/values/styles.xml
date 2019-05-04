@@ -47,4 +47,5 @@
         <!-- To keep the color of EditText -->
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>
+
 </resources>
