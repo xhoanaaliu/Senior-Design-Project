@@ -12,25 +12,30 @@
         </item>
         <item name="alertDialogTheme">@style/AppAlertDialog</item>
     </style>
+
     <style name="AppTheme.Dark.Dialog" parent="Theme.AppCompat.Dialog">
         <item name="colorAccent">@color/white</item>
         <item name="android:textColorPrimary">@color/iron</item>
         <item name="android:background">@color/primary</item>
     </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <style name="MyEditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="colorControlActivated">#243447</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-   <style name="SwitchTheme" parent="Theme.AppCompat.Light">
-       <item name = "colorControlActivated">#148E13</item>
-   </style>
+
+    <style name="SwitchTheme" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">#148E13</item>
+    </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="PrimaryFlatButton" parent="Theme.AppCompat.Light">
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
         <item name="colorControlHighlight">@color/colorAccent</item>
@@ -38,14 +43,24 @@
     </style>
 
 
-    <style name="AppAlertDialog"
-        parent="Theme.AppCompat.DayNight.Dialog.Alert">
+    <style name="AppAlertDialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>
-    <style name="AppAlertDialogContent"
-        parent="Theme.AppCompat.DayNight">
+
+    <style name="AppAlertDialogContent" parent="Theme.AppCompat.DayNight">
         <!-- To keep the color of EditText -->
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
     </style>
 
 </resources>
