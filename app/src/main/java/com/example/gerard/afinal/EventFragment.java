@@ -6,11 +6,13 @@ import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -44,7 +46,14 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -81,6 +90,8 @@ public class EventFragment extends Fragment implements View.OnClickListener{
     private ArrayList<EventInfo> eventsArrayList;
     private Bitmap bitmap;
     String imageURL;
+    Hashtable listCalendar;
+
     public EventFragment() {
 
     }
@@ -104,9 +115,11 @@ public class EventFragment extends Fragment implements View.OnClickListener{
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_event, container, false);
     }
+
     public void setEvent_id(String event_id){
         this.event_id=event_id;
     }
+
     public String getEvent_id(){
         return event_id;
     }
@@ -191,6 +204,12 @@ public class EventFragment extends Fragment implements View.OnClickListener{
         mAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("Event/event1");
         events_retrieved = new ArrayList<String>();
+
+        haveCalendarReadWritePermissions(getActivity());
+        requestCalendarReadWritePermission(getActivity());
+        listCalendar = new Hashtable();
+//        listCalendar = listCalendarId(getApplicationContext());
+
     }
 
     @Override
@@ -306,21 +325,7 @@ public class EventFragment extends Fragment implements View.OnClickListener{
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {}});
                         //Toast.makeText(getApplicationContext(),"WHatatattata",Toast.LENGTH_SHORT).show();
-                    }/*interestRef.orderByChild("eventID").equalTo(eventId.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue() != null) {
-                                interestedButton.setBackgroundResource(R.color.colorPrimary);
-                                interestedButton.setTextColor(getResources().getColor(R.color.white));
-                                isInterestedInButtonClicked = true;
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });*/
+                    }
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {}});
@@ -330,20 +335,24 @@ public class EventFragment extends Fragment implements View.OnClickListener{
                 public void onClick(View v) {
                     isGoingToButtonClicked = !isGoingToButtonClicked; // toggle the boolean flag
 
+                    calendarEvent(isGoingToButtonClicked);
+
                     if (isGoingToButtonClicked == true && isInterestedInButtonClicked == false) {
                         v.setBackgroundResource(R.color.colorPrimary);
                         goingToButton.setTextColor(getResources().getColor(R.color.white));
 
+                        removeInterestedIn();
                         checkIfGoingToNew();
 
                     }else if(isGoingToButtonClicked == false && isInterestedInButtonClicked == false){
                         v.setBackgroundColor(Color.TRANSPARENT);
                         goingToButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-
+                        removeInterestedIn();
                         removeGoingTo();
 
                     }else if(isGoingToButtonClicked == true && isInterestedInButtonClicked == true) {
                         checkIfGoingToNew();
+                        removeInterestedIn();
 
                         v.setBackgroundResource(R.color.colorPrimary);
                         goingToButton.setTextColor(getResources().getColor(R.color.white));
@@ -370,6 +379,7 @@ public class EventFragment extends Fragment implements View.OnClickListener{
                         interestedButton.setTextColor(getResources().getColor(R.color.white));
 
                         checkIfInterestedInNew();
+                        removeGoingTo();
 
                     }else if ((isInterestedInButtonClicked == false && isGoingToButtonClicked == false)|| (isInterestedInButtonClicked == false && isGoingToButtonClicked == true)){
                         //setFocus(btn_unfocus, btn[1]);
@@ -377,12 +387,14 @@ public class EventFragment extends Fragment implements View.OnClickListener{
                         interestedButton.setTextColor(getResources().getColor(R.color.colorPrimary));
 
                         removeInterestedIn();
+                        removeGoingTo();
 
                     }else if(isInterestedInButtonClicked == true && isGoingToButtonClicked == true) {
                         v.setBackgroundResource(R.color.colorPrimary);
                         interestedButton.setTextColor(getResources().getColor(R.color.white));
 
                         checkIfInterestedInNew();
+                        removeGoingTo();
 
                         goingToButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                         goingToButton.setBackgroundColor(Color.TRANSPARENT);
@@ -618,12 +630,135 @@ public class EventFragment extends Fragment implements View.OnClickListener{
         });
     }
 
+    public void calendarEvent(Boolean b){
+        if (b){
+            float longi = 10;
+           /* MakeNewCalendarEntry(getActivity(),title.getText().toString(),description.getText().toString(),
+                    location.getText().toString(),Long.parseLong(times.getText().toString()),Long.parseLong(times.getText().toString()),
+                    true,true, 1,1);
+            MakeNewCalendarEntry(getActivity(),title.getText().toString(),description.getText().toString(),
+                    location.getText().toString(),longi,longi+1,
+                    true,true, 1,1);*/
+            //addReminder(2019, 5, 5, 18, 0,2019,5, 5, 18, 30);
+            String dateInputS = date.getText().toString();
+            Date dateInput = null;
+            try {
+                dateInput = new SimpleDateFormat("dd-MM-yyyy").parse(dateInputS);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            DateFormat year = new SimpleDateFormat("yyyy");
+            DateFormat month = new SimpleDateFormat("MM");
+            DateFormat day = new SimpleDateFormat("dd");
+            String outputYear = year.format(dateInput);
+            String outputMonth = month.format(dateInput);
+            String outputDay = day.format(dateInput);
+
+            long startTime = getLongAsDate(Integer.parseInt(outputYear), Integer.parseInt(outputMonth), Integer.parseInt(outputDay));
+            long endTime = getLongAsDate(Integer.parseInt(outputYear), Integer.parseInt(outputMonth), Integer.parseInt(outputDay)+1);
+            //contentEvent.put("dtstart", startTime);
+            //contentEvent.put("dtend", endTime);
+            ContentResolver cr = getContext().getContentResolver();
+        ContentValues calEvent = new ContentValues();
+        calEvent.put(CalendarContract.Events.CALENDAR_ID, 1); // XXX pick)
+        calEvent.put(CalendarContract.Events.TITLE, "Reminder to " + title.getText().toString());
+        calEvent.put(CalendarContract.Events.DTSTART, startTime);
+        calEvent.put(CalendarContract.Events.DTEND, endTime);
+        calEvent.put(CalendarContract.Events.HAS_ALARM, 1);
+        calEvent.put(CalendarContract.Events.EVENT_TIMEZONE, CalendarContract.Calendars.CALENDAR_TIME_ZONE);
+        //calEvent.put(CalendarContract.EventDays.STARTDAY,"2458608.50000");
+
+        //save an event
+        final Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, calEvent);
+
+        int dbId = Integer.parseInt(uri.getLastPathSegment());
+
+        //Now create a reminder and attach to the reminder
+        ContentValues reminders = new ContentValues();
+        reminders.put(CalendarContract.Reminders.EVENT_ID, dbId);
+        reminders.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_DEFAULT);
+        reminders.put(CalendarContract.Reminders.MINUTES, 0);
+
+        final Uri reminder = cr.insert(CalendarContract.Reminders.CONTENT_URI, reminders);
+
+        int added = Integer.parseInt(reminder.getLastPathSegment());
+        //this means reminder is added
+        if(added > 0) {
+            Intent view = new Intent(Intent.ACTION_VIEW);
+            view.setData(uri); // enter the uri of the event not the reminder
+
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH){
+                view.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        |Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        |Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+            }
+            else {
+                view.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_NO_HISTORY |
+                        Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            }
+            //view the event in calendar
+            startActivity(view);
+            //Calendar cl = Calendar.getInstance();
+           //cl.setTimeInMillis(milliseconds);  //here your time in miliseconds
+            //String date = "" + cl.get(Calendar.DAY_OF_MONTH) + "/" + cl.get(Calendar.MONTH) + "/" + cl.get(Calendar.YEAR);
+        }
+        }
+    }
+    public long getLongAsDate(int year, int month, int date) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.set(Calendar.DAY_OF_MONTH, date);
+        calendar.set(Calendar.MONTH, month - 1);
+        calendar.set(Calendar.YEAR, year);
+        return calendar.getTimeInMillis();
+    }
+    public void addReminder(int statrYear, int startMonth, int startDay, int startHour, int startMinut, int endYear, int endMonth, int endDay, int endHour, int endMinuts){
+        Calendar beginTime = Calendar.getInstance();
+        beginTime.set(statrYear, startMonth, startDay, startHour, startMinut);
+        long startMillis = beginTime.getTimeInMillis();
+
+        Calendar endTime = Calendar.getInstance();
+        endTime.set(endYear, endMonth, endDay, endHour, endMinuts);
+        long endMillis = endTime.getTimeInMillis();
+
+        String eventUriString = "content://com.android.calendar/events";
+        ContentValues eventValues = new ContentValues();
+
+        eventValues.put(Events.CALENDAR_ID, 1);
+        eventValues.put(Events.TITLE, "OCS");
+        eventValues.put(Events.DESCRIPTION, "Clinic App");
+        eventValues.put(Events.EVENT_TIMEZONE, "Nasik");
+        eventValues.put(Events.DTSTART, startMillis);
+        eventValues.put(Events.DTEND, endMillis);
+
+        //eventValues.put(Events.RRULE, "FREQ=DAILY;COUNT=2;UNTIL="+endMillis);
+        eventValues.put("eventStatus", 1);
+        eventValues.put("visibility", 3);
+        eventValues.put("transparency", 0);
+        eventValues.put(Events.HAS_ALARM, 1);
+
+        Uri eventUri = getApplicationContext().getContentResolver().insert(Uri.parse(eventUriString), eventValues);
+        long eventID = Long.parseLong(eventUri.getLastPathSegment());
+
+        /***************** Event: Reminder(with alert) Adding reminder to event *******************/
+
+        String reminderUriString = "content://com.android.calendar/reminders";
+
+        ContentValues reminderValues = new ContentValues();
+
+        reminderValues.put("event_id", eventID);
+        reminderValues.put("minutes", 1);
+        reminderValues.put("method", 1);
+
+        Uri reminderUri = getApplicationContext().getContentResolver().insert(Uri.parse(reminderUriString), reminderValues);
+    }
     //Remember to initialize this activityObj first, by calling initActivityObj(this) from your activity
     private static final String TAG = "CalendarHelper";
     public static final int CALENDARHELPER_PERMISSION_REQUEST_CODE = 99;
 
 
-    public static void MakeNewCalendarEntry(Activity caller,String title,String description,String location,long startTime,long endTime, boolean allDay,boolean hasAlarm, int calendarId,int selectedReminderValue) {
+    public static void MakeNewCalendarEntry(Activity caller,String title,String description,String location,float startTime,float endTime, boolean allDay,boolean hasAlarm, int calendarId,int selectedReminderValue) {
 
         ContentResolver cr = caller.getContentResolver();
         ContentValues values = new ContentValues();
@@ -633,6 +768,8 @@ public class EventFragment extends Fragment implements View.OnClickListener{
         values.put(Events.DESCRIPTION, description);
         values.put(Events.CALENDAR_ID, calendarId);
         values.put(Events.STATUS, Events.STATUS_CONFIRMED);
+        //values.put(Events.LAST_DATE,"12.2.2019");
+        //values.put(Events.RDATE,"12.08.2109");
 
 
         if (allDay)
