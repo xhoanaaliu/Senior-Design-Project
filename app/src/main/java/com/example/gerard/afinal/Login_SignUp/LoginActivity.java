@@ -100,8 +100,7 @@ public class LoginActivity extends AppCompatActivity {
     private final int REQUEST_LOCATION_CODE = 99;
     private final int REQUEST_LOCATION_CODE2 = 98;
 
-    @BindView(R.id.link_signup)
-    TextView _signupLink;
+    private TextView _signupLink;
 
 
     @Override
@@ -172,6 +171,8 @@ public class LoginActivity extends AppCompatActivity {
         signUpFragment = new SignUpFragment();
         scrl.setId(R.id.sign_in);
 
+        _signupLink = findViewById(R.id.link_signup);
+
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -204,9 +205,11 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(LoginActivity.this, "ALOO", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(i);
+                Toast.makeText(LoginActivity.this, "ALOO2", Toast.LENGTH_SHORT).show();
+
 
             }
         });

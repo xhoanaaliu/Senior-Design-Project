@@ -32,6 +32,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.support.test.InstrumentationRegistry.getContext;
+
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -68,6 +70,8 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_sign_up);
+
+        Toast.makeText(this, "ALOO3", Toast.LENGTH_SHORT).show();
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -129,6 +133,8 @@ public class SignUpActivity extends AppCompatActivity {
 
                             progressBar.setVisibility(View.GONE);
                             onAuthSuccess(task.getResult().getUser());
+                            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                            finish();
 
                         } else {
 
@@ -211,20 +217,16 @@ public class SignUpActivity extends AppCompatActivity {
         // Write new user
         writeNewUser(user.getUid(), user.getEmail());
 
-        // Go to MainActivity
-        startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
-        finish();
     }
 
     private void writeNewUser(String userId, String email) {
 
         Map<String, String> user = new HashMap<>();
-        user.put("name", name);
+        user.put("username", name);
         user.put("surname", surname);
         user.put("email", email);
         user.put("password", password);
         user.put("location", location);
-
         mDatabase.child("Users").child(userId).setValue(user);
     }
 
