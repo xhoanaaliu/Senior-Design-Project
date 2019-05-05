@@ -205,12 +205,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                // Start the Signup activity
-                signUpFragment = new SignUpFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.main_fragment, signUpFragment, "SignUp")
-                        .addToBackStack(null)
-                        .commit();
+                Intent i = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(i);
+
             }
         });
 
@@ -238,6 +235,9 @@ public class LoginActivity extends AppCompatActivity {
 
                         Log.d("FACELOG", "facebook:onSuccess:" + loginResult);
                         handleFacebookAccessToken(loginResult.getAccessToken());
+
+                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(i);
                     }
 
                     @Override
@@ -266,10 +266,9 @@ public class LoginActivity extends AppCompatActivity {
                         bundle.putDouble("longtitude", lastLoc.getLongitude());
                         hmp.setArguments(bundle);
                     }
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, hmp, "Home")
-                            .addToBackStack(null)
-                            .commit();
+
+                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(i);
                 }
             }
         };
@@ -283,7 +282,7 @@ public class LoginActivity extends AppCompatActivity {
         mGoogleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
             @Override
             public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                Toast.makeText(getContext(), "Connection Failed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Connection Failed!", Toast.LENGTH_SHORT).show();
             }
         })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
