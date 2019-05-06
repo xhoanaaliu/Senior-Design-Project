@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +50,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.input_email) EditText _emailText;
     @BindView(R.id.input_password) EditText _passwordText;
     @BindView(R.id.input_confirmpassword) EditText _confirmpasswordText;
-    @BindView(R.id.btn_signup) Button _signupButton;
+    @BindView(R.id.btn_signup)
+    ImageView _signupButton;
     @BindView(R.id.link_login) TextView _loginLink;
 
     @Override
