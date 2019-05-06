@@ -133,7 +133,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mAuth= FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
-        userID=user.getUid();
+        Bundle arguments = this.getArguments();
+        if(arguments != null) {
+            userID = arguments.getString("ID");
+            Log.d("USER ID", userID);
+        }
+        else
+            userID=user.getUid();
         databaseReference=database.getReference("Users");
         userName = rootView.findViewById(R.id.userName);
         Query q1 = databaseReference.orderByChild("user_id").equalTo(userID);
