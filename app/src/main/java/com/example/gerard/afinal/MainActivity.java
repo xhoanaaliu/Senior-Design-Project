@@ -7,6 +7,7 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.location.Location;
 import android.location.LocationManager;
@@ -94,6 +95,7 @@ import com.textrazor.annotations.Entity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -142,10 +144,10 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar;
     String API_KEY = "5d9a93f99b0aab73d3f8be94453d6d83f3ea2b193b7780ca43751893";
     HashMap<String, String> u;
-    DrawerLayout drawer;
+
     Bitmap bitmap;
     NavigationView navigationView;
-
+    public static final int PICK_IMAGE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,12 +158,12 @@ public class MainActivity extends AppCompatActivity
         database = FirebaseDatabase.getInstance();
         dataref = FirebaseDatabase.getInstance().getReference();
 
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.d("REQUEST LOCATION", "NOT GRANTED");
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_CODE2);
             //ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION_CODE);
         }
-
         if(!gotLocation){
                 SmartLocation.with(this).location()
                         .oneFix()
@@ -177,8 +179,6 @@ public class MainActivity extends AppCompatActivity
                         });
         }
 
-        dataref = FirebaseDatabase.getInstance().getReference();
-
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             //@Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -191,21 +191,22 @@ public class MainActivity extends AppCompatActivity
                 }*/
             }
         };
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         imageView = findViewById(R.id.imageView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        navigationView = findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
 
         fragment = new HomePage();
         loginFragment = new LoginFragment();
@@ -214,15 +215,12 @@ public class MainActivity extends AppCompatActivity
         signupfragment = new SignUpFragment();
         loginFragment = new LoginFragment();
 
-        //setHasOptionsMenu(true);
-
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_fragment, loginFragment, "LoginFragment")
                 .addToBackStack(null)
                 .commit();
         hideBar(false);
     }
-
     public void hideBar(boolean isHidden){
         navigation.setVisibility(isHidden ? View.GONE : View.VISIBLE);
         toolbar.setVisibility(isHidden ? View.GONE : View.VISIBLE);
@@ -249,7 +247,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    /*@Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -263,8 +261,9 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+
         return super.onOptionsItemSelected(item);
-    }*/
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -359,8 +358,30 @@ public class MainActivity extends AppCompatActivity
                     return true;
                 case R.id.navigation_camera:
 
-                    dispatchTakePictureIntent();
+                    new TTFancyGifDialog.Builder(MainActivity.this)
+                            .setTitle("Choose Method")
+                            .setMessage("Please select from where you want to take your poster !")
+                            .setPositiveBtnBackground("#66000000")
+                            .setPositiveBtnText("Open Camera")
+                            .setNegativeBtnBackground("#66000000")
+                            .setNegativeBtnText("Open Gallery")
+                            .setGifResource(R.drawable.gif13)   //Pass your Gif here
+                            .OnPositiveClicked(new TTFancyGifDialogListener() {
+                                @Override
+                                public void OnClick() {
+                                    dispatchTakePictureIntent();
+                                }
+                            })
+                            .OnNegativeClicked(new TTFancyGifDialogListener() {
+                                @Override
+                                public void OnClick() {
 
+                                    Intent intent = new Intent(Intent.ACTION_PICK,
+                                            MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                                    startActivityForResult(intent, PICK_IMAGE);
+                                }
+                            })
+                            .build();
                     return true;
                 case R.id.navigation_change_location:
                     LocationFragment locationFragment = new LocationFragment();
@@ -424,14 +445,16 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            galleryAddPic();
+//            galleryAddPic();
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 uploadImage(photoURI);
             }
-           /* NewEventFragment newEventFragment = new NewEventFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, newEventFragment, "location")
-                    .addToBackStack(null).commit();*/
+        }
+
+        if(requestCode == PICK_IMAGE  && resultCode == RESULT_OK){
+            Uri selectedImage = data.getData();
+            Toast.makeText(this,"Error",Toast.LENGTH_SHORT).show();
+            uploadImage(selectedImage);
 
         }
 
@@ -763,8 +786,10 @@ public class MainActivity extends AppCompatActivity
                     if(response != null) {
 
                         for (Entity entity : response.getResponse().getEntities()) {
-                            System.out.println(entity.getEntityId() + ": " + entity.getDBPediaTypes().get(0));
-                            u.put(entity.getEntityId(), entity.getDBPediaTypes().get(0));
+                            if( entity.getDBPediaTypes() != null) {
+                                System.out.println(entity.getEntityId() + ": " + entity.getDBPediaTypes().get(0));
+                                u.put(entity.getEntityId(), entity.getDBPediaTypes().get(0));
+                            }
                         }
                     }
 
