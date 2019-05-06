@@ -142,11 +142,9 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar;
     String API_KEY = "5d9a93f99b0aab73d3f8be94453d6d83f3ea2b193b7780ca43751893";
     HashMap<String, String> u;
-
+    DrawerLayout drawer;
     Bitmap bitmap;
     NavigationView navigationView;
-
-
 
 
     @Override
@@ -158,12 +156,12 @@ public class MainActivity extends AppCompatActivity
         database = FirebaseDatabase.getInstance();
         dataref = FirebaseDatabase.getInstance().getReference();
 
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.d("REQUEST LOCATION", "NOT GRANTED");
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_CODE2);
             //ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION_CODE);
         }
+
         if(!gotLocation){
                 SmartLocation.with(this).location()
                         .oneFix()
@@ -179,75 +177,7 @@ public class MainActivity extends AppCompatActivity
                         });
         }
 
-        /*
-        Map<String, String> em = new HashMap<>();
-        em.put("category","EE");
-        em.put("title" , "IEEE meeting");
-        em.put("location" , "Bilkent");
-        em.put("date" , "15 March");
-        em.put("description","Robotics");
-        em.put("time","19:30");
-        dataref.child("Event").child("1").setValue(em);
-        */
-
-        //**************************************************************************************************//
         dataref = FirebaseDatabase.getInstance().getReference();
-
-        Map<String, String> user = new HashMap<>();
-        user.put("email", "test email");
-        user.put("password", "test password");
-        user.put("name", "test name");
-        user.put("surname", "test surname");
-        user.put("birthday", "test birthday");
-        user.put("picture", "test picture");
-        dataref.child("User").child("user 1").setValue(user);
-
-        Map<String, String> be_friend = new HashMap<>();
-        be_friend.put("email_user", "test email user");
-        be_friend.put("email_friend", "test email friend");
-        dataref.child("BeFriend").child("be friend 1").setValue(be_friend);
-
-        Map<String, String> follow = new HashMap<>();
-        follow.put("email_user", "test email user");
-        follow.put("email_organization", "test email organization");
-        dataref.child("Follow").child("follow 1").setValue(follow);
-
-        Map<String, String> interest = new HashMap<>();
-        interest.put("interest_type", "test interest type");
-        interest.put("ineterest_name", "test interest name");
-        dataref.child("Interest").child("interest 1").setValue(interest);
-
-        Map<String, String> interest_event = new HashMap<>();
-        interest_event.put("interest_event_id", "test interest event");
-        interest_event.put("ineterest_id", "test interest");
-        dataref.child("InterestEvent").child("interest event 1").setValue(interest_event);
-
-        Map<String, String> interest_user = new HashMap<>();
-        interest_user.put("interest_user_id", "test interest user");
-        interest_user.put("ineterest_id", "test interest");
-        dataref.child("InterestUser").child("interest user 1").setValue(interest_user);
-
-        Map<String, String> organization = new HashMap<>();
-        organization.put("organization_email", "test organization_email");
-        organization.put("organization_name", "test organization name");
-        dataref.child("Organization").child("organization 1").setValue(organization);
-
-        Map<String, String> interested_in = new HashMap<>();
-        interested_in.put("user_id", "test user");
-        interested_in.put("event_id", "test event");
-        dataref.child("InterestedIn").child("ineterested in 1").setValue(interested_in);
-
-        Map<String, String> participated_in = new HashMap<>();
-        participated_in.put("user_id", "test user");
-        dataref.child("ParticipatedIn").child("participated in 1").setValue(participated_in);
-
-        Map<String, String> going_to = new HashMap<>();
-        going_to.put("user_id", "test user");
-        going_to.put("event_id", "test event");
-        dataref.child("GoingTo").child("going to 1").setValue(going_to);
-
-        //**************************************************************************************************//
-
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             //@Override
@@ -261,22 +191,21 @@ public class MainActivity extends AppCompatActivity
                 }*/
             }
         };
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         imageView = findViewById(R.id.imageView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
 
         fragment = new HomePage();
         loginFragment = new LoginFragment();
@@ -285,12 +214,15 @@ public class MainActivity extends AppCompatActivity
         signupfragment = new SignUpFragment();
         loginFragment = new LoginFragment();
 
+        //setHasOptionsMenu(true);
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_fragment, loginFragment, "LoginFragment")
                 .addToBackStack(null)
                 .commit();
         hideBar(false);
     }
+
     public void hideBar(boolean isHidden){
         navigation.setVisibility(isHidden ? View.GONE : View.VISIBLE);
         toolbar.setVisibility(isHidden ? View.GONE : View.VISIBLE);
@@ -317,7 +249,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -331,9 +263,8 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

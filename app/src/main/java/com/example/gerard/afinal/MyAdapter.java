@@ -75,11 +75,21 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             img = (ImageView) v.findViewById(R.id.listImage);
             v.setOnClickListener(this);
             v.setOnLongClickListener(this);
+
+
+            title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(getApplicationContext(),"Done",Toast.LENGTH_LONG).show();
+                }
+            });
         }
 
         public void setItemClickListener(ItemClickListener itemClickListener){
             this.itemClickListener = itemClickListener;
         }
+
+
 
         @Override
         public void onClick(View view) {
