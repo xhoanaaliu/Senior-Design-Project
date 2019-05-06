@@ -15,10 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.gerard.afinal.HomePage;
 import com.example.gerard.afinal.MainActivity;
 import com.example.gerard.afinal.R;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,8 +39,10 @@ public class CategoriesFragment extends Fragment {
     private ArrayList<Category> categoryList;
     private TextView categoryName, categoryName1, categoryName2, categoryName3, categoryName4, categoryName5;
     private ImageView categoryPicture, categoryPicture1, categoryPicture2, categoryPicture3, categoryPicture4, categoryPicture5;
+    private Button applyButton;
     private FirebaseDatabase database;
     private DatabaseReference myRefUsers;
+    private HomePage home;
     FirebaseUser user;
 
 
@@ -83,7 +87,7 @@ public class CategoriesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         database = FirebaseDatabase.getInstance();
         myRefUsers = database.getReference("Users");
-
+        applyButton = getView().findViewById(R.id.button3);
 
         categoryName = getView().findViewById(R.id.academic_event);
         categoryName1 = getView().findViewById(R.id.cultural_event);
@@ -101,6 +105,18 @@ public class CategoriesFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
+        applyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                home = new HomePage();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.main_fragment, home, "HomePageOpen")
+                        .addToBackStack(null)
+                        .commit();
+            }
+
+         });
         categoryPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
