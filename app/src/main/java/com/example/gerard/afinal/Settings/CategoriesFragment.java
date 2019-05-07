@@ -87,21 +87,21 @@ public class CategoriesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         database = FirebaseDatabase.getInstance();
         myRefUsers = database.getReference("Users");
-        applyButton = getView().findViewById(R.id.button3);
+        applyButton = view.findViewById(R.id.button3);
 
-        categoryName = getView().findViewById(R.id.academic_event);
-        categoryName1 = getView().findViewById(R.id.cultural_event);
-        categoryName2 = getView().findViewById(R.id.concerts_event);
-        categoryName3 = getView().findViewById(R.id.festivals_event);
-        categoryName4 = getView().findViewById(R.id.workshop_event);
+        categoryName = view.findViewById(R.id.academic_event);
+        categoryName1 = view.findViewById(R.id.cultural_event);
+        categoryName2 = view.findViewById(R.id.concerts_event);
+        categoryName3 = view.findViewById(R.id.festivals_event);
+        categoryName4 = view.findViewById(R.id.workshop_event);
         //categoryName5 = getView().findViewById(R.id.exhibition_event);
 
-        categoryPicture = getView().findViewById(R.id.academic_picture);
-        categoryPicture1 = getView().findViewById(R.id.cultural_picture);
-        categoryPicture2 = getView().findViewById(R.id.concerts_picture);
-        categoryPicture3 = getView().findViewById(R.id.festivals_picture);
-        categoryPicture4 = getView().findViewById(R.id.workshop_picture);
-        categoryPicture5 = getView().findViewById(R.id.exhibition_picture);
+        categoryPicture = view.findViewById(R.id.academic_picture);
+        categoryPicture1 = view.findViewById(R.id.cultural_picture);
+        categoryPicture2 = view.findViewById(R.id.concerts_picture);
+        categoryPicture3 = view.findViewById(R.id.festivals_picture);
+        categoryPicture4 = view.findViewById(R.id.workshop_picture);
+        categoryPicture5 = view.findViewById(R.id.exhibition_picture);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
