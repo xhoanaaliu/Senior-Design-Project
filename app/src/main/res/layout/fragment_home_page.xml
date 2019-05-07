@@ -25,6 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="Events"
+                android:visibility="gone"
                 android:paddingTop="20dp"
                 android:layout_height="wrap_content" />
 
@@ -33,16 +34,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:paddingTop="10dp"
-                android:text="What's good in" />
+                android:textStyle="bold|italic"
+                android:textSize="30dp"
+                android:paddingTop="25dp"
+                android:text="What's good in"
+                android:textColor="@color/quantum_black_100"/>
 
             <TextView
                 android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:paddingTop="10dp"
-                android:text="Ankara" />
+                android:paddingTop="5dp"
+                android:textStyle="italic"
+                android:textSize="20dp"
+                android:text="Ankara"
+                android:textColor="@color/colorPrimary"/>
         </LinearLayout>
 
     </LinearLayout>
