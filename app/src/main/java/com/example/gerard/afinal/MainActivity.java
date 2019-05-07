@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity
 
     Bitmap bitmap;
     NavigationView navigationView;
-    public static final int PICK_IMAGE = 1;
+    public static final int PICK_IMAGE = 98;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -445,10 +445,10 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_IMAGE_CAPTURE) {
+
                 Toast.makeText(this,"Your poster is being processed",Toast.LENGTH_SHORT).show();
                 uploadImage(photoURI);
-            }
+
         }
 
         if(requestCode == PICK_IMAGE  && resultCode == RESULT_OK){
@@ -783,8 +783,7 @@ public class MainActivity extends AppCompatActivity
 
                     u = new HashMap<>();
 
-                    if(response != null) {
-
+                    if(response.getResponse().getEntities() != null) {
                         for (Entity entity : response.getResponse().getEntities()) {
                             if( entity.getDBPediaTypes() != null) {
                                 System.out.println(entity.getEntityId() + ": " + entity.getDBPediaTypes().get(0));
