@@ -11,8 +11,8 @@
         android:id="@+id/imageViewEvent"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="30dp"
-        android:layout_width="150dp"
-        android:layout_height="200dp"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
         tools:src="@tools:sample/avatars" />
 
     <TextView
@@ -20,8 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="50dp"
-
+        android:layout_marginTop="60dp"
         android:text="TextView"
         android:textSize="14sp"
         android:textStyle="bold|italic"
