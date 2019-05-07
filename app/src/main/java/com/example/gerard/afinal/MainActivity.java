@@ -445,15 +445,15 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-//            galleryAddPic();
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                Toast.makeText(this,"Your poster is being processed",Toast.LENGTH_SHORT).show();
                 uploadImage(photoURI);
             }
         }
 
         if(requestCode == PICK_IMAGE  && resultCode == RESULT_OK){
             Uri selectedImage = data.getData();
-            Toast.makeText(this,"Error",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Your poster is being processed",Toast.LENGTH_SHORT).show();
             uploadImage(selectedImage);
 
         }
