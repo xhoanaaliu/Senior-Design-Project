@@ -84,6 +84,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             title = (TextView) v.findViewById(R.id.textTitle);
             location = (TextView) v.findViewById(R.id.textLocation);
             date = (TextView) v.findViewById(R.id.textDate);
+            times = (TextView) v.findViewById(R.id.textViewTime);
             img = (ImageView) v.findViewById(R.id.listImage);
             username = (TextView) v.findViewById(R.id.textView11);
             v.setOnClickListener(this);

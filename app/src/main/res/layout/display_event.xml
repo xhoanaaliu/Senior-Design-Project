@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".Account.ProfileFragment">
+
+
+    <ImageView
+        android:id="@+id/imageViewEvent"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="30dp"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/textViewCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="50dp"
+
+        android:fontFamily="@font/eagle_lake"
+        android:text="TextView"
+        android:textSize="14sp"
+        android:textStyle="bold|italic"
+        android:layout_toRightOf="@id/imageViewEvent"
+        android:layout_marginLeft="50dp"/>
+
+    <TextView
+        android:id="@+id/textViewDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewCategory"
+        android:layout_alignParentEnd="true"
+        android:fontFamily="@font/eagle_lake"
+        android:text="TextView"
+        android:textSize="14sp"
+        android:textStyle="bold|italic"
+        android:layout_toRightOf="@id/imageViewEvent"
+        android:layout_marginLeft="50dp"/>
+
+    <TextView
+        android:id="@+id/textViewDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewDate"
+        android:layout_alignParentEnd="true"
+        android:fontFamily="@font/eagle_lake"
+        android:text="TextView"
+        android:textSize="14sp"
+        android:textStyle="bold|italic"
+        android:layout_toRightOf="@id/imageViewEvent"
+        android:layout_marginLeft="50dp"/>
+
+    <TextView
+        android:id="@+id/textViewLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewDescription"
+        android:layout_alignParentEnd="true"
+        android:fontFamily="@font/eagle_lake"
+        android:text="TextView"
+        android:textSize="14sp"
+        android:textStyle="bold|italic"
+        android:layout_toRightOf="@id/imageViewEvent"
+        android:layout_marginLeft="50dp"/>
+
+    <TextView
+        android:id="@+id/textViewTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewLocation"
+        android:layout_alignParentEnd="true"
+        android:fontFamily="@font/eagle_lake"
+        android:text="TextView"
+        android:textSize="14sp"
+        android:textStyle="bold|italic"
+        android:layout_toRightOf="@id/imageViewEvent"
+        android:layout_marginLeft="50dp"/>
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewTime"
+        android:layout_alignParentRight="true"
+        android:fontFamily="@font/eagle_lake"
+        android:text="TextView"
+        android:textSize="14sp"
+        android:textStyle="bold|italic"
+        android:layout_toRightOf="@id/imageViewEvent"
+        android:layout_marginLeft="50dp"/>
+</RelativeLayout>

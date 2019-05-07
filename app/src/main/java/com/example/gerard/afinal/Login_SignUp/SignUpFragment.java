@@ -41,9 +41,12 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     private LoginFragment loginFragment;
     private CategoriesFragment categoryfragment;
     private FirebaseDatabase database;
-    private DatabaseReference myRefUsers;
+    private DatabaseReference myRefUser;
     private CircleImageView profilePic;
     private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private String userID;
+
     private LoginFragment lfr;
     @BindView(R.id.input_name) EditText _nameText;
     @BindView(R.id.input_surname) EditText _surnameText;
@@ -66,6 +69,28 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
         ButterKnife.bind(this,view);
         mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        myRefUser=database.getReference("Users");
+
+
+        // Read from the database
+        myRefUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                Log.d(TAG, "onDataChange: Added information to database: \n" +
+                        dataSnapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
+
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,12 +150,32 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        String name = _nameText.getText().toString();
+                        String surname = _surnameText.getText().toString();
+                        String email = _emailText.getText().toString();
+                        String password = _passwordText.getText().toString();
+                        String confirmpassword = _confirmpasswordText.getText().toString();
+                        String location="";
+                        String preferences ="";
+                        String profile_picture = "";
                         if (task.isSuccessful()) {
 
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            userID = user.getUid();
+                            NormalUser u1 = new NormalUser();
+                            u1.setUsername(name);
+                            u1.setUsersurname(surname);
+                            u1.setEmail(email);
+                            u1.setPassword(password);
+                            u1.setLocation("");
+                            u1.setPreferences("");
+                            u1.setProfile_picture("");
+                            u1.setUser_id(userID);
+                            myRefUser.child(userID).setValue(u1);
 
+                            //myRefUser.push().setValue(u1);
                         } else {
                             // If sign in fails, display a message to the user.
                            /* Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -143,6 +188,10 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
                     }
                 });
+
+
+
+
 
 
         new android.os.Handler().postDelayed(
@@ -232,7 +281,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         database = FirebaseDatabase.getInstance();
-        myRefUsers = database.getReference("Users");
+        myRefUser = database.getReference("Users");
         profilePic = view.findViewById(R.id.profile_image);
         lfr=new LoginFragment();
     }

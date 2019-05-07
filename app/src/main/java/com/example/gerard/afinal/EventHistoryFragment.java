@@ -1,5 +1,6 @@
 package com.example.gerard.afinal;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,10 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.example.gerard.afinal.Login_SignUp.LoginFragment;
+import com.example.gerard.afinal.Login_SignUp.NormalUser;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -21,80 +28,119 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Map;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 
 public class EventHistoryFragment extends Fragment {
     private TextView textViewEventHistory;
-    private ListView listView;
-    private ArrayList<String> eventHistoryList = new ArrayList<>();
-    private ArrayAdapter<String> adapter;
+   ListView listView;
+    MyCustomListAdapter adapter;
     private DatabaseReference datarefEvents;
     private DatabaseReference databaseReference;
-    private ArrayList<String> eventFragmentArrayList = new ArrayList<>();
+    private StorageReference mStorageRef;
+     ArrayList<EventInfo> eventFragmentArrayList  = new ArrayList<>();
     private EventFragment evt;
     private DatabaseReference ref2;
     private String eventTitle;
+
     FirebaseUser user;
     private String userID;
+    ImageView imageViewEvent;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView= inflater.inflate(R.layout.fragment_event_history, container, false);
-        evt = new EventFragment();
-        textViewEventHistory = (TextView) rootView.findViewById(R.id.textViewEventHistory);
-        listView = rootView.findViewById(R.id.listView);
-        datarefEvents = FirebaseDatabase.getInstance().getReference("Event");
-        ref2 = FirebaseDatabase.getInstance().getReference("GoingTo");
+        final View rootView= inflater.inflate(R.layout.fragment_event_history, container, false);
+        ref2 = FirebaseDatabase.getInstance().getReference();
         user = FirebaseAuth.getInstance().getCurrentUser();
+        datarefEvents = FirebaseDatabase.getInstance().getReference("Event");
         userID=user.getUid();
-        adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,eventFragmentArrayList);
-        listView.setAdapter(adapter);
-        Query q1 = ref2.orderByChild("user_id").equalTo(userID);
+        listView = rootView.findViewById(R.id.listView);
+        imageViewEvent = rootView.findViewById(R.id.imageViewEvent);
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+      ref2.child("GoingTo").child(userID).addChildEventListener(new ChildEventListener() {
+          @Override
+          public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+              final String key = dataSnapshot.getKey();
+              datarefEvents.orderByChild("user_id").equalTo(userID).addChildEventListener(new ChildEventListener() {
+                  @Override
+                  public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                      String key2 = dataSnapshot.getKey();
+                      if(key2.equals(key)){
+                          adapter = new MyCustomListAdapter(getContext(),R.layout.display_event,eventFragmentArrayList);
+                          listView.setAdapter(adapter);
+                          Map<String, String> value = (Map<String,String>) dataSnapshot.getValue();
+                          String category = value.get("category");
+                          String date = value.get("date");
+                          String description = value.get("description");
+                          String location = value.get("location");
+                          String time = value.get("time");
+                          String title = value.get("title");
+                          String url = value.get("imageName");
 
-        q1.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Map<String, String> value = (Map<String,String>) dataSnapshot.getValue();
-                String item="";
-                String category = value.get("category");
-                String date = value.get("date");
-                String description = value.get("description");
-                String location = value.get("location");
-                String time = value.get("time");
-                String title = value.get("title");
-                item = "Category : " + category + " " + "\nDate : " +  date + " " + "\nDescription : " +
-                        description + " " + "\nLocation : " +  location + " " + "\nTime : " +  time + " " + "\nTitle : " + title;
-                eventFragmentArrayList.add(item);
-                adapter.notifyDataSetChanged();
-            }
+                          EventInfo e1 = new EventInfo(category,date,description,url,location,time,title);
+                          eventFragmentArrayList.add(e1);
+                          adapter.notifyDataSetChanged();
+                      }
+                  }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                  @Override
+                  public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            }
+                  }
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                  @Override
+                  public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-            }
+                  }
 
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                  @Override
+                  public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            }
+                  }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                  @Override
+                  public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                  }
+              });
+          }
+
+          @Override
+          public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+          }
+
+          @Override
+          public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+          }
+
+          @Override
+          public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+          }
+
+          @Override
+          public void onCancelled(@NonNull DatabaseError databaseError) {
+
+          }
+      });
+
         return rootView;
     }
 
 
+    @Override
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
 
 }

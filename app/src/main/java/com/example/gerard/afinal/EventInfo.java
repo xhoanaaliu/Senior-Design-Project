@@ -14,8 +14,7 @@ public class EventInfo {
     public EventInfo() {
     }
 
-    public EventInfo(String event_id, String category, String date, String description, String imageName, String location, String times, String title) {
-        this.event_id = event_id;
+    public EventInfo(String category, String date, String description, String imageName, String location, String times, String title) {
         this.category = category;
         this.date = date;
         this.description = description;
@@ -23,6 +22,7 @@ public class EventInfo {
         this.location = location;
         this.times = times;
         this.title = title;
+
     }
 
     public String getEvent_id() {
