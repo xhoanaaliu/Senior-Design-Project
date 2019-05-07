@@ -93,10 +93,10 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 signup();
-                categoryfragment = new CategoriesFragment();
+               /* categoryfragment = new CategoriesFragment();
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.main_fragment, categoryfragment);
-                transaction.commit();
+                transaction.commit();*/
             }
         });
 
