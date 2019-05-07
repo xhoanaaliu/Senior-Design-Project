@@ -18,7 +18,7 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_bias="0.872"
-      tools:src="@tools:sample/avatars" />
+      android:src="@drawable/not_loaded" />
 
   <TextView
       android:id="@+id/textTitle"
@@ -65,6 +65,7 @@
       android:layout_marginStart="4dp"
       android:layout_marginTop="4dp"
       android:text=""
+      android:textColor="@color/com_facebook_blue"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
   <!--<TextView

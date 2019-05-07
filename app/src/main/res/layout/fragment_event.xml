@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/not_loaded" />
 
     </com.github.florent37.shapeofview.shapes.ArcView>
 

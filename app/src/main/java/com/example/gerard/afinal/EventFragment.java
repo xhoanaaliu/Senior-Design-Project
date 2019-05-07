@@ -2,9 +2,11 @@ package com.example.gerard.afinal;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -810,7 +812,79 @@ public class EventFragment extends Fragment implements View.OnClickListener{
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.reportEvent){
-            new TTFancyGifDialog.Builder(getActivity())
+            final String[] reportContentInput =  new String[1];
+            final String[] listItems = {"This event does not exist.", "The poster is not the same with the information given.",
+                    "This post contains offensive content."};
+            final ArrayList mSelectedItems = new ArrayList();  // Where we track the selected items
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            // Set the dialog title
+            builder.setTitle("Report")// Specify the list array, the items to be selected by default (null for none),
+                    // and the listener through which to receive callbacks when items are selected
+                    .setMultiChoiceItems(listItems, null,
+                            new DialogInterface.OnMultiChoiceClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which,
+                                                    boolean isChecked) {
+                                    if (isChecked) {
+                                        // If the user checked the item, add it to the selected items
+                                        mSelectedItems.add(which);
+                                    } else if (mSelectedItems.contains(which)) {
+                                        // Else, if the item is already in the array, remove it
+                                        mSelectedItems.remove(Integer.valueOf(which));
+                                    }
+                                }
+                            })
+                    // Set the action buttons
+                    .setPositiveButton("Report", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User clicked OK, so save the mSelectedItems results somewhere
+                            // or return them to the component that opened the dialog
+                            checkIfAlreadyReported(mSelectedItems.get(0).toString());
+                            Toast.makeText(getActivity(),"Thank you! We will look at your report request!",Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            /*AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Why do you want to report this event?");
+
+            int checkedItem = 0; //this will checked the item when user open the dialog
+            builder.setSingleChoiceItems(listItems, checkedItem, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Toast.makeText(getActivity(), "Position: " + which + " Value: " + listItems[which], Toast.LENGTH_LONG).show();
+                }
+            });
+
+            builder.setPositiveButton("Report", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //reportContentInput[0] = listItems[which];
+                    checkIfAlreadyReported(listItems[which]);
+                    Toast.makeText(getActivity(),"Thank you! We will look at your report request!",Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
+
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();*/
+            /*new TTFancyGifDialog.Builder(getActivity())
                     .setTitle("Report")
                     .setMessage("Are you sure you want to report this Event?")
                     .setPositiveBtnBackground("#32CD32")
@@ -825,11 +899,11 @@ public class EventFragment extends Fragment implements View.OnClickListener{
 
                         }
                     })
-                    .build();
+                    .build();*/
         }
         return super.onOptionsItemSelected(item);
     }
-    public void checkIfAlreadyReported(){
+    public void checkIfAlreadyReported(final String reportContent){
         userRef = FirebaseDatabase.getInstance().getReference("Report");
         userRef.orderByChild("user_id").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -846,7 +920,7 @@ public class EventFragment extends Fragment implements View.OnClickListener{
                                 Map<String, String> report = new HashMap<>();
                                 report.put("eventId", eventIdString);
                                 report.put("userId", userID);
-                                report.put("reason", "test name");
+                                report.put("reason", reportContent);
                                 DatabaseReference db = dataref.push();
                                 db.setValue(report);
                             }
