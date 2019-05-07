@@ -122,7 +122,7 @@ public class CategoriesFragment extends Fragment {
             public void onClick(View v) {
 
                 String category0 = "Conferences";
-                myRefUsers.child("Interests").setValue(category0);
+                myRefUsers.child("preferences").setValue(category0);
             }
         });
         categoryPicture1.setOnClickListener(new View.OnClickListener() {
@@ -130,7 +130,7 @@ public class CategoriesFragment extends Fragment {
             public void onClick(View v) {
 
                 String category1 = "Cultural";
-                myRefUsers.child("Interests").setValue(category1);
+                myRefUsers.child("preferences").setValue(category1);
             }
         });
 
@@ -138,14 +138,14 @@ public class CategoriesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String category2 = "Concerts";
-                myRefUsers.child("Interests").setValue(category2);
+                myRefUsers.child("preferences").setValue(category2);
             }
         });
         categoryPicture3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String category3 = "Festivals";
-                myRefUsers.child("Interests").setValue(category3);
+                myRefUsers.child("preferences").setValue(category3);
 
             }
         });
@@ -154,7 +154,7 @@ public class CategoriesFragment extends Fragment {
             public void onClick(View v) {
 
                 String category4 = "Workshops";
-                myRefUsers.child("Interests").setValue(category4);
+                myRefUsers.child("preferences").setValue(category4);
 
             }
         });
@@ -163,7 +163,7 @@ public class CategoriesFragment extends Fragment {
             public void onClick(View v) {
 
                 String category5 = "Exhibitions";
-                myRefUsers.child("Interests").setValue(category5);
+                myRefUsers.child("preferences").setValue(category5);
 
             }
         });

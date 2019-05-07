@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gerard.afinal.R;
+import com.example.gerard.afinal.Settings.CategoriesFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -62,6 +64,7 @@ public class SignUpActivity extends AppCompatActivity {
     String location;
     String preferences;
     String profile_picture ;
+    CategoriesFragment categoryfragment;
 
 
 
@@ -90,6 +93,10 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 signup();
+                categoryfragment = new CategoriesFragment();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.main_fragment, categoryfragment);
+                transaction.commit();
             }
         });
 
