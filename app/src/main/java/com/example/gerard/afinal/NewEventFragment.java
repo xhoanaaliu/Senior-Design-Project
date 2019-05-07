@@ -73,7 +73,7 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
     private TimePickerDialog timePickerDialog;
     private ImageView dateButton;
     private ImageView timeButton;
-    private Button submitButton;
+    private ImageView submitButton;
     private MaterialSpinner spinner;
     private KenBurnsView new_poster;
     private DatabaseReference dataref;
