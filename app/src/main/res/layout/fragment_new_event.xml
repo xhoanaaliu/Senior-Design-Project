@@ -45,7 +45,8 @@
                 android:layout_height="wrap_content"
                 android:hint="Title"
                 android:textColor="#333"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                />
         </com.github.florent37.materialtextfield.MaterialTextField>
 
         <LinearLayout

@@ -3,7 +3,9 @@ package com.example.gerard.afinal.Login_SignUp;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -100,6 +102,9 @@ public class LoginActivity extends AppCompatActivity {
     private final int REQUEST_LOCATION_CODE = 99;
     private final int REQUEST_LOCATION_CODE2 = 98;
 
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    SharedPreferences sharedpreferences;
+
     private TextView _signupLink;
 
 
@@ -147,6 +152,8 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.d("REQUEST LOCATION", "NOT GRANTED");
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_CODE2);
@@ -184,10 +191,12 @@ public class LoginActivity extends AppCompatActivity {
                         bundle.putDouble("longtitude", lastLoc.getLongitude());
                         hmp.setArguments(bundle);
                     }
-                    getSupportFragmentManager().beginTransaction()
+                    Intent i = new Intent(LoginActivity.this,MainActivity.class);
+                    startActivity(i);
+                    /*getSupportFragmentManager().beginTransaction()
                             .replace(R.id.main_fragment, hmp, "Home")
                             .addToBackStack(null)
-                            .commit();
+                            .commit();*/
                 }
             }
         };
@@ -197,6 +206,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+
                 login();
             }
         });
@@ -412,6 +422,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginSuccess() {
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        //editor.putString("email", _emailText.getText().toString());
+        //editor.putString("password", _passwordText.getText().toString());
+        //editor.commit();
         _loginButton.setEnabled(true);
         //getActivity().finish();
     }

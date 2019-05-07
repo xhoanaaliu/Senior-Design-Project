@@ -190,10 +190,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         });
 
 
-        MainActivity activity = (MainActivity) getActivity();
-        if (activity != null)
-            activity.hideBar(true);
-
         login_fb = view.findViewById(R.id.view_facebook_login);
         login_google = view.findViewById(R.id.view_google_login);
 
@@ -544,9 +540,5 @@ return valid;
     public void onDestroyView() {
         super.onDestroyView();
 
-        MainActivity activity = (MainActivity) getActivity();
-        if (activity != null)
-            activity.hideBar(false);    // to show the bottom bar when
-        // we destroy this fragment
     }
 }

@@ -316,24 +316,36 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
 
             case R.id.submit:
 
-                Map<String, String> em = new HashMap<>();
-                em.put("title" , titleField.getText().toString());
-                em.put("date" , date_field.getText().toString());
-                em.put("time" , time_field.getText().toString());
-                em.put("location" , addressField.getText().toString() );
-                em.put("category" , category);
-                em.put("description" , descriptionField.getText().toString());
-                em.put("imageName", bitmapimage.toString() + ".jpg");
-                em.put("user_id",userID);
+                if( titleField.getText().toString().trim().equals("")||date_field.getText().toString().trim().equals("")
+                        ||time_field.getText().toString().trim().equals("")||addressField.getText().toString().trim().equals("")
+                        ||descriptionField.getText().toString().trim().equals(""))
+                {
+                    titleField.setError( "Required!" );
+                    date_field.setError( "Required!" );
+                    time_field.setError( "Required!" );
+                    addressField.setError( "Required!" );
+                    descriptionField.setError( "Required!" );
 
-                DatabaseReference db = dataref.push();
-                db.setValue(em);
+                    titleField.setHint("Please fill in the required Information!");
 
-                HomePage hm = new HomePage();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.main_fragment, hm, "new_event")
-                        .addToBackStack(null).commit();
+                } else {
+                    Map<String, String> em = new HashMap<>();
+                    em.put("title" , titleField.getText().toString());
+                    em.put("date" , date_field.getText().toString());
+                    em.put("time" , time_field.getText().toString());
+                    em.put("location" , addressField.getText().toString() );
+                    em.put("category" , category);
+                    em.put("description" , descriptionField.getText().toString());
+                    em.put("imageName", bitmapimage.toString() + ".jpg");
+                    em.put("user_id",userID);
 
+                    DatabaseReference db = dataref.push();
+                    db.setValue(em);
+                    HomePage hm = new HomePage();
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main_fragment, hm, "new_event")
+                            .addToBackStack(null).commit();
+                }
                 break;
 
             case R.id.new_poster:

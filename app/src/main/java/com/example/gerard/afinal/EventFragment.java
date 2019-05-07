@@ -50,6 +50,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -67,13 +68,11 @@ import android.provider.CalendarContract;
 
 public class EventFragment extends Fragment implements View.OnClickListener{
 
-    //private OnFragmentInteractionListener mListener;
-    public static int MY_PERMISSION = 1;
     public KenBurnsView poster;
     private TextView title, location, date, description,times, category;
     private ImageView googleLoc, calendarDate,buttonTime;
     private Button interestedButton, goingToButton;
-    private String eventIdString, dateString;
+    private String eventIdString, dateString, timeString;
 
     private boolean isGoingToButtonClicked = false;
     private boolean isInterestedInButtonClicked = false;
@@ -91,15 +90,11 @@ public class EventFragment extends Fragment implements View.OnClickListener{
     private ArrayList<EventInfo> eventsArrayList;
     private Bitmap bitmap;
     String imageURL;
-    Hashtable listCalendar;
 
     public EventFragment() {
 
     }
-    /*public EventFragment(String event_id){
-        this.event_id=event_id;
-    }
-    */
+
     public static EventFragment newInstance() {
         EventFragment fragment = new EventFragment();
         return fragment;
@@ -247,12 +242,13 @@ public class EventFragment extends Fragment implements View.OnClickListener{
             location.setText(bundle.getString("location"));
             dateString = bundle.getString("date");
             description.setText(bundle.getString("description"));
-            times.setText(bundle.getString("time"));
+            timeString =bundle.getString("time");
             category.setText(bundle.getString("category"));
             eventIdString = bundle.getString("ID");
             String url = bundle.getString("url");
 
             final StorageReference islandRef = mStorageRef.child(url);
+
             Date dateInput = null;
             try {
                 dateInput = new SimpleDateFormat("dd-MM-yyyy").parse(dateString);
@@ -263,6 +259,7 @@ public class EventFragment extends Fragment implements View.OnClickListener{
             DateFormat formatter = new SimpleDateFormat("d MMMM");
             String s = formatter.format(dateInput);
             date.setText(s);
+            times.setText(timeString);
 
             islandRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
@@ -301,52 +298,6 @@ public class EventFragment extends Fragment implements View.OnClickListener{
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) { }});
 
-            /*userRef = FirebaseDatabase.getInstance().getReference("GoingTo");
-            userRef.orderByChild(userID).equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.getValue() != null) {
-                        userRef.orderByChild("eventID").equalTo(eventIdString).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.getValue() != null) {
-                                    goingToButton.setBackgroundResource(R.drawable.rounded_button_clicked);
-                                    goingToButton.setTextColor(getResources().getColor(R.color.white));
-                                    isGoingToButtonClicked = true;
-                                }
-                            }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {}});
-                        //Toast.makeText(getApplicationContext(),"Your user id is on going to table",Toast.LENGTH_SHORT).show();
-                        interestRef.orderByChild("eventID").equalTo(eventIdString).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.getValue() != null) {
-                                    interestedButton.setBackgroundResource(R.drawable.rounded_button_clicked);
-                                    interestedButton.setTextColor(getResources().getColor(R.color.white));
-                                    isInterestedInButtonClicked = true;
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    } else {
-                        userRef.orderByChild("eventID").equalTo(eventIdString).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                            }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {}});
-                        //Toast.makeText(getApplicationContext(),"WHatatattata",Toast.LENGTH_SHORT).show();
-                    }
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {}});
-*/
             goingToButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -355,6 +306,8 @@ public class EventFragment extends Fragment implements View.OnClickListener{
                         goingToButton.setBackgroundResource(R.drawable.rounded_button_clicked);
                         goingToButton.setTextColor(getResources().getColor(R.color.white));
                         requestCalendarReadWritePermission();
+                        boolean b = haveCalendarReadWritePermissions();
+                        calendarEvent(b);
 
                         goTo.child("InterestedIn").child(userID).child(eventIdString).setValue(null);
                         goTo.child("GoingTo").child(userID).child(eventIdString).setValue(true);
@@ -371,6 +324,9 @@ public class EventFragment extends Fragment implements View.OnClickListener{
 
                         goTo.child("InterestedIn").child(userID).child(eventIdString).setValue(null);
                         requestCalendarReadWritePermission();
+
+                        boolean b = haveCalendarReadWritePermissions();
+                        calendarEvent(b);
 
                         goingToButton.setBackgroundResource(R.drawable.rounded_button_clicked);
                         goingToButton.setTextColor(getResources().getColor(R.color.white));
@@ -401,7 +357,7 @@ public class EventFragment extends Fragment implements View.OnClickListener{
 
                     }else if ((isInterestedInButtonClicked == false && isGoingToButtonClicked == false)
                             || (isInterestedInButtonClicked == false && isGoingToButtonClicked == true)){
-                        //setFocus(btn_unfocus, btn[1]);
+
                         interestedButton.setBackgroundResource(R.drawable.rounded_button_unclicked);
                         interestedButton.setTextColor(getResources().getColor(R.color.colorPrimary));
 
@@ -421,102 +377,12 @@ public class EventFragment extends Fragment implements View.OnClickListener{
                     }
                 }
             });
-
         }
-
     }
 
     @Override
     public void onStop() {
         super.onStop();
-    }
-
-
-    public void checkIfInterestedInNew(){
-        userRef = FirebaseDatabase.getInstance().getReference("Interested");
-        userRef.orderByChild("user_id").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
-                    userRef.orderByChild("eventID").equalTo(eventIdString).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue() != null) {
-                                Toast.makeText(getApplicationContext(),"You are already interested in this event",Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(getApplicationContext(),"Added",Toast.LENGTH_SHORT).show();
-                                EventInfo e2 = new EventInfo();
-                                e2.setEvent_id(eventIdString);
-                                String value = e2.getEvent_id();
-                                Map<String, String> interested = new HashMap<>();
-                                interested.put("eventID",value);
-                                interested.put("user_id",userID);
-                                DatabaseReference db2 = interestRef.push();
-                                db2.setValue(interested);
-                            }
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {}});
-                    //Toast.makeText(getApplicationContext(),"You are already in interested in table",Toast.LENGTH_SHORT).show();
-                } else {
-                    userRef.orderByChild("eventID").equalTo(eventIdString).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue() != null) {
-                                Toast.makeText(getApplicationContext(),"You are already interested in this event",Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(getApplicationContext(),"Added",Toast.LENGTH_SHORT).show();
-                                EventInfo e2 = new EventInfo();
-                                e2.setEvent_id(eventIdString);
-                                String value = e2.getEvent_id();
-                                Map<String, String> interested = new HashMap<>();
-                                interested.put("eventID",value);
-                                interested.put("user_id",userID);
-                                DatabaseReference db2 = interestRef.push();
-                                db2.setValue(interested);
-                            }
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {}});
-                    //Toast.makeText(getApplicationContext(),"WHatatattata",Toast.LENGTH_SHORT).show();
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}});
-    }
-    public void removeInterestedIn(){
-        eventRef =  FirebaseDatabase.getInstance().getReference();
-        eventRef.child("Interested").orderByChild("user_id").equalTo(userID).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                eventRef = FirebaseDatabase.getInstance().getReference();
-                eventRef.child("Interested").orderByChild("eventID").equalTo(eventIdString).addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        if (isInterestedInButtonClicked == false){
-                            dataSnapshot.getRef().setValue(null);
-                        }
-                    }
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {}
-                });
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}
-        });
     }
 
     public void calendarEvent(Boolean b){
@@ -525,29 +391,36 @@ public class EventFragment extends Fragment implements View.OnClickListener{
             String dateInputS = dateString;
             Date dateInput = null;
             try {
-                dateInput = new SimpleDateFormat("dd-MM-yyyy").parse(dateInputS);
+                dateInput = new SimpleDateFormat("dd-MM-yyyy hh:mm").parse(dateInputS+" "+timeString);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
             DateFormat year = new SimpleDateFormat("yyyy");
             DateFormat month = new SimpleDateFormat("MM");
             DateFormat day = new SimpleDateFormat("dd");
+            DateFormat hour = new SimpleDateFormat("hh");
+            DateFormat minute =new SimpleDateFormat("mm");
             String outputYear = year.format(dateInput);
             String outputMonth = month.format(dateInput);
             String outputDay = day.format(dateInput);
+            String outputHour = hour.format(dateInput);
+            String outputMinute = minute.format(dateInput);
 
-            long startTime = getLongAsDate(Integer.parseInt(outputYear), Integer.parseInt(outputMonth), Integer.parseInt(outputDay));
-            long endTime = getLongAsDate(Integer.parseInt(outputYear), Integer.parseInt(outputMonth), Integer.parseInt(outputDay)+1);
+
+            long startTime = getLongAsDate(Integer.parseInt(outputYear), Integer.parseInt(outputMonth),
+                    Integer.parseInt(outputDay), Integer.parseInt(outputHour)+3, Integer.parseInt(outputMinute));
+            long endTime = getLongAsDate(Integer.parseInt(outputYear), Integer.parseInt(outputMonth),
+                    Integer.parseInt(outputDay), Integer.parseInt(outputHour) +4, Integer.parseInt(outputMinute));
 
             ContentResolver cr = getContext().getContentResolver();
             ContentValues calEvent = new ContentValues();
+
             calEvent.put(CalendarContract.Events.CALENDAR_ID, 1); // XXX pick)
             calEvent.put(CalendarContract.Events.TITLE, "Reminder to " + title.getText().toString());
             calEvent.put(CalendarContract.Events.DTSTART, startTime);
             calEvent.put(CalendarContract.Events.DTEND, endTime);
             calEvent.put(CalendarContract.Events.HAS_ALARM, 1);
             calEvent.put(CalendarContract.Events.EVENT_TIMEZONE, CalendarContract.Calendars.CALENDAR_TIME_ZONE);
-            //calEvent.put(CalendarContract.EventDays.STARTDAY,"2458608.50000");
 
             //save an event
             final Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, calEvent);
@@ -583,11 +456,13 @@ public class EventFragment extends Fragment implements View.OnClickListener{
             }
         }
     }
-    public long getLongAsDate(int year, int month, int date) {
+    public long getLongAsDate(int year, int month, int date, int hour, int minute) {
         Calendar calendar = new GregorianCalendar();
         calendar.set(Calendar.DAY_OF_MONTH, date);
         calendar.set(Calendar.MONTH, month - 1);
         calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.HOUR, hour);
+        calendar.set(Calendar.MINUTE, minute);
         return calendar.getTimeInMillis();
     }
 
@@ -638,14 +513,13 @@ public class EventFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    public static boolean haveCalendarReadWritePermissions(Activity caller)
-    {
-        int permissionCheck = ContextCompat.checkSelfPermission(caller,
+    public static boolean haveCalendarReadWritePermissions() {
+        int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.READ_CALENDAR);
 
         if (permissionCheck== PackageManager.PERMISSION_GRANTED)
         {
-            permissionCheck = ContextCompat.checkSelfPermission(caller,
+            permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(),
                     Manifest.permission.WRITE_CALENDAR);
 
             if (permissionCheck == PackageManager.PERMISSION_GRANTED)
@@ -657,7 +531,7 @@ public class EventFragment extends Fragment implements View.OnClickListener{
         return false;
     }
 
-    public void deleteEvent(View view) {
+    public void deleteEventFromCalendar(View view) {
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_CALENDAR}, CALENDARHELPER_PERMISSION_REQUEST_CODE);
         }
@@ -670,6 +544,7 @@ public class EventFragment extends Fragment implements View.OnClickListener{
         int updCount = getApplicationContext().getContentResolver().delete(uri,mSelectionClause,mSelectionArgs);
 
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -680,7 +555,6 @@ public class EventFragment extends Fragment implements View.OnClickListener{
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.reportEvent){
-            final String[] reportContentInput =  new String[1];
             final String[] listItems = {"This event does not exist.", "The poster is not the same with the information given.",
                     "This post contains offensive content."};
             final ArrayList<String > mSelectedItems = new ArrayList();  // Where we track the selected items
@@ -706,11 +580,17 @@ public class EventFragment extends Fragment implements View.OnClickListener{
                     .setPositiveButton("Report", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
-                            // User clicked OK, so save the mSelectedItems results somewhere
-                            // or return them to the component that opened the dialog
-                            Toast.makeText(getActivity(),mSelectedItems.get(0).toString(),Toast.LENGTH_SHORT).show();
-                            checkIfAlreadyReported(mSelectedItems.get(0).toString());
-                            //Toast.makeText(getActivity(),"Thank you! We will look at your report request!",Toast.LENGTH_SHORT).show();
+                            final DatabaseReference dataref = FirebaseDatabase.getInstance().getReference("Report");
+                            dataref.child(userID).child(eventIdString).addListenerForSingleValueEvent(new ValueEventListener() {
+                                public void onDataChange(DataSnapshot snapshot) {
+                                    if (snapshot.exists()){
+                                       Toast.makeText(getContext(),"You already reported this event.", Toast.LENGTH_SHORT);
+                                    }else {
+                                        dataref.child(userID).child(eventIdString).child("reason").setValue(mSelectedItems.get(0));
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) { }});
                             dialog.dismiss();
                         }
                     })
@@ -726,56 +606,6 @@ public class EventFragment extends Fragment implements View.OnClickListener{
 
         }
         return super.onOptionsItemSelected(item);
-    }
-    public void checkIfAlreadyReported(final String reportContent){
-        userRef = FirebaseDatabase.getInstance().getReference("Report");
-        userRef.orderByChild("user_id").equalTo(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
-                    userRef.orderByChild("eventID").equalTo(eventIdString).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue() != null) {
-                                Toast.makeText(getApplicationContext(),"You have already reported this event",Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(getApplicationContext(),"Added",Toast.LENGTH_SHORT).show();
-                                DatabaseReference dataref = FirebaseDatabase.getInstance().getReference("Report");
-                                Map<String, String> report = new HashMap<>();
-                                report.put("eventId", eventIdString);
-                                report.put("userId", userID);
-                                report.put("reason", reportContent);
-                                DatabaseReference db = dataref.push();
-                                db.setValue(report);
-                            }
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {}});
-                    //Toast.makeText(getApplicationContext(),"Your user id is on going to table",Toast.LENGTH_SHORT).show();
-                } else {
-                    userRef.orderByChild("eventID").equalTo(eventIdString).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue() != null) {
-                                Toast.makeText(getApplicationContext(),"You have already reported this event",Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(getApplicationContext(),"Added",Toast.LENGTH_SHORT).show();
-                                DatabaseReference dataref = FirebaseDatabase.getInstance().getReference("Report");
-                                Map<String, String> report = new HashMap<>();
-                                report.put("eventId", eventIdString);
-                                report.put("userId", userID);
-                                report.put("reason", reportContent);
-                                DatabaseReference db = dataref.push();
-                                db.setValue(report);
-                            }
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {}});
-                    //Toast.makeText(getApplicationContext(),"WHatatattata",Toast.LENGTH_SHORT).show();
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {}});
     }
 
 }

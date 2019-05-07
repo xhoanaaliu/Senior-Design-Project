@@ -40,6 +40,7 @@
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:text="Title of the Event"
+            android:paddingBottom="10dp"
             android:textStyle="bold"
             android:textSize="30dp"/>
         <LinearLayout
@@ -87,7 +88,8 @@
                 android:layout_alignParentBottom="true"
                 android:orientation="vertical"
                 android:paddingLeft="30dp"
-                android:paddingRight="30dp">
+                android:paddingRight="30dp"
+                android:paddingTop="20dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -100,7 +102,7 @@
 
                     <TextView
                         android:id="@+id/location"
-                        android:layout_width="wrap_content"
+                        android:layout_width="280dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:weightSum="75"
@@ -112,14 +114,14 @@
 
                     <ImageView
                         android:id="@+id/googleLocation"
-                        android:layout_width="60dp"
-                        android:layout_height="70dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:weightSum="25"
                         android:layout_gravity="center"
                         android:layout_weight="70"
                         android:clickable="true"
                         android:focusable="true"
-                        android:src="@drawable/google_maps" />
+                        android:src="@drawable/event_location" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -135,7 +137,7 @@
 
                         <TextView
                             android:id="@+id/date"
-                            android:layout_width="wrap_content"
+                            android:layout_width="110dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="left"
@@ -146,15 +148,13 @@
 
                         <ImageView
                             android:id="@+id/calendarDate"
-                            android:layout_width="60dp"
-                            android:layout_height="70dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
                             android:layout_gravity="center"
                             android:weightSum="50"
-                            android:layout_marginLeft="30dp"
-                            android:layout_marginRight="30dp"
                             android:clickable="true"
                             android:focusable="true"
-                            android:src="@drawable/google_calendar" />
+                            android:src="@drawable/event_date" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -165,7 +165,7 @@
 
                         <TextView
                             android:id="@+id/times"
-                            android:layout_width="wrap_content"
+                            android:layout_width="110dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="left"
@@ -176,15 +176,14 @@
 
                         <ImageView
                             android:id="@+id/buttonTime"
-                            android:layout_width="60dp"
-                            android:layout_height="70dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_gravity="center"
+                            android:paddingLeft="10dp"
                             android:weightSum="50"
-                            android:layout_marginLeft="30dp"
-                            android:layout_marginRight="30dp"
                             android:clickable="true"
                             android:focusable="true"
-                            android:src="@drawable/new_event_clock" />
+                            android:src="@drawable/event_time" />
                     </LinearLayout>
                 </LinearLayout>
                     </LinearLayout>

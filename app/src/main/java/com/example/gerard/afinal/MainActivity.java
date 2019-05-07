@@ -219,12 +219,18 @@ public class MainActivity extends AppCompatActivity
                 .replace(R.id.main_fragment, loginFragment, "LoginFragment")
                 .addToBackStack(null)
                 .commit();
-        hideBar(false);
-    }
-    public void hideBar(boolean isHidden){
-        navigation.setVisibility(isHidden ? View.GONE : View.VISIBLE);
-        toolbar.setVisibility(isHidden ? View.GONE : View.VISIBLE);
-        //getSupportActionBar().hide();
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.main_fragment);
+        if (f instanceof EventFragment) {
+            navigation.getMenu().findItem(R.id.navigation_home).setChecked(true);
+        } else if (f instanceof NewEventFragment) {
+            navigation.getMenu().findItem(R.id.navigation_camera).setChecked(true);
+        } else if (f instanceof ProfileFragment) {
+            navigation.getMenu().findItem(R.id.navigation_profile).setChecked(true);
+        } else if (f instanceof LocationFragment) {
+            navigation.getMenu().findItem(R.id.navigation_change_location).setChecked(true);
+        } else if (f instanceof EventHistoryFragment) {
+            navigation.getMenu().findItem(R.id.navigation_my_events).setChecked(true);
+        }
     }
 
     @Override
