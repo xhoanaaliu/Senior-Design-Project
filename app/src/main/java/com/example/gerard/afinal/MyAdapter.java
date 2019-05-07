@@ -173,7 +173,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         Map<String, String> value = (Map<String, String>) dataSnapshot.getValue();
-                        String user = value.get("username");
+                        String user = value.get("name");
                         String id = dataSnapshot.getKey();
                         if(user != null && id.equals(mDataset.get(position).getCreatorID())){
                             holder.username.setText("Created by " + user);
@@ -193,27 +193,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
                             }
                         });
-
                     }
 
                     @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
 
                     @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) { }
 
                     @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) { }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
+                    public void onCancelled(@NonNull DatabaseError databaseError) { }
                 });
             }
 
@@ -273,7 +265,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                         activity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, fragment)
                                 .addToBackStack(null).commit();
                     }
-
                 }
             });
         }
