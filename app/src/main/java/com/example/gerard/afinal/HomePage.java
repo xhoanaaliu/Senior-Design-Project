@@ -193,8 +193,9 @@ public class HomePage extends Fragment implements GoogleApiClient.ConnectionCall
                     String time = value.get("time");
                     String title = value.get("title");
                     String ID = dataSnapshot.getKey();
+                    String creatorID = value.get("user_id");
 
-                    Event temp = new Event(title, location, date, time, URL, description, category, ID);
+                    Event temp = new Event(title, location, date, time, URL, description, category, ID, creatorID);
 
                     Date currDate = new Date();
                     String dateInString = date;
@@ -327,11 +328,12 @@ public class HomePage extends Fragment implements GoogleApiClient.ConnectionCall
         private String URL;
         private String description;
         private String category;
+        private String creatorID;
 
         public Event() {
         }
 
-        public Event(String title, String location, String date, String time, String URL, String description, String category, String ID) {
+        public Event(String title, String location, String date, String time, String URL, String description, String category, String ID, String creatorID) {
 
             this.title = title;
             this.location = location;
@@ -341,6 +343,7 @@ public class HomePage extends Fragment implements GoogleApiClient.ConnectionCall
             this.description = description;
             this.category = category;
             this.ID = ID;
+            this.creatorID = creatorID;
         }
 
         public String getTitle() {
@@ -405,6 +408,14 @@ public class HomePage extends Fragment implements GoogleApiClient.ConnectionCall
 
         public void setID(String ID) {
             this.ID = ID;
+        }
+
+        public String getCreatorID() {
+            return creatorID;
+        }
+
+        public void setCreatorID(String creatorID) {
+            this.creatorID = creatorID;
         }
     }
 }

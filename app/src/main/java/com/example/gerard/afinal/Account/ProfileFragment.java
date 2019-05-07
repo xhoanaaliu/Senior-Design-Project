@@ -34,6 +34,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -88,6 +89,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private DatabaseReference reff;
     private static final int CAMERA = 0;
     private static final int GALLERY = 1;
+    private boolean invisible = false;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -130,10 +132,22 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView= inflater.inflate(R.layout.fragment_profile, container, false);
+        Button followButton = rootView.findViewById(R.id.button2);
         mAuth= FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
-        userID=user.getUid();
+        Bundle arguments = this.getArguments();
+        if(arguments != null) {
+            userID = arguments.getString("ID");
+            Log.d("USER ID", userID);
+        }
+        else {
+            userID = user.getUid();
+        }
+        if(userID.equals(user.getUid())){
+            invisible = true;
+            followButton.setVisibility(View.GONE);
+        }
         databaseReference=database.getReference("Users");
         userName = rootView.findViewById(R.id.userName);
         Query q1 = databaseReference.orderByChild("user_id").equalTo(userID);

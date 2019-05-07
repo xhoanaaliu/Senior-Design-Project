@@ -227,16 +227,8 @@ public class SignUpActivity extends AppCompatActivity {
         user.put("email", email);
         user.put("password", password);
         user.put("location", location);
+
         mDatabase.child("Users").child(userId).setValue(user);
     }
-
-    private String usernameFromEmail(String email) {
-        if (email.contains("@")) {
-            return email.split("@")[0];
-        } else {
-            return email;
-        }
-    }
-
 
 }

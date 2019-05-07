@@ -1,107 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".LocationFragment">
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="21dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="29dp"
-            android:text="@string/eventsNear"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/location_name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-    </android.support.constraint.ConstraintLayout>
-
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView"
-        android:layout_width="match_parent"
-        android:layout_height="349dp"
-        android:layout_below="@+id/autocomplete_fragment"
-        android:layout_marginTop="72dp"
-        android:layout_marginBottom="12dp" />
-
     <TextView
-        android:id="@+id/heading_label"
+        android:id="@+id/search_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="450dp"
+        android:layout_marginTop="30dp"
         android:text="Location Search"
         android:textColor="#555555"
-        android:textSize="24sp" />
+        android:textSize="20sp"
+        android:layout_marginLeft="30dp"/>
 
-    <EditText
-        android:id="@+id/search_field"
-        android:layout_width="wrap_content"
-        android:layout_height="47dp"
-        android:layout_below="@+id/heading_label"
-        android:layout_alignStart="@+id/heading_label"
-        android:layout_alignLeft="@+id/heading_label"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_toStartOf="@+id/search_btn"
-        android:layout_toLeftOf="@+id/search_btn"
-        android:background="@drawable/search_layout"
-        android:ems="10"
-        android:hint="Search here"
-        android:inputType="textPersonName"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="10dp"
-        android:textColor="#999999"
-        android:textSize="16sp" />
 
     <fragment
         android:id="@+id/autocomplete_fragment"
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"/>
 
-    <ImageView
-        android:id="@+id/search_btn"
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="340dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="12dp"/>
+
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/search_field"
-        android:layout_alignBottom="@+id/search_field"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="30dp"
-        android:src="@mipmap/location_search_button_icon"/>
-
-
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp">
 
         <ImageView
             android:id="@+id/location_image"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="25dp"
             android:layout_below="@+id/search_field"
             android:src="@mipmap/use_current_location_icon" />
 
@@ -109,64 +52,18 @@
         android:id="@+id/text_loc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/location_image"
-        android:layout_alignBottom="@+id/location_image"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="0dp"
-        android:layout_toEndOf="@+id/location_image"
-        android:layout_toRightOf="@+id/location_image"
         android:text="Use my current location"
         android:textColor="#555555"
         android:textSize="20sp"
-        android:paddingLeft="5dp"
-        android:paddingTop="10dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="8dp"/>
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="10dp"/>
 
-    <View
-        android:id="@+id/separator"
-        android:layout_width="wrap_content"
-        android:layout_height="1dip"
-        android:layout_below="@+id/text_loc"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginEnd="30dp"
-        android:background="#243447"
-         />
+    </LinearLayout>
 
 
-        <TextView
-            android:id="@+id/rec_loc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/separator"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp"
-            android:text="Recent Locations"
-            android:textSize="20sp"
-            android:textColor="#555555"
-            />
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/my_recycler_view"
-        android:scrollbars="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/rec_loc"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="20dp"
-        />
 
 
-</RelativeLayout>
+
+</LinearLayout>

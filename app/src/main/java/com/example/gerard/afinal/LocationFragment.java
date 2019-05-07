@@ -80,7 +80,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Lo
     DatabaseReference databaseReference;
     final String apiKey ="AIzaSyAT0Qg5FjgR_2WNOXKBb_SwmuBP6Jw72Zg";
     TextView recLoc;
-    ImageView searchBtn;
+    TextView searchBtn;
     private final int REQUEST_LOCATION_CODE = 99;
     private final int REQUEST_LOCATION_CODE2 = 98;
     private Location lastLoc;
@@ -148,6 +148,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Lo
         View view = inflater.inflate(R.layout.fragment_location, container, false);
         // Inflate the layout for this fragment
         TextView locationName = view.findViewById(R.id.textView7);
+        searchBtn = view.findViewById(R.id.search_btn);
         final Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
         List<Address> addressList = new ArrayList<>();
         try {
@@ -158,9 +159,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Lo
             Log.d("IO", "Service is not available");
         }
 
-        if(!addressList.isEmpty()) {
-            locationName.setText(addressList.get(0).getAdminArea());
-        }
+
 
         mMapView = view.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -233,11 +232,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Lo
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recLoc = view.findViewById(R.id.rec_loc);
-        searchBtn = view.findViewById(R.id.search_btn);
-        searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+
                 // Initialize Places.
                 Places.initialize(getApplicationContext(), apiKey);
                 // Create a new Places client instance.
@@ -254,20 +249,17 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Lo
                 autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                     @Override
                     public void onPlaceSelected(Place place) {
-                        // TODO: Get info about the selected place.
-                        recLoc.setText(place.getName()+","+place.getId());
-                        Log.i("f", "Place: " + place.getName() + ", " + place.getId());
+                        //recLoc.setText(place.getName() + "," + place.getId());
+
                     }
 
                     @Override
                     public void onError(Status status) {
                         // TODO: Handle the error.
-                        Log.i("f", "An error occurred: " + status);
+
+
                     }
                 });
-
-            }
-        });
     }
 
     @Override

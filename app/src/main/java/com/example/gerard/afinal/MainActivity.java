@@ -7,6 +7,7 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.location.Location;
 import android.location.LocationManager;
@@ -94,6 +95,7 @@ import com.textrazor.annotations.Entity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -145,9 +147,7 @@ public class MainActivity extends AppCompatActivity
 
     Bitmap bitmap;
     NavigationView navigationView;
-
-
-
+    public static final int PICK_IMAGE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,76 +178,6 @@ public class MainActivity extends AppCompatActivity
                             }
                         });
         }
-
-        /*
-        Map<String, String> em = new HashMap<>();
-        em.put("category","EE");
-        em.put("title" , "IEEE meeting");
-        em.put("location" , "Bilkent");
-        em.put("date" , "15 March");
-        em.put("description","Robotics");
-        em.put("time","19:30");
-        dataref.child("Event").child("1").setValue(em);
-        */
-
-        //**************************************************************************************************//
-        dataref = FirebaseDatabase.getInstance().getReference();
-
-        Map<String, String> user = new HashMap<>();
-        user.put("email", "test email");
-        user.put("password", "test password");
-        user.put("name", "test name");
-        user.put("surname", "test surname");
-        user.put("birthday", "test birthday");
-        user.put("picture", "test picture");
-        dataref.child("User").child("user 1").setValue(user);
-
-        Map<String, String> be_friend = new HashMap<>();
-        be_friend.put("email_user", "test email user");
-        be_friend.put("email_friend", "test email friend");
-        dataref.child("BeFriend").child("be friend 1").setValue(be_friend);
-
-        Map<String, String> follow = new HashMap<>();
-        follow.put("email_user", "test email user");
-        follow.put("email_organization", "test email organization");
-        dataref.child("Follow").child("follow 1").setValue(follow);
-
-        Map<String, String> interest = new HashMap<>();
-        interest.put("interest_type", "test interest type");
-        interest.put("ineterest_name", "test interest name");
-        dataref.child("Interest").child("interest 1").setValue(interest);
-
-        Map<String, String> interest_event = new HashMap<>();
-        interest_event.put("interest_event_id", "test interest event");
-        interest_event.put("ineterest_id", "test interest");
-        dataref.child("InterestEvent").child("interest event 1").setValue(interest_event);
-
-        Map<String, String> interest_user = new HashMap<>();
-        interest_user.put("interest_user_id", "test interest user");
-        interest_user.put("ineterest_id", "test interest");
-        dataref.child("InterestUser").child("interest user 1").setValue(interest_user);
-
-        Map<String, String> organization = new HashMap<>();
-        organization.put("organization_email", "test organization_email");
-        organization.put("organization_name", "test organization name");
-        dataref.child("Organization").child("organization 1").setValue(organization);
-
-        Map<String, String> interested_in = new HashMap<>();
-        interested_in.put("user_id", "test user");
-        interested_in.put("event_id", "test event");
-        dataref.child("InterestedIn").child("ineterested in 1").setValue(interested_in);
-
-        Map<String, String> participated_in = new HashMap<>();
-        participated_in.put("user_id", "test user");
-        dataref.child("ParticipatedIn").child("participated in 1").setValue(participated_in);
-
-        Map<String, String> going_to = new HashMap<>();
-        going_to.put("user_id", "test user");
-        going_to.put("event_id", "test event");
-        dataref.child("GoingTo").child("going to 1").setValue(going_to);
-
-        //**************************************************************************************************//
-
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             //@Override
@@ -317,7 +247,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -333,7 +263,7 @@ public class MainActivity extends AppCompatActivity
 
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -428,8 +358,30 @@ public class MainActivity extends AppCompatActivity
                     return true;
                 case R.id.navigation_camera:
 
-                    dispatchTakePictureIntent();
+                    new TTFancyGifDialog.Builder(MainActivity.this)
+                            .setTitle("Choose Method")
+                            .setMessage("Please select from where you want to take your poster !")
+                            .setPositiveBtnBackground("#66000000")
+                            .setPositiveBtnText("Open Camera")
+                            .setNegativeBtnBackground("#66000000")
+                            .setNegativeBtnText("Open Gallery")
+                            .setGifResource(R.drawable.gif13)   //Pass your Gif here
+                            .OnPositiveClicked(new TTFancyGifDialogListener() {
+                                @Override
+                                public void OnClick() {
+                                    dispatchTakePictureIntent();
+                                }
+                            })
+                            .OnNegativeClicked(new TTFancyGifDialogListener() {
+                                @Override
+                                public void OnClick() {
 
+                                    Intent intent = new Intent(Intent.ACTION_PICK,
+                                            MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                                    startActivityForResult(intent, PICK_IMAGE);
+                                }
+                            })
+                            .build();
                     return true;
                 case R.id.navigation_change_location:
                     LocationFragment locationFragment = new LocationFragment();
@@ -493,14 +445,16 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            galleryAddPic();
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                Toast.makeText(this,"Your poster is being processed",Toast.LENGTH_SHORT).show();
                 uploadImage(photoURI);
             }
-           /* NewEventFragment newEventFragment = new NewEventFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, newEventFragment, "location")
-                    .addToBackStack(null).commit();*/
+        }
+
+        if(requestCode == PICK_IMAGE  && resultCode == RESULT_OK){
+            Uri selectedImage = data.getData();
+            Toast.makeText(this,"Your poster is being processed",Toast.LENGTH_SHORT).show();
+            uploadImage(selectedImage);
 
         }
 
@@ -832,8 +786,10 @@ public class MainActivity extends AppCompatActivity
                     if(response != null) {
 
                         for (Entity entity : response.getResponse().getEntities()) {
-                            System.out.println(entity.getEntityId() + ": " + entity.getDBPediaTypes().get(0));
-                            u.put(entity.getEntityId(), entity.getDBPediaTypes().get(0));
+                            if( entity.getDBPediaTypes() != null) {
+                                System.out.println(entity.getEntityId() + ": " + entity.getDBPediaTypes().get(0));
+                                u.put(entity.getEntityId(), entity.getDBPediaTypes().get(0));
+                            }
                         }
                     }
 

@@ -10,16 +10,15 @@
 
   <ImageView
       android:id="@+id/listImage"
-      android:layout_width="95dp"
-      android:layout_height="137dp"
-      android:layout_marginStart="16dp"
-      android:layout_marginLeft="16dp"
+      android:layout_width="110dp"
+      android:layout_height="99dp"
+      android:layout_marginStart="4dp"
       android:layout_marginTop="8dp"
-      android:layout_marginBottom="8dp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      tools:src="@tools:sample/avatars" />
+      app:layout_constraintVertical_bias="0.872"
+      android:src="@drawable/not_loaded" />
 
   <TextView
       android:id="@+id/textTitle"
@@ -27,7 +26,7 @@
       android:layout_height="wrap_content"
       android:layout_gravity="center"
       android:layout_marginStart="16dp"
-      android:layout_marginTop="16dp"
+      android:layout_marginTop="32dp"
       android:padding="5dp"
       app:layout_constraintStart_toEndOf="@+id/listImage"
       app:layout_constraintTop_toTopOf="parent"
@@ -58,6 +57,17 @@
       app:layout_constraintStart_toEndOf="@+id/listImage"
       app:layout_constraintTop_toBottomOf="@+id/textLocation"
       tools:text="@tools:sample/lorem" />
+
+  <TextView
+      android:id="@+id/textView11"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="4dp"
+      android:layout_marginTop="4dp"
+      android:text=""
+      android:textColor="@color/com_facebook_blue"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
   <!--<TextView
       android:id="@+id/textTime"
       android:layout_width="wrap_content"
