@@ -15,7 +15,7 @@
         android:layout_height="8dp"
         android:textSize="18sp"
         android:layout_weight="2"
-        android:text="        Please select your interedted categories:" />
+        android:text="        Please select your interested categories:" />
 
     <LinearLayout
         android:paddingTop="32sp"
