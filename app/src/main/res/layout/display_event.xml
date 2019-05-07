@@ -11,6 +11,7 @@
         android:id="@+id/imageViewEvent"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="30dp"
+        android:layout_marginLeft="30dp"
         android:layout_width="100dp"
         android:layout_height="150dp"
         tools:src="@tools:sample/avatars" />
