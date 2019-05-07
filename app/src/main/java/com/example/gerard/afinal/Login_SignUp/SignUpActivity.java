@@ -209,16 +209,6 @@ public class SignUpActivity extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
     }
 
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // Check auth on Activity start
-        if (mAuth.getCurrentUser() != null) {
-            onAuthSuccess(mAuth.getCurrentUser());
-        }
-    }
     private void onAuthSuccess(FirebaseUser user) {
 
         // Write new user
