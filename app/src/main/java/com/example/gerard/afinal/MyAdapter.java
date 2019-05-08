@@ -173,7 +173,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         Map<String, String> value = (Map<String, String>) dataSnapshot.getValue();
-                        String user = value.get("name");
+                        String user = value.get("username");
                         String id = dataSnapshot.getKey();
                         if(user != null && id.equals(mDataset.get(position).getCreatorID())){
                             holder.username.setText("Created by " + user);

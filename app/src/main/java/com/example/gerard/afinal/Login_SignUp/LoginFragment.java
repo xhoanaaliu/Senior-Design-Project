@@ -373,10 +373,10 @@ return valid;
                         bundle.putDouble("longtitude", lastLoc.getLongitude());
                         hmp.setArguments(bundle);
                     }
-                    getActivity().getSupportFragmentManager().beginTransaction()
+                    /*getActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.main_fragment, hmp, "Home")
                             .addToBackStack(null)
-                            .commit();
+                            .commit();*/
                 }
             }
         };

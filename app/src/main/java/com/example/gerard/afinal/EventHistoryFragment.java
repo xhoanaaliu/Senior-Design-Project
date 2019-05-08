@@ -70,11 +70,13 @@ public class EventHistoryFragment extends Fragment {
           @Override
           public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
               final String key = dataSnapshot.getKey();
+              Toast.makeText(getContext(),"j", Toast.LENGTH_SHORT).show();
               datarefEvents.orderByChild("user_id").equalTo(userID).addChildEventListener(new ChildEventListener() {
                   @Override
                   public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                       String key2 = dataSnapshot.getKey();
                       if(key2.equals(key)){
+                          Toast.makeText(getContext(),key,Toast.LENGTH_SHORT).show();
                           adapter = new MyCustomListAdapter(getContext(),R.layout.display_event,eventFragmentArrayList);
                           listView.setAdapter(adapter);
                           Map<String, String> value = (Map<String,String>) dataSnapshot.getValue();
