@@ -51,7 +51,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.ProviderQueryResult;
+//import com.google.firebase.auth.ProviderQueryResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -80,8 +80,8 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.Context.KEYGUARD_SERVICE;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
-public class LoginFragment extends Fragment implements View.OnClickListener{
-    private static final String TAG = "LoginActivity";
+public class LoginFragment extends Fragment{ //implements View.OnClickListener{
+    /*private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
     private EventFragment event = new EventFragment();
     private HomePage hmp = new HomePage();
@@ -378,7 +378,7 @@ return valid;
                             .addToBackStack(null)
                             .commit();*/
                 }
-            }
+          /*  }
         };
         mGoogleBtn = (SignInButton) view.findViewById(R.id.googleBtn);
         // Configure Google Sign In
@@ -540,5 +540,5 @@ return valid;
     public void onDestroyView() {
         super.onDestroyView();
 
-    }
-}
+    }*/
+//}

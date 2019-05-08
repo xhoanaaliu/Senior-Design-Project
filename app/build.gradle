@@ -27,6 +27,7 @@ repositories {
     jcenter()
     maven { url "https://jitpack.io" }
     mavenCentral()
+    google()
 
 }
 dependencies {
@@ -51,12 +52,12 @@ dependencies {
     implementation 'com.jaredrummler:material-spinner:1.3.1'
     implementation 'com.jakewharton:butterknife:8.8.1'
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
-    implementation 'com.google.firebase:firebase-messaging:12.0.1'
-    implementation 'com.google.firebase:firebase-storage:16.0.4'
+    implementation 'com.google.firebase:firebase-messaging:18.0.0'
+    implementation 'com.google.firebase:firebase-storage:17.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.github.florent37:shapeofview:1.3.2'
     implementation 'com.flaviofaria:kenburnsview:1.0.7'
-    implementation 'com.facebook.android:facebook-login:[4,5)'
+    implementation 'com.facebook.android:facebook-login:5.0.0'
     implementation 'com.google.gms:google-services:4.2.0'
     implementation 'com.mxn.soul:flowingdrawer-core:2.0.0'
     implementation 'com.nineoldandroids:library:2.4.0'
@@ -64,11 +65,11 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'com.android.support:preference-v7:28.0.0'
     implementation 'de.hdodenhof:circleimageview:1.2.1'
-    implementation 'com.google.firebase:firebase-core:16.0.8'
-    implementation 'com.google.firebase:firebase-database:16.1.0'
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.google.firebase:firebase-database:17.0.0'
     implementation 'junit:junit:4.12'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
-    implementation 'com.google.firebase:firebase-auth:16.2.1'
+    implementation 'com.google.firebase:firebase-auth:17.0.0'
     implementation 'com.android.support.test:runner:1.0.2'
     implementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation "com.google.android.gms:play-services-location:16.0.0"
@@ -87,7 +88,7 @@ dependencies {
         exclude module: 'httpclient'
     }
 
-    implementation 'com.google.firebase:firebase-messaging:17.3.2'
+    //implementation 'com.google.firebase:firebase-messaging:17.3.2'
 
     implementation 'com.textrazor:textrazor:1.0.12'
 
@@ -98,8 +99,12 @@ dependencies {
     implementation 'com.bestsoft32.tayyab:tt-fancy-gif-dialog:1.0.2'
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
 
-    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+    implementation 'com.facebook.android:facebook-android-sdk:5.0.0'
 
+    implementation 'com.google.firebase:firebase-ml-vision:20.0.0'
+    implementation 'com.google.firebase:firebase-ml-vision-image-label-model:17.0.2'
+
+    apply plugin: 'com.google.gms.google-services'
 
 }
 

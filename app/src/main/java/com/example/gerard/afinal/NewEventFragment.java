@@ -366,7 +366,7 @@ public class NewEventFragment extends DialogFragment implements DatePickerDialog
 
             switch(entry.getValue()){
                 case("Place"):
-                    addressField.setHint(entry.getKey());
+                    addressField.setText(entry.getKey());
                     break;
                 case("Date"):
                 case("Time"):

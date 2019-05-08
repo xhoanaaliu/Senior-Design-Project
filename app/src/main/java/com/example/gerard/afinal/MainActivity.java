@@ -77,15 +77,22 @@ import com.google.api.services.vision.v1.Vision;
 import com.google.api.services.vision.v1.VisionRequest;
 import com.google.api.services.vision.v1.VisionRequestInitializer;
 import com.google.api.services.vision.v1.model.AnnotateImageRequest;
+import com.google.api.services.vision.v1.model.AnnotateImageResponse;
 import com.google.api.services.vision.v1.model.BatchAnnotateImagesRequest;
 import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
+import com.google.api.services.vision.v1.model.ImageSource;
 import com.google.api.services.vision.v1.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.cloud.FirebaseVisionCloudDetectorOptions;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
+import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
 import com.textrazor.AnalysisException;
 import com.textrazor.NetworkException;
 import com.textrazor.TextRazor;
@@ -99,6 +106,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -121,8 +130,6 @@ public class MainActivity extends AppCompatActivity
     private ProfileFragment profileFragment;
     private SettingsFragment settingsFragment;
     private ImageView imageView;
-    private LoginFragment loginFragment;
-    private SignUpFragment signupfragment;
     private GoogleApiClient mGoogleApiClient;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
@@ -205,15 +212,14 @@ public class MainActivity extends AppCompatActivity
 
 
         fragment = new HomePage();
-        loginFragment = new LoginFragment();
         profileFragment = new ProfileFragment();
         settingsFragment = new SettingsFragment();
-        signupfragment = new SignUpFragment();
-        loginFragment = new LoginFragment();
+
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_fragment, loginFragment, "LoginFragment")
+                .replace(R.id.main_fragment, fragment, "Homepage")
                 .addToBackStack(null)
                 .commit();
+
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.main_fragment);
         if (f instanceof EventFragment) {
             navigation.getMenu().findItem(R.id.navigation_home).setChecked(true);
@@ -528,6 +534,7 @@ public class MainActivity extends AppCompatActivity
                             .build();
                 }else {
 
+                    imageLabeling(bitmap);
                     callCloudVision(bitmap);
                 }
                 //selectedImage.setImageBitmap(bitmap);
@@ -663,15 +670,20 @@ public class MainActivity extends AppCompatActivity
                     Vision vision = builder.build();
 
                     List<Feature> featureList = new ArrayList<>();
-                   /* Feature labelDetection = new Feature();
+                    Feature labelDetection = new Feature();
                     labelDetection.setType("LABEL_DETECTION");
                     labelDetection.setMaxResults(10);
-                    featureList.add(labelDetection);*/
+                    featureList.add(labelDetection);
 
                     Feature textDetection = new Feature();
                     textDetection.setType("TEXT_DETECTION");
                     textDetection.setMaxResults(10);
                     featureList.add(textDetection);
+
+                    Feature web_feature = new Feature();
+                    web_feature.setType("WEB_DETECTION");
+                    web_feature.setMaxResults(10);
+                    featureList.add(web_feature);
 
 
                     List<AnnotateImageRequest> imageList = new ArrayList<>();
@@ -703,6 +715,8 @@ public class MainActivity extends AppCompatActivity
             }
 
             protected void onPostExecute(String result) {
+
+                System.out.println(result);
 
                 getAuth(result);
             }
@@ -738,6 +752,35 @@ public class MainActivity extends AppCompatActivity
         } else {
             message.append("nothing\n");
         }
+
+        message.append("Labels:\n");
+
+        List<EntityAnnotation> labels = response.getResponses().get(0)
+                .getLabelAnnotations();
+
+        if (labels != null) {
+            for (EntityAnnotation label : labels) {
+                message.append(String.format(Locale.getDefault(), "%.3f: %s",
+                        label.getScore(), label.getDescription()));
+                message.append("\n");
+            }
+        } else {
+            message.append("nothing\n");
+        }
+
+        message.append("Landmarks:\n");
+        List<EntityAnnotation> landmarks = response.getResponses().get(0)
+                .getLandmarkAnnotations();
+        if (landmarks != null) {
+            for (EntityAnnotation landmark : landmarks) {
+                message.append(String.format(Locale.getDefault(), "%.3f: %s",
+                        landmark.getScore(), landmark.getDescription()));
+                message.append("\n");
+            }
+        } else {
+            message.append("nothing\n");
+        }
+
         return message.toString();
     }
 
@@ -835,4 +878,107 @@ public class MainActivity extends AppCompatActivity
             return rotatedImg;
     }
 */
+       public void imageLabeling(Bitmap bitmap){
+           FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
+           //FirebaseVisionImage image = FirebaseVisionImage.fromMediaImage(mediaImage, rotation);
+
+           FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance()
+                   .getCloudImageLabeler();
+
+        // Or, to set the minimum confidence required:
+        // FirebaseVisionCloudImageLabelerOptions options =
+        //     new FirebaseVisionCloudImageLabelerOptions.Builder()
+        //         .setConfidenceThreshold(0.7f)
+        //         .build();
+        // FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance()
+        //     .getCloudImageLabeler(options);
+
+
+
+           labeler.processImage(image)
+                   .addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionImageLabel>>() {
+                       @Override
+                       public void onSuccess(List<FirebaseVisionImageLabel> labels) {
+                           // Task completed successfully
+                           // ...
+                           for (FirebaseVisionImageLabel label: labels) {
+                               String text = label.getText();
+                               String entityId = label.getEntityId();
+                               float confidence = label.getConfidence();
+                               System.out.println("Text: " + text +  " Confidence: " + confidence);
+                           }
+                       }
+                   })
+                   .addOnFailureListener(new OnFailureListener() {
+                       @Override
+                       public void onFailure(@NonNull Exception e) {
+                           // Task failed with an exception
+                           // ...
+                       }
+                   });
+       }
+
+    /**
+     * Detects whether the remote image on Google Cloud Storage has features you would want to
+     * moderate.
+     *
+     * @param gcsPath The path to the remote on Google Cloud Storage file to detect web annotations.
+     * @param out A {@link PrintStream} to write the results to.
+     * @throws Exception on errors while closing the client.
+     * @throws IOException on Input/Output errors.
+     */
+   /* public static void detectWebDetectionsGcs(String gcsPath, PrintStream out) throws Exception,
+            IOException {
+        List<AnnotateImageRequest> requests = new ArrayList<>();
+
+        ImageSource imgSource = ImageSource.Builder().setGcsImageUri(gcsPath).build();
+        Image img = Image.newBuilder().setSource(imgSource).build();
+        Feature feat = Feature.newBuilder().setType(Type.WEB_DETECTION).build();
+        AnnotateImageRequest request =
+                AnnotateImageRequest.newBuilder().addFeatures(feat).setImage(img).build();
+        requests.add(request);
+
+        try (ImageAnnotatorClient client = ImageAnnotatorClient.create()) {
+            BatchAnnotateImagesResponse response = client.batchAnnotateImages(requests);
+            List<AnnotateImageResponse> responses = response.getResponsesList();
+
+            for (AnnotateImageResponse res : responses) {
+                if (res.hasError()) {
+                    out.printf("Error: %s\n", res.getError().getMessage());
+                    return;
+                }
+
+                // Search the web for usages of the image. You could use these signals later
+                // for user input moderation or linking external references.
+                // For a full list of available annotations, see http://g.co/cloud/vision/docs
+                WebDetection annotation = res.getWebDetection();
+                out.println("Entity:Id:Score");
+                out.println("===============");
+                for (WebEntity entity : annotation.getWebEntitiesList()) {
+                    out.println(entity.getDescription() + " : " + entity.getEntityId() + " : "
+                            + entity.getScore());
+                }
+                for (WebLabel label : annotation.getBestGuessLabelsList()) {
+                    out.format("\nBest guess label: %s", label.getLabel());
+                }
+                out.println("\nPages with matching images: Score\n==");
+                for (WebPage page : annotation.getPagesWithMatchingImagesList()) {
+                    out.println(page.getUrl() + " : " + page.getScore());
+                }
+                out.println("\nPages with partially matching images: Score\n==");
+                for (WebImage image : annotation.getPartialMatchingImagesList()) {
+                    out.println(image.getUrl() + " : " + image.getScore());
+                }
+                out.println("\nPages with fully matching images: Score\n==");
+                for (WebImage image : annotation.getFullMatchingImagesList()) {
+                    out.println(image.getUrl() + " : " + image.getScore());
+                }
+                out.println("\nPages with visually similar images: Score\n==");
+                for (WebImage image : annotation.getVisuallySimilarImagesList()) {
+                    out.println(image.getUrl() + " : " + image.getScore());
+                }
+            }
+        }
+    }*/
+
 }
