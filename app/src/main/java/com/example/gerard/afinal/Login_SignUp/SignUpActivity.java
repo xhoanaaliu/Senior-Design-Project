@@ -74,7 +74,6 @@ public class SignUpActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_sign_up);
 
-        Toast.makeText(this, "ALOO3", Toast.LENGTH_SHORT).show();
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -224,7 +223,7 @@ public class SignUpActivity extends AppCompatActivity {
         user.put("email", email);
         user.put("password", password);
         user.put("location", location);
-
+         user.put("user_id",userId);
         mDatabase.child("Users").child(userId).setValue(user);
     }
 

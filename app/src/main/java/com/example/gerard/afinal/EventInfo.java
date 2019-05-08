@@ -1,5 +1,5 @@
 package com.example.gerard.afinal;
-
+//EventInfo class, keeps event informations
 public class EventInfo {
     private String event_id;
     private String category;

@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MyCustomListAdapter extends ArrayAdapter<EventInfo> {
-
+     //Customized adapter for GoingTo and InterestedIn Listviews.
     Context mCtx;
     int resource;
     ArrayList<EventInfo> eventInfoList;

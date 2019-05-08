@@ -60,10 +60,12 @@ public class EventHistoryFragment extends Fragment {
         ref2 = FirebaseDatabase.getInstance().getReference();
         user = FirebaseAuth.getInstance().getCurrentUser();
         datarefEvents = FirebaseDatabase.getInstance().getReference("Event");
-        userID=user.getUid();
+        userID=user.getUid();//userID from firebaseAuth
         listView = rootView.findViewById(R.id.listView);
         imageViewEvent = rootView.findViewById(R.id.imageViewEvent);
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        //Checks if the userID that exists in GoingTo table, also exists in event table.
+        //By checking the eventID's, retrieves information from Event table.
       ref2.child("GoingTo").child(userID).addChildEventListener(new ChildEventListener() {
           @Override
           public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

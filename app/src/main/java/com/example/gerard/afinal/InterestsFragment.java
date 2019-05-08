@@ -56,6 +56,8 @@ public class InterestsFragment extends Fragment {
         refInterests = FirebaseDatabase.getInstance().getReference();
         listViewInterests = rootView.findViewById(R.id.listViewInterests);
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        //Checks if the userID that exists in Interests table, also exists in event table.
+        //By checking the eventID's, retrieves information from Event table.
         refInterests.child("InterestedIn").child(userID).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

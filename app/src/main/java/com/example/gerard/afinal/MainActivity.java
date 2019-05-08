@@ -43,6 +43,7 @@ import android.widget.Toast;
 import com.bestsoft32.tt_fancy_gif_dialog_lib.TTFancyGifDialog;
 import com.bestsoft32.tt_fancy_gif_dialog_lib.TTFancyGifDialogListener;
 import com.example.gerard.afinal.Account.ProfileFragment;
+import com.example.gerard.afinal.Login_SignUp.LoginActivity;
 import com.example.gerard.afinal.Login_SignUp.LoginFragment;
 import com.example.gerard.afinal.Login_SignUp.SignUpFragment;
 import com.example.gerard.afinal.OCR.PackageManagerUtils;
@@ -162,7 +163,7 @@ public class MainActivity extends AppCompatActivity
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.d("REQUEST LOCATION", "NOT GRANTED");
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_CODE2);
-            //ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION_CODE);
+
         }
         if(!gotLocation){
                 SmartLocation.with(this).location()
@@ -183,12 +184,7 @@ public class MainActivity extends AppCompatActivity
             //@Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
-            /*    if(firebaseAuth.getCurrentUser()==null){
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment, loginFragment, "LoginFragment")
-                            .addToBackStack(null)
-                            .commit();
-                }*/
+
             }
         };
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -214,7 +210,6 @@ public class MainActivity extends AppCompatActivity
         settingsFragment = new SettingsFragment();
         signupfragment = new SignUpFragment();
         loginFragment = new LoginFragment();
-
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_fragment, loginFragment, "LoginFragment")
                 .addToBackStack(null)
@@ -253,23 +248,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-
-        return super.onOptionsItemSelected(item);
-    }*/
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -335,10 +314,9 @@ public class MainActivity extends AppCompatActivity
                 }
             }).executeAsync();
 
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment, loginFragment, "LoginFragment")
-                    .addToBackStack(null)
-                    .commit();
+
+            Intent i1 = new Intent(MainActivity.this,LoginActivity.class);
+            startActivity(i1);
 
 
         }
@@ -351,7 +329,7 @@ public class MainActivity extends AppCompatActivity
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
+            //Handle bottom navigation view clicks here.
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 

@@ -260,7 +260,7 @@ public class EventFragment extends Fragment implements View.OnClickListener{
             String s = formatter.format(dateInput);
             date.setText(s);
             times.setText(timeString);
-
+            //GET THE IMAGE
             islandRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
@@ -275,7 +275,6 @@ public class EventFragment extends Fragment implements View.OnClickListener{
                     // Handle any errors
                 }
             });
-
             goTo.child("GoingTo").child(userID).child(eventIdString).addListenerForSingleValueEvent(new ValueEventListener() {
                 public void onDataChange(DataSnapshot snapshot) {
                     if (snapshot.exists()){

@@ -150,7 +150,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
         databaseReference=database.getReference("Users");
         userName = rootView.findViewById(R.id.userName);
-        Query q1 = databaseReference.orderByChild("user_id").equalTo(userID);
+        Query q1 = databaseReference.orderByChild("user_id").equalTo(userID);//To get the userspecific data
 
         q1.addValueEventListener(new ValueEventListener() {
             @Override
@@ -221,15 +221,17 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
+                //for selecting profile picture from gallery
                 startActivityForResult(Intent.createChooser(intent,"Select Picture"),GALLERY);
             }
         });
-        adapter= new MyAdapter(getChildFragmentManager());
-        adapter.addFragment(new InterestsFragment(),"Interests");
-        adapter.addFragment(new EventHistoryFragment(),"EventHıstory");
-        adapter.addFragment(new FollowingFragment(),"Followıng");
-        viewPager.setAdapter(adapter);
-        tabs.setupWithViewPager(viewPager);
+                //adapters for tab items
+                adapter= new MyAdapter(getChildFragmentManager());
+                adapter.addFragment(new InterestsFragment(),"Interests");
+                adapter.addFragment(new EventHistoryFragment(),"EventHıstory");
+                adapter.addFragment(new FollowingFragment(),"Followıng");
+                viewPager.setAdapter(adapter);
+                tabs.setupWithViewPager(viewPager);
     }
 
 
@@ -249,7 +251,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     rotateImage = Bitmap.createBitmap(Image, 0, 0, Image.getWidth(), Image.getHeight(), matrix,true);
                     //profilePicture.setImageBitmap(rotateImage);
                 } else{
-
+                    //for handling the oriantation and size of the image that will be inserted into circular image view
                     rotateImage= handleSamplingAndRotationBitmap(getContext(),mImageUri);
                     Bitmap resized = getResizedBitmap(rotateImage,1024,1024);
                     profilePicture.setImageBitmap(resized);
