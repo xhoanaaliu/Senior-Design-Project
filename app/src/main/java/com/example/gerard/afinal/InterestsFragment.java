@@ -62,7 +62,7 @@ public class InterestsFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 final String key = dataSnapshot.getKey();
-                datarefEvents.orderByChild("user_id").equalTo(userID).addChildEventListener(new ChildEventListener() {
+                datarefEvents.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         String key2 = dataSnapshot.getKey();

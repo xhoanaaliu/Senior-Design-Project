@@ -148,17 +148,19 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             invisible = true;
             followButton.setVisibility(View.GONE);
         }
-        databaseReference=database.getReference("Users");
+        databaseReference=database.getReference();
         userName = rootView.findViewById(R.id.userName);
-        Query q1 = databaseReference.orderByChild("user_id").equalTo(userID);//To get the userspecific data
 
-        q1.addValueEventListener(new ValueEventListener() {
+         /*databaseReference.child("Users").child(userID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot d:dataSnapshot.getChildren()){
-                    NormalUser u1 = d.getValue(NormalUser.class);
-                    String name = u1.getUsername();
-                    userName.setText(name);
+                String user_ID = dataSnapshot.getKey();
+                if(user_ID.equals(userID)) {
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                        NormalUser u1 = d.getValue(NormalUser.class);
+                        String name = u1.getUsername();
+                        userName.setText(name);
+                    }
                 }
             }
 
@@ -166,7 +168,25 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        })
+        databaseReference.child("Users").child(userID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String userId = dataSnapshot.getKey();
+                for(DataSnapshot d : dataSnapshot.getChildren()){
+                    if(userId.equals(userID)) {
+                        NormalUser u1 = d.getValue(NormalUser.class);
+                        String name = u1.getUsername();
+                        userName.setText(name);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });*/
 
         return rootView;
     }
