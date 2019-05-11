@@ -218,11 +218,13 @@ public class HomePage extends Fragment implements GoogleApiClient.ConnectionCall
                     String a = dateFormat.format(currDate);
                     Log.d("DATE", a);
 
+
                     if((days < 15) && (days != 0)){
                         events_retrieved.add(temp);
                         adapter.notifyDataSetChanged();
                         Log.d("DATASET", "CHANGED");
                     }
+
                 }
 
                 @Override

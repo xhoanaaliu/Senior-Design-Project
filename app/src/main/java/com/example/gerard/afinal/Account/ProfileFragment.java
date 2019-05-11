@@ -46,6 +46,7 @@ import com.example.gerard.afinal.MainActivity;
 import com.example.gerard.afinal.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -79,6 +80,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference databaseReference;
     private FirebaseDatabase database;
+    private DatabaseReference databaseReference2;
     private  String userID;
     FirebaseUser user;
     CircleImageView profilePicture;
@@ -150,6 +152,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
         databaseReference=database.getReference();
         userName = rootView.findViewById(R.id.userName);
+
+        if(!invisible){
+            followButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    databaseReference2 = FirebaseDatabase.getInstance().getReference("Follow");
+                    databaseReference2.child(user.getUid()).child(userID).setValue(true);
+                }
+            });
+        }
 
          /*databaseReference.child("Users").child(userID).addValueEventListener(new ValueEventListener() {
             @Override

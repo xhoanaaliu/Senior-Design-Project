@@ -58,8 +58,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -86,6 +89,8 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Lo
     private Location lastLoc;
     private boolean gotLocation = false;
     private Map<LatLng, Event> markerList = new HashMap<>();
+    private LatLng selected;
+    private boolean reached = false;
 
     public LocationFragment() {
         // Required empty public constructor
@@ -187,22 +192,41 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Lo
 
                 Event temp = new Event(title, location, date,time,URL, description);
 
-                Geocoder geocoder1 = new Geocoder(getContext(), Locale.getDefault());
-                List<Address> addresses = new ArrayList<>();
+                Date currentDate = new Date();
+                Date currDate = new Date();
+                String dateInString = date;
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                long days = 0;
                 try {
-                    addresses = geocoder1.getFromLocationName(location, 10);
-                }
-                catch (IOException io){
-                    Log.d("Service", "Unavailable");
+                    currDate = formatter.parse(dateInString);
+                    if (currDate.getTime() >= currentDate.getTime()){
+                        long diff = currDate.getTime() - currentDate.getTime();
+                        long seconds = diff / 1000;
+                        long minutes = seconds / 60;
+                        long hours = minutes / 60;
+                        days = hours / 24;
+                    }
+                }catch (ParseException e) {
+                    //handle exception if date is not in "dd-MM-yyyy" format
                 }
 
-                if (!addresses.isEmpty()){
-                    addMarker(googleMap, addresses.get(0).getLatitude(), addresses.get(0).getLongitude(), temp);
-                    Log.d("THIS","REACHEDDDDDDDDDD");
+
+                if(days < 20 && days != 0) {
+
+                    Geocoder geocoder1 = new Geocoder(getContext(), Locale.getDefault());
+                    List<Address> addresses = new ArrayList<>();
+                    try {
+                        addresses = geocoder1.getFromLocationName(location, 10);
+                    } catch (IOException io) {
+                        Log.d("Service", "Unavailable");
+                    }
+
+                    if (!addresses.isEmpty()) {
+                        addMarker(googleMap, addresses.get(0).getLatitude(), addresses.get(0).getLongitude(), temp);
+                        Log.d("THIS", "REACHEDDDDDDDDDD");
+                    }
                 }
 
-                events_retrieved.add(temp);
-                Log.d("DATASET", "CHANGED");
             }
 
             @Override
@@ -240,7 +264,9 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Lo
 
                 // Initialize the AutocompleteSupportFragment.
                 AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-                        getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+                       getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+
 
                 // Specify the types of place data to return.
                 autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
@@ -250,7 +276,22 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Lo
                     @Override
                     public void onPlaceSelected(Place place) {
                         //recLoc.setText(place.getName() + "," + place.getId());
+                        if(place != null) {
+                            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+                            List<Address> list = new ArrayList<>();
+                            try {
+                                list = geocoder.getFromLocationName(place.getName(), 10);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
 
+                            LatLng temp;
+                            if(!list.isEmpty()){
+                                temp = new LatLng(list.get(0).getLatitude(), list.get(0).getLongitude());
+                                CameraPosition cameraPosition = new CameraPosition.Builder().target(temp).zoom(11).build();
+                                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                            }
+                        }
                     }
 
                     @Override
@@ -312,19 +353,15 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Lo
         // and move the map's camera to the same location.
         googleMap = mMap;
         LatLng curr;
-        if(lastLoc != null) {
+        if (lastLoc != null) {
             curr = new LatLng(lastLoc.getLatitude(), lastLoc.getLongitude());
             Log.d("KONUM VAAAAAR", "" + lastLoc.getLatitude() + "" + lastLoc.getLongitude());
-        }
-        else {
+        } else {
             curr = new LatLng(lat, lng);
         }
         CameraPosition cameraPosition = new CameraPosition.Builder().target(curr).zoom(11).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-
         //addMarker(googleMap, curr.latitude, curr.longitude);
-
     }
 
     @Override
