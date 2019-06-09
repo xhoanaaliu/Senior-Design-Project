@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity
     public static final int CAMERA_PERMISSIONS_REQUEST = 2;
     Uri photoURI;
     private final String LOG_TAG = "MainActivity";
-    private static final String CLOUD_VISION_API_KEY = "AIzaSyCvkaYZjqjAm9jgQyiS0pMr-CE6f3ZVExU";
+    private static final String CLOUD_VISION_API_KEY = "API";
     private static final String ANDROID_PACKAGE_HEADER = "X-Android-Package";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
     private final int REQUEST_LOCATION_CODE = 99;
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity
     Location lastLoc;
     boolean gotLocation = false;
     private Toolbar toolbar;
-    String API_KEY = "5d9a93f99b0aab73d3f8be94453d6d83f3ea2b193b7780ca43751893";
+    String API_KEY = "API";
     HashMap<String, String> u;
 
     Bitmap bitmap;

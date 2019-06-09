@@ -81,7 +81,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Lo
     public static double lng = 32.748524;
     private static List<Event> events_retrieved;
     DatabaseReference databaseReference;
-    final String apiKey ="AIzaSyAT0Qg5FjgR_2WNOXKBb_SwmuBP6Jw72Zg";
+    final String apiKey ="API";
     TextView recLoc;
     TextView searchBtn;
     private final int REQUEST_LOCATION_CODE = 99;
